@@ -1,22 +1,40 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const pool = require('./config/db'); 
+const path = require('path');
+const pool = require('./config/db');
 
+const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+// Owner va user routes ham kerak bo‘lsa shu tarzda ulashing
 
-
-// .env faylidan yuklash
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 6666;
 
-// Middlewarelarni ulash
-app.use(cors()); 
-app.use(bodyParser.json()); 
+// Middlewarelar
+app.use(cors());
+
+// Body parser o‘rniga express ichidagi parserlardan foydalanamiz
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Statik papkani ulash — uploads papkasidagi fayllarga kirish uchun
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
+
+// Routinglar
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+// app.use('/api/owner', ownerRoutes);
+// app.use('/api/user', userRoutes);
+
+// Test uchun oddiy route
+app.get('/', (req, res) => {
+  res.send('Server ishlayapti...');
+});
 
 // Serverni ishga tushirish
 app.listen(PORT, () => {
