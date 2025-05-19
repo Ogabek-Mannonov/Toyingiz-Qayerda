@@ -6,7 +6,9 @@ const pool = require('./config/db');
 
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-// Owner va user routes ham kerak bo‘lsa shu tarzda ulashing
+const ownerRoutes = require('./routes/ownerRoutes');
+const userRoutes = require('./routes/userRoutes');
+
 
 dotenv.config();
 
@@ -28,8 +30,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Routinglar
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
-// app.use('/api/owner', ownerRoutes);
-// app.use('/api/user', userRoutes);
+app.use('/api/owner', ownerRoutes);
+app.use('/api/user', userRoutes);
 
 // Test uchun oddiy route
 app.get('/', (req, res) => {
