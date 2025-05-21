@@ -1,10 +1,12 @@
 import React from 'react'
-import AddHallForm from './components/AddHallForm'
+import Home from './pages/Home'
+import Header from './components/Header'
 
 export default function App() {
   return (
     <div>
-      <AddHallForm />
+      <Header />
+      <Home />
     </div>
   )
 }

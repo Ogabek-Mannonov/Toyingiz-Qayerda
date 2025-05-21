@@ -1,0 +1,210 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Header */
+
+.header {
+  width: 100%;
+  height: 100px;
+  background-color: #292929;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0 20px;
+  box-sizing: border-box;
+  z-index: 1100;
+}
+
+.left-box,
+.name-box,
+.right-box {
+  display: flex;
+  align-items: center;
+}
+
+.left-box {
+  width: 30%;
+  justify-content: flex-start;
+}
+
+.name-box {
+  width: 40%;
+  justify-content: center;
+}
+
+.name-box h3 {
+  font-size: 35px;
+  color: white;
+  cursor: pointer;
+  user-select: none;
+}
+
+.right-box {
+  width: 30%;
+  justify-content: flex-end;
+}
+
+/* Hamburger button */
+
+.hamburger-btn {
+  font-size: 28px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.hamburger-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Sidebar */
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 250px;
+  height: 100%;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  transition: left 0.3s ease;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.close-btn {
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-bottom: 20px;
+  padding: 5px 10px;
+  transition: background-color 0.2s ease;
+  border-radius: 4px;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.sidebar ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-left: 0;
+}
+
+.sidebar ul li {
+  cursor: pointer;
+  font-size: 18px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.sidebar ul li:hover {
+  background-color: #444;
+}
+
+/* Overlay */
+
+.overlay {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100vw; 
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1100;
+}
+
+/* Signin button */
+
+.signin-btn {
+  width: 180px;
+  height: 50px;
+  background-color: transparent;
+  border-radius: 30px;
+  font-size: 17px;
+  border: 1px solid white;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border 0.3s ease;
+  user-select: none;
+}
+
+.signin-btn:hover {
+  border: none;
+  background-color: #3c3d3d;
+}
+
+/* Home Page */
+
+.home-container {
+  width: 100%;
+  display: flex;
+}
+
+.main {
+  background-image: url('https://images.squarespace-cdn.com/content/v1/52cd6c35e4b00bc0dba09595/1579010513202-K7Z8U0ND58F1E7DXE1V2/west-mill-exclusive-use-wedding-venue-52.JPG');
+  width: 100%;
+  height: 90vh;
+  background-size: cover;
+  margin-top: 100px;
+  display: flex;
+  align-items: center;
+}
+
+.text-btn {
+  width: 60%;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-left: 120px;
+  gap: 40px;
+}
+
+.text-home h2 {
+  font-size: 60px;
+  color: white;
+}
+
+.second-btn {
+  width: 250px;
+  height: 70px;
+  background-color: transparent;
+  border-radius: 30px;
+  font-size: 17px;
+  border: 1px solid white;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+.second-btn:hover {
+  border: none;
+  background-color: #3c3d3d;
+}
