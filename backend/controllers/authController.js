@@ -3,36 +3,45 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.signup = async (req, res) => {
-  const { firstname, lastname, username, password, role, phone_number } = req.body;
+  const { first_name, last_name, username, password, phone_number } = req.body;
 
   try {
+    // Username borligini tekshirish
+    const existingUser = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ error: 'Bu username allaqachon mavjud' });
+    }
+
     // Parolni hash qilish
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Foydalanuvchini bazaga yozish, created_at va updated_at bazada avtomatik to'ldiriladi
+    // Role default user
+    const role = 'user';
+
+    // Foydalanuvchini yaratish
     const newUser = await pool.query(
       `INSERT INTO users 
-       (first_name, last_name, username, password_hash, role, phone_number) 
-       VALUES ($1, $2, $3, $4, $5, $6) 
-       RETURNING user_id, username, role, first_name, last_name, phone_number, created_at, updated_at`,
-      [firstname, lastname, username, hashedPassword, role, phone_number]
+       (first_name, last_name, username, password_hash, role, phone_number, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW())
+       RETURNING user_id, username, role, first_name, last_name, phone_number`,
+      [first_name, last_name, username, hashedPassword, role, phone_number]
     );
 
     // Token yaratish
+    const user = newUser.rows[0];
     const token = jwt.sign(
-      { id: newUser.rows[0].user_id, role: newUser.rows[0].role },
+      { id: user.user_id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
-    res.status(201).json({ token, user: newUser.rows[0] });
+    res.status(201).json({ token, user });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server xatosi' });
+    console.error('Signup error:', error);
+    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
   }
 };
-
 
 exports.login = async (req, res) => {
   const { username, password } = req.body;
@@ -42,7 +51,7 @@ exports.login = async (req, res) => {
     const userResult = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
 
     if (userResult.rows.length === 0) {
-      return res.status(400).json({ message: 'Foydalanuvchi topilmadi' });
+      return res.status(400).json({ error: 'Foydalanuvchi topilmadi' });
     }
 
     const user = userResult.rows[0];
@@ -51,19 +60,29 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return res.status(400).json({ message: 'Parol noto‘g‘ri' });
+      return res.status(400).json({ error: 'Parol noto‘g‘ri' });
     }
 
     // Token yaratish
     const token = jwt.sign(
-      { id: user.id, role: user.role },
+      { id: user.user_id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
-    res.json({ token, user: { id: user.id, username: user.username, role: user.role } });
+    // Foydalanuvchi ma’lumotlari
+    const userData = {
+      id: user.user_id,
+      username: user.username,
+      role: user.role,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      phone_number: user.phone_number,
+    };
+
+    res.json({ token, user: userData });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Server xatosi' });
+    console.error('Login error:', error);
+    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
   }
 };

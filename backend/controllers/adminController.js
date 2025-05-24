@@ -1,8 +1,8 @@
-// controllers/adminController.js
 const pool = require('../config/db');
+const bcrypt = require('bcryptjs');
 const upload = require('../middlewares/uploadMiddleware');
 
-// To’yxona yaratish va bir nechta rasm yuklash
+// To’yxona yaratish va rasm yuklash
 exports.createVenue = [
   upload.array('images', 5), // maksimal 5 ta rasm yuklash
   async (req, res) => {
@@ -21,7 +21,7 @@ exports.createVenue = [
       const venueResult = await pool.query(
         `INSERT INTO wedding_halls 
           (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id) 
-         VALUES ($1,$2,$3,$4,$5,$6,$7,'pending',$8) 
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8) 
          RETURNING hall_id`,
         [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id]
       );
@@ -42,13 +42,39 @@ exports.createVenue = [
 
       res.status(201).json({ message: 'To’yxona va rasm(lar) muvaffaqiyatli qo‘shildi', hall_id });
     } catch (error) {
-      console.error(error);
+      console.error('Create Venue error:', error);
       res.status(500).json({ error: 'Server xatosi' });
     }
   }
 ];
 
-// To’yxonalar ro’yxatini olish, filter va sort bilan
+// Owner yaratish (faqat admin uchun)
+exports.createOwner = async (req, res) => {
+  try {
+    const { first_name, last_name, username, password, phone_number } = req.body;
+
+    // Parolni hash qilish
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const role = 'owner';
+
+    const result = await pool.query(
+      `INSERT INTO users 
+       (first_name, last_name, username, password_hash, role, phone_number, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) 
+       RETURNING user_id, username, role, first_name, last_name, phone_number`,
+      [first_name, last_name, username, hashedPassword, role, phone_number]
+    );
+
+    res.status(201).json({ message: 'Owner yaratildi', owner: result.rows[0] });
+  } catch (error) {
+    console.error('Create Owner error:', error);
+    res.status(500).json({ error: 'Server xatosi' });
+  }
+};
+
+// To’yxonalar ro’yxatini olish (filter va sort bilan)
 exports.getVenues = async (req, res) => {
   try {
     const { sortBy, order, search } = req.query;
@@ -88,7 +114,7 @@ exports.getVenues = async (req, res) => {
 
     res.json({ venues: result.rows });
   } catch (error) {
-    console.error(error);
+    console.error('Get Venues error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -109,7 +135,7 @@ exports.approveVenue = async (req, res) => {
 
     res.json({ message: 'To’yxona tasdiqlandi', venue: result.rows[0] });
   } catch (error) {
-    console.error(error);
+    console.error('Approve Venue error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -143,7 +169,7 @@ exports.updateVenue = async (req, res) => {
 
     res.json({ venue: result.rows[0] });
   } catch (error) {
-    console.error(error);
+    console.error('Update Venue error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -161,7 +187,7 @@ exports.deleteVenue = async (req, res) => {
 
     res.json({ message: 'To’yxona o‘chirildi' });
   } catch (error) {
-    console.error(error);
+    console.error('Delete Venue error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -174,7 +200,7 @@ exports.getOwners = async (req, res) => {
     );
     res.json({ owners: result.rows });
   } catch (error) {
-    console.error(error);
+    console.error('Get Owners error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -219,7 +245,7 @@ exports.getBookings = async (req, res) => {
 
     res.json({ bookings: result.rows });
   } catch (error) {
-    console.error(error);
+    console.error('Get Bookings error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -240,7 +266,7 @@ exports.cancelBooking = async (req, res) => {
 
     res.json({ message: 'Bron bekor qilindi', booking: result.rows[0] });
   } catch (error) {
-    console.error(error);
+    console.error('Cancel Booking error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
