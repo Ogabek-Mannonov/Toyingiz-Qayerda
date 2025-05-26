@@ -1,0 +1,183 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+.admin-panel-container {
+  width: 100%;
+  display: flex;
+  font-family: Arial, sans-serif;
+}
+
+.admin-sidebar {
+  width: 250px;
+  background-color: #161616;
+  color: white;
+  padding: 20px;
+  height: 100vh;
+  position: fixed;
+}
+
+.admin-sidebar .title {
+  margin-bottom: 30px;
+  font-size: 24px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 10px;
+}
+
+.nav-parent {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-box {
+  margin-bottom: 15px;
+}
+
+.nav-box a {
+  color: white;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.nav-box a.active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.admin-content {
+  width: 100%;
+  background-color: grey;
+  margin-left: 300px;
+  margin-right: 10px;
+  margin-top: 10px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+}
+
+
+
+
+/* Dashboard */
+
+.dashboard-container {
+  padding: 20px;
+}
+
+.dashboard-title {
+  font-size: 32px;
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background-color: #eee;
+  padding: 20px;
+  flex: 1 1 200px;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin-bottom: 12px;
+  font-size: 20px;
+  color: #333;
+}
+
+.stat-card p {
+  font-size: 28px;
+  font-weight: bold;
+  color: #222;
+  margin: 0;
+}
+
+
+/* Create Owner */
+.create-venue-owner {
+  max-width: 600px;
+  margin: 10px auto;
+  padding: 10px;
+  background: #fafafa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.create-venue-owner h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.create-venue-owner h3 {
+  margin-top: 25px;
+  margin-bottom: 10px;
+  color: #555;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.create-venue-owner form input[type="text"],
+.create-venue-owner form input[type="number"],
+.create-venue-owner form input[type="password"],
+.create-venue-owner form select,
+.create-venue-owner form input[type="file"] {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.file-label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #444;
+}
+
+.create-venue-owner button {
+  width: 100%;
+  background-color: #007bff;
+  color: white;
+  font-size: 18px;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-venue-owner button:hover {
+  background-color: #0056b3;
+}
+
+.error-message {
+  background-color: #f8d7da;
+  color: #842029;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #f5c2c7;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.success-message {
+  background-color: #d1e7dd;
+  color: #0f5132;
+  padding: 10px 15px;
+  margin-bottom: 15px;
+  border: 1px solid #badbcc;
+  border-radius: 6px;
+  font-weight: 600;
+  text-align: center;
+}
