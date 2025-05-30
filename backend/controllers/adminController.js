@@ -294,3 +294,28 @@ exports.getDistricts = async (req, res) => {
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
+
+// adminController.js
+
+exports.getDashboardStats = async (req, res) => {
+  try {
+    const totalVenuesRes = await pool.query('SELECT COUNT(*) FROM wedding_halls');
+    const approvedVenuesRes = await pool.query("SELECT COUNT(*) FROM wedding_halls WHERE status = 'approved'");
+    const pendingVenuesRes = await pool.query("SELECT COUNT(*) FROM wedding_halls WHERE status = 'pending'");
+    const ownersCountRes = await pool.query("SELECT COUNT(*) FROM users WHERE role = 'owner'");
+    const upcomingBookingsRes = await pool.query("SELECT COUNT(*) FROM bookings WHERE status = 'upcoming' AND booking_date >= CURRENT_DATE");
+    const pastBookingsRes = await pool.query("SELECT COUNT(*) FROM bookings WHERE booking_date < CURRENT_DATE");
+
+    res.json({
+      totalVenues: parseInt(totalVenuesRes.rows[0].count),
+      approvedVenues: parseInt(approvedVenuesRes.rows[0].count),
+      pendingVenues: parseInt(pendingVenuesRes.rows[0].count),
+      ownersCount: parseInt(ownersCountRes.rows[0].count),
+      upcomingBookings: parseInt(upcomingBookingsRes.rows[0].count),
+      pastBookings: parseInt(pastBookingsRes.rows[0].count),
+    });
+  } catch (error) {
+    console.error('Dashboard Stats error:', error);
+    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+  }
+};

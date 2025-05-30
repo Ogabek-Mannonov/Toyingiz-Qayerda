@@ -1,4 +1,3 @@
-// controllers/userController.js
 const pool = require('../config/db');
 
 exports.getVenues = async (req, res) => {
@@ -26,11 +25,37 @@ exports.getVenueById = async (req, res) => {
       return res.status(404).json({ message: 'To’yxona topilmadi' });
     }
 
-    // Kalendardagi bronlar va bo‘sh kunlarni qo‘shish kerak (keyin qo‘shimcha qilamiz)
     res.json({ venue: venue.rows[0] });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Server xatosi' });
+  }
+};
+
+exports.getVenueBookings = async (req, res) => {
+  try {
+    const venueId = req.params.id;
+
+    const venueRes = await pool.query(
+      `SELECT * FROM wedding_halls WHERE hall_id = $1 AND status = 'approved'`,
+      [venueId]
+    );
+
+    if (venueRes.rowCount === 0) {
+      return res.status(404).json({ message: "To'yxona topilmadi yoki tasdiqlanmagan" });
+    }
+
+    const bookingsRes = await pool.query(
+      `SELECT booking_date, status, number_of_guests, client_name, client_phone_number 
+       FROM bookings 
+       WHERE hall_id = $1`,
+      [venueId]
+    );
+
+    res.json({ bookings: bookingsRes.rows });
+  } catch (error) {
+    console.error('Get Venue Bookings error:', error);
+    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
   }
 };
 
@@ -39,7 +64,6 @@ exports.createBooking = async (req, res) => {
     const { hall_id, booking_date, number_of_guests, client_name, client_phone_number } = req.body;
     const user_id = req.user.id;
 
-    // Bron sanasi band emasligini tekshirish
     const check = await pool.query(
       `SELECT * FROM bookings WHERE hall_id = $1 AND booking_date = $2`,
       [hall_id, booking_date]
@@ -88,7 +112,6 @@ exports.cancelBooking = async (req, res) => {
     const user_id = req.user.id;
     const bookingId = req.params.id;
 
-    // Bron foydalanuvchiga tegishli ekanini tekshirish
     const check = await pool.query(
       `SELECT booking_id FROM bookings WHERE booking_id = $1 AND user_id = $2`,
       [bookingId, user_id]

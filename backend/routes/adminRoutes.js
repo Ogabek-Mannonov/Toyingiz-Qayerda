@@ -9,6 +9,7 @@ router.patch('/venues/:id/approve', adminController.approveVenue);
 router.put('/venues/:id', adminController.updateVenue);
 router.delete('/venues/:id', adminController.deleteVenue);
 router.get('/districts', adminController.getDistricts);
+router.get('/dashboard-stats', adminController.getDashboardStats);
 
 
 router.get('/owners', adminController.getOwners);

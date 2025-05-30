@@ -3,17 +3,16 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
-const roleMiddleware = require('../middlewares/roleMiddleware');
 
-// Faqat user roli uchun ruxsat
-router.use(authMiddleware);
-router.use(roleMiddleware(['user']));
-
-// Tasdiqlangan to’yxonalarni olish
+// To’yxonalarni ko’rish — bu public route, auth kerak emas
 router.get('/venues', userController.getVenues);
 
-// Yakka to’yxona ma’lumotlarini olish
+// Quyidagi route’lar uchun autentifikatsiya talab qilinadi
+router.use(authMiddleware);
+
+// Yakka to’yxona ma’lumotlari va bronlar kalendari (agar kerak bo‘lsa authsiz ham qilinishi mumkin)
 router.get('/venues/:id', userController.getVenueById);
+router.get('/venues/:id/bookings', userController.getVenueBookings);
 
 // Bron qilish
 router.post('/bookings', userController.createBooking);
