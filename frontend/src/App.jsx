@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import SidebarMenu from './components/SidebarMenu';  // Sidebar componenti
+import SidebarMenu from './components/SidebarMenu';  
 import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -8,7 +8,7 @@ import Signup from './pages/Signin';
 import OwnerPanel from './owner/OwnerPanel';
 import AdminPanel from './admin/AdminPanel';
 import UserVenueList from './user/UserVenueList';
-import UserBookingForm from './user/UserBookingForm'; // Bron qilish sahifasi
+import UserBookingForm from './user/UserBookingForm'; 
 
 function Layout() {
   const location = useLocation();
@@ -33,7 +33,7 @@ function Layout() {
       {!hideHeaderPaths.includes(location.pathname) && <Header />}
 
       <div className="app-container">
-        <SidebarMenu /> {/* SidebarMenu */}
+        <SidebarMenu />
 
         <div className="content">
           <Routes>
@@ -42,8 +42,8 @@ function Layout() {
             <Route path="/signup" element={<Signup />} />
             <Route path="/owner-panel/*" element={<OwnerPanel />} />
             <Route path="/admin-panel/*" element={<AdminPanel />} />
-            <Route path="/user/venues" element={<UserVenueList />} /> {/* To’yxonalar ro’yxati */}
-            <Route path="/user/venues/:id" element={<UserBookingForm />} /> {/* Yakka to’yxona bron qilish */}
+            <Route path="/user/venues" element={<UserVenueList />} /> 
+            <Route path="/user/venues/:id" element={<UserBookingForm />} /> 
           </Routes>
         </div>
       </div>
