@@ -223,7 +223,7 @@ export default function CreateVenueWithOwner() {
           required
         />
 
-        <button type="submit">Create Venue and Owner</button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );

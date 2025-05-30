@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';  // Link ni import qildik
 
 const SidebarMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,10 +17,10 @@ const SidebarMenu = () => {
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
         <button onClick={toggleSidebar} className="close-btn">&times;</button>
         <ul>
-          <li>Bosh sahifa</li>
-          <li>To'yxonalar</li>
-          <li>Profil</li>
-          <li>Chiqish</li>
+          <li><Link to="/" onClick={toggleSidebar}>Bosh sahifa</Link></li>
+          <li><Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link></li> {/* Yangi link qo'shildi */}
+          <li><Link to="/profile" onClick={toggleSidebar}>Profil</Link></li>
+          <li><Link to="/logout" onClick={toggleSidebar}>Chiqish</Link></li>
         </ul>
       </div>
 

@@ -12,7 +12,12 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    axios.get('/api/admin/dashboard-stats')
+    // Backend URL to'g'ri ekanligini tekshiring
+    axios.get('http://localhost:5000/api/admin/dashboard-stats', {
+      headers: {
+        Authorization: 'Bearer ' + localStorage.getItem('token'), // agar autentifikatsiya kerak bo‘lsa
+      }
+    })
       .then(res => {
         setStats(res.data);
       })
