@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './user.css'
+import { useNavigate, useParams } from 'react-router-dom';
+import '../index.css';
 
-export default function UserBookingForm({ hallId }) {
+export default function UserBookingForm() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const hallId = id;
 
   const [formData, setFormData] = useState({
     booking_date: '',
@@ -15,6 +17,12 @@ export default function UserBookingForm({ hallId }) {
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    setToken(storedToken);
+  }, []);
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -24,16 +32,15 @@ export default function UserBookingForm({ hallId }) {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setError('');
-    setSuccess('');
 
-    const token = localStorage.getItem('token');
     if (!token) {
-      setError('Bron qilish uchun tizimga kirishingiz kerak');
-      // Masalan, avtomatik login sahifasiga yo‘naltirish:
-      setTimeout(() => navigate('/login'), 2000);
+      // Token yo'q bo'lsa, login sahifasiga yo'naltirish
+      navigate('/login');
       return;
     }
+
+    setError('');
+    setSuccess('');
 
     try {
       const response = await axios.post(
@@ -54,9 +61,7 @@ export default function UserBookingForm({ hallId }) {
         client_phone_number: '',
       });
     } catch (err) {
-      setError(
-        err.response?.data?.message || 'Bron qilishda xatolik yuz berdi'
-      );
+      setError(err.response?.data?.message || 'Bron qilishda xatolik yuz berdi');
     }
   };
 

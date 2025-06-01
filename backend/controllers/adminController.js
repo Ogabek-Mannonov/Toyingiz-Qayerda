@@ -22,7 +22,7 @@ exports.createVenueWithOwner = [
         owner_phone_number,
       } = req.body;
 
-      // 1. district_name dan district_id olish
+      // district_id olish
       const districtResult = await pool.query(
         'SELECT district_id FROM districts WHERE LOWER(name) = LOWER($1)',
         [district_name]
@@ -32,7 +32,7 @@ exports.createVenueWithOwner = [
       }
       const district_id = districtResult.rows[0].district_id;
 
-      // 2. Owner username takrorlanmasligini tekshirish
+      // Owner username tekshirish
       const existingUser = await pool.query(
         'SELECT * FROM users WHERE username = $1',
         [owner_username]
@@ -41,7 +41,7 @@ exports.createVenueWithOwner = [
         return res.status(400).json({ error: 'Bu username allaqachon mavjud' });
       }
 
-      // 3. Ownerni yaratish
+      // Owner yaratish
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(owner_password, salt);
       const ownerRole = 'owner';
@@ -49,25 +49,21 @@ exports.createVenueWithOwner = [
       const ownerResult = await pool.query(
         `INSERT INTO users 
          (first_name, last_name, username, password_hash, role, phone_number, created_at, updated_at) 
-         VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) 
-         RETURNING user_id`,
+         VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) RETURNING user_id`,
         [owner_first_name, owner_last_name, owner_username, hashedPassword, ownerRole, owner_phone_number]
       );
-
       const owner_id = ownerResult.rows[0].user_id;
 
-      // 4. To'yxona yaratish
+      // To’yxona yaratish
       const venueResult = await pool.query(
         `INSERT INTO wedding_halls 
          (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id) 
-         VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8) 
-         RETURNING hall_id`,
+         VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8) RETURNING hall_id`,
         [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id]
       );
-
       const hall_id = venueResult.rows[0].hall_id;
 
-      // 5. Rasm fayllarini saqlash
+      // Rasm fayllarini saqlash
       const files = req.files;
       if (files && files.length > 0) {
         const insertPromises = files.map(file => {
@@ -91,7 +87,7 @@ exports.createVenueWithOwner = [
 // To’yxonalar ro’yxatini olish (filter va sort bilan)
 exports.getVenues = async (req, res) => {
   try {
-    const { sortBy, order, search } = req.query;
+    const { sortBy, order, search, status, district } = req.query;
 
     let baseQuery = `
       SELECT wh.*, d.name as district_name, u.first_name || ' ' || u.last_name as owner_name
@@ -100,14 +96,25 @@ exports.getVenues = async (req, res) => {
       JOIN users u ON wh.owner_id = u.user_id
     `;
 
-    let whereClause = '';
+    let whereClauses = [];
     let params = [];
+
     if (search) {
-      whereClause = ` WHERE LOWER(wh.name) LIKE $1 OR LOWER(d.name) LIKE $1`;
       params.push(`%${search.toLowerCase()}%`);
+      whereClauses.push(`(LOWER(wh.name) LIKE $${params.length} OR LOWER(d.name) LIKE $${params.length})`);
+    }
+    if (status) {
+      params.push(status);
+      whereClauses.push(`wh.status = $${params.length}`);
+    }
+    if (district) {
+      params.push(district);
+      whereClauses.push(`d.name = $${params.length}`);
     }
 
-    let orderClause = '';
+    let whereClause = whereClauses.length ? ` WHERE ${whereClauses.join(' AND ')}` : '';
+
+    let orderClause = ' ORDER BY wh.name ASC';
     if (sortBy) {
       const columns = {
         price_per_seat: 'wh.price_per_seat',
@@ -116,10 +123,8 @@ exports.getVenues = async (req, res) => {
         status: 'wh.status'
       };
       const col = columns[sortBy] || 'wh.name';
-      const ord = (order && order.toLowerCase() === 'desc') ? 'DESC' : 'ASC';
+      const ord = order && order.toLowerCase() === 'desc' ? 'DESC' : 'ASC';
       orderClause = ` ORDER BY ${col} ${ord}`;
-    } else {
-      orderClause = ' ORDER BY wh.name ASC';
     }
 
     const finalQuery = baseQuery + whereClause + orderClause;
@@ -136,7 +141,6 @@ exports.getVenues = async (req, res) => {
 // To’yxonani tasdiqlash
 exports.approveVenue = async (req, res) => {
   const venueId = req.params.id;
-
   try {
     const result = await pool.query(
       `UPDATE wedding_halls SET status = 'approved', updated_at = NOW() WHERE hall_id = $1 RETURNING *`,
@@ -146,7 +150,6 @@ exports.approveVenue = async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'To’yxona topilmadi' });
     }
-
     res.json({ message: 'To’yxona tasdiqlandi', venue: result.rows[0] });
   } catch (error) {
     console.error('Approve Venue error:', error);
@@ -180,7 +183,6 @@ exports.updateVenue = async (req, res) => {
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'To’yxona topilmadi' });
     }
-
     res.json({ venue: result.rows[0] });
   } catch (error) {
     console.error('Update Venue error:', error);
@@ -191,14 +193,11 @@ exports.updateVenue = async (req, res) => {
 // To’yxonani o‘chirish
 exports.deleteVenue = async (req, res) => {
   const venueId = req.params.id;
-
   try {
     const result = await pool.query('DELETE FROM wedding_halls WHERE hall_id = $1', [venueId]);
-
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'To’yxona topilmadi' });
     }
-
     res.json({ message: 'To’yxona o‘chirildi' });
   } catch (error) {
     console.error('Delete Venue error:', error);
@@ -222,7 +221,7 @@ exports.getOwners = async (req, res) => {
 // Bronlarni olish
 exports.getBookings = async (req, res) => {
   try {
-    const { sortBy, order, status } = req.query;
+    const { sortBy, order, status, venue } = req.query;
 
     let baseQuery = `
       SELECT b.booking_id, b.booking_date, b.number_of_guests, b.client_name, b.client_phone_number, b.status,
@@ -232,14 +231,21 @@ exports.getBookings = async (req, res) => {
       JOIN users u ON b.user_id = u.user_id
     `;
 
-    let whereClause = '';
+    let whereClauses = [];
     let params = [];
+
     if (status) {
-      whereClause = ` WHERE b.status = $1`;
       params.push(status);
+      whereClauses.push(`b.status = $${params.length}`);
+    }
+    if (venue) {
+      params.push(venue);
+      whereClauses.push(`wh.name = $${params.length}`);
     }
 
-    let orderClause = '';
+    let whereClause = whereClauses.length ? ` WHERE ${whereClauses.join(' AND ')}` : '';
+
+    let orderClause = ' ORDER BY b.booking_date ASC';
     if (sortBy) {
       const columns = {
         booking_date: 'b.booking_date',
@@ -249,8 +255,6 @@ exports.getBookings = async (req, res) => {
       const col = columns[sortBy] || 'b.booking_date';
       const ord = (order && order.toLowerCase() === 'desc') ? 'DESC' : 'ASC';
       orderClause = ` ORDER BY ${col} ${ord}`;
-    } else {
-      orderClause = ' ORDER BY b.booking_date ASC';
     }
 
     const finalQuery = baseQuery + whereClause + orderClause;
@@ -267,17 +271,14 @@ exports.getBookings = async (req, res) => {
 // Bronni bekor qilish
 exports.cancelBooking = async (req, res) => {
   const bookingId = req.params.id;
-
   try {
     const result = await pool.query(
       `UPDATE bookings SET status = 'cancelled', updated_at = NOW() WHERE booking_id = $1 RETURNING *`,
       [bookingId]
     );
-
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'Bron topilmadi' });
     }
-
     res.json({ message: 'Bron bekor qilindi', booking: result.rows[0] });
   } catch (error) {
     console.error('Cancel Booking error:', error);
@@ -285,6 +286,7 @@ exports.cancelBooking = async (req, res) => {
   }
 };
 
+// Rayonlar ro’yxatini olish
 exports.getDistricts = async (req, res) => {
   try {
     const result = await pool.query('SELECT district_id, name FROM districts ORDER BY name');
@@ -295,8 +297,7 @@ exports.getDistricts = async (req, res) => {
   }
 };
 
-// adminController.js
-
+// Dashboard statistikasi
 exports.getDashboardStats = async (req, res) => {
   try {
     const totalVenuesRes = await pool.query('SELECT COUNT(*) FROM wedding_halls');

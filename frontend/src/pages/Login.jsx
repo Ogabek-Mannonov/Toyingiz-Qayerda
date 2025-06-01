@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -22,12 +22,12 @@ export default function Login() {
 
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
-
       const { token, user } = response.data;
 
-      // Token va rolni localStorage ga saqlash
+      // Token va role ni saqlash
       localStorage.setItem('token', token);
       localStorage.setItem('userRole', user.role);
+      localStorage.setItem('username', user.username);
 
       // Rolga qarab yo'naltirish
       if (user.role === 'owner') {
@@ -35,7 +35,7 @@ export default function Login() {
       } else if (user.role === 'admin') {
         navigate('/admin-panel');
       } else {
-        navigate('/user-panel');
+        navigate('/'); // oddiy userlar uchun asosiy sahifa
       }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
@@ -47,9 +47,9 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Kirish</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           name="username"
@@ -57,6 +57,7 @@ export default function Login() {
           value={formData.username}
           onChange={handleChange}
           required
+          autoComplete="username"
         />
         <input
           type="password"
@@ -65,9 +66,13 @@ export default function Login() {
           value={formData.password}
           onChange={handleChange}
           required
+          autoComplete="current-password"
         />
         <button type="submit">Kirish</button>
       </form>
+      <p className="switch-auth">
+        Hisobingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
+      </p>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function CreateVenueWithOwner() {
@@ -18,16 +18,24 @@ export default function CreateVenueWithOwner() {
     images: []
   });
 
+  const [districts, setDistricts] = useState([]);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
+
+  // Rayonlar ro'yxatini backenddan olish
+  useEffect(() => {
+    axios.get('http://localhost:5000/api/admin/districts')
+      .then(res => setDistricts(res.data.districts))
+      .catch(() => setDistricts([]));
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
-    setError('');  // Xatolikni tozalash inputga yozganda
-    setSuccessMessage(''); // Oldingi muvaffaqiyatni tozalash
+    setError('');
+    setSuccessMessage('');
   };
 
   const handleFileChange = (e) => {
@@ -59,8 +67,6 @@ export default function CreateVenueWithOwner() {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Venue and Owner created:', response.data);
-
       setSuccessMessage('To’yxona va egasi muvaffaqiyatli yaratildi!');
       setFormData({
         name: '',
@@ -82,7 +88,6 @@ export default function CreateVenueWithOwner() {
       if (error.response && error.response.data && error.response.data.error) {
         setError(error.response.data.error);
       } else if (error.response && error.response.data) {
-        // Ba'zida backend xatolikni "message" maydonida yuborishi mumkin
         setError(error.response.data.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
       } else {
         setError('Server bilan bog‘lanishda xatolik yuz berdi');
@@ -95,7 +100,6 @@ export default function CreateVenueWithOwner() {
     <div className="create-venue-owner">
       <h2>To'yxona va To'yxona egasini qo'shish</h2>
 
-      {/* Xatolik va muvaffaqiyat xabarlarini ko‘rsatish */}
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
 
@@ -110,14 +114,19 @@ export default function CreateVenueWithOwner() {
             onChange={handleChange}
             required
           />
-          <input
-            type="text"
+
+          {/* Tuman select */}
+          <select
             name="district_name"
-            placeholder="Tuman Nomi"
             value={formData.district_name}
             onChange={handleChange}
             required
-          />
+          >
+            <option value="">Tumanni tanlang</option>
+            {districts.map(d => (
+              <option key={d.district_id} value={d.name}>{d.name}</option>
+            ))}
+          </select>
         </div>
 
         <div className="input-row">
@@ -150,23 +159,24 @@ export default function CreateVenueWithOwner() {
           />
           <input
             type="text"
-            name="Telfon raqam"
-            placeholder="Phone Number"
+            name="phone_number"  // <-- To'g'ri name attribute
+            placeholder="Telefon raqam"
             value={formData.phone_number}
             onChange={handleChange}
             required
           />
         </div>
 
-        <input
-          type="text"
-          name="Ta'rif"
-          placeholder="Description"
+        <textarea
+          name="description"  // <-- To'g'ri name attribute
+          placeholder="Tavsif"
           value={formData.description}
           onChange={handleChange}
+          rows={4}
         />
 
-        <input className='desc'
+        <input
+          className='desc'
           type="file"
           name="images"
           accept="image/*"
@@ -217,13 +227,13 @@ export default function CreateVenueWithOwner() {
         <input
           type="text"
           name="owner_phone_number"
-          placeholder="Telfon Raqam"
+          placeholder="Telefon raqam"
           value={formData.owner_phone_number}
           onChange={handleChange}
           required
         />
 
-        <button type="submit">Submit</button>
+        <button type="submit">Yuborish</button>
       </form>
     </div>
   );

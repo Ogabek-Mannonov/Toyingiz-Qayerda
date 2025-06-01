@@ -44,33 +44,31 @@ exports.signup = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password } = req.body;  // Yoki agar siz email ishlatsangiz: const { email, password } = req.body;
 
   try {
-    // Foydalanuvchini topish
+
+    // Agar username bilan qidirish kerak bo‘lsa:
     const userResult = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
 
     if (userResult.rows.length === 0) {
-      return res.status(400).json({ error: 'Foydalanuvchi topilmadi' });
+      return res.status(400).json({ error: 'Foydalanuvchi topilmadi' });  // Bu yerda ham email emas, username so‘zini ishlating
     }
 
     const user = userResult.rows[0];
 
-    // Parolni solishtirish
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
       return res.status(400).json({ error: 'Parol noto‘g‘ri' });
     }
 
-    // Token yaratish
     const token = jwt.sign(
       { id: user.user_id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: '1d' }
     );
 
-    // Foydalanuvchi ma’lumotlari
     const userData = {
       id: user.user_id,
       username: user.username,

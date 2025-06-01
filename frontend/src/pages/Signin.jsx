@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 export default function Signup() {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
-    username: '',
-    password: '',
     first_name: '',
     last_name: '',
     phone_number: '',
+    username: '',
+    password: '',
   });
+
   const [error, setError] = useState('');
 
   const handleChange = e => {
@@ -22,8 +24,10 @@ export default function Signup() {
     setError('');
 
     try {
-      // Bu yerda to'g'ri endpoint - signup
-      const response = await axios.post('http://localhost:5000/api/auth/signup', formData);
+      await axios.post('http://localhost:5000/api/auth/signup', formData);
+
+      localStorage.setItem('username', formData.username);
+
       navigate('/login');
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
@@ -35,9 +39,9 @@ export default function Signup() {
   };
 
   return (
-    <div>
+    <div className="form-container">
       <h2>Ro'yxatdan o'tish</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <form onSubmit={handleSubmit}>
         <input
           name="first_name"
@@ -45,6 +49,7 @@ export default function Signup() {
           value={formData.first_name}
           onChange={handleChange}
           required
+          autoComplete="given-name"
         />
         <input
           name="last_name"
@@ -52,6 +57,7 @@ export default function Signup() {
           value={formData.last_name}
           onChange={handleChange}
           required
+          autoComplete="family-name"
         />
         <input
           name="phone_number"
@@ -59,6 +65,7 @@ export default function Signup() {
           value={formData.phone_number}
           onChange={handleChange}
           required
+          autoComplete="tel"
         />
         <input
           name="username"
@@ -66,6 +73,7 @@ export default function Signup() {
           value={formData.username}
           onChange={handleChange}
           required
+          autoComplete="username"
         />
         <input
           type="password"
@@ -74,9 +82,13 @@ export default function Signup() {
           value={formData.password}
           onChange={handleChange}
           required
+          autoComplete="new-password"
         />
         <button type="submit">Ro'yxatdan o'tish</button>
       </form>
+      <p className="switch-auth">
+        Hisobingiz bormi? <Link to="/login">Kirish</Link>
+      </p>
     </div>
   );
 }

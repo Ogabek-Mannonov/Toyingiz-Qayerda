@@ -1,209 +1,768 @@
-* {
-  padding: 0;
+/* ===== UMUMIY RESET VA TAYYORLIK ===== */
+
+*,
+*::before,
+*::after {
   margin: 0;
-  font-family: 'Poppins', sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  user-select: none;
+  scroll-behavior: smooth;
 }
 
-/* Header */
+body {
+  background: linear-gradient(135deg, #f9f7f1, #e8d9c7);
+  color: #3e3e3e;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ===== HEADER ===== */
 
 .header {
-  width: 100%;
-  height: 100px;
-  background-color: #292929;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   position: fixed;
-  top: 0;
-  left: 0;
-  padding: 0 20px;
-  box-sizing: border-box;
-  z-index: 1100;
+  top: 0; left: 0; right: 0;
+  height: 80px;
+  background-color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  z-index: 1500;
+  transition: background-color 0.3s ease;
 }
 
-.left-box,
-.name-box,
-.right-box {
-  display: flex;
-  align-items: center;
+.header.scrolled {
+  background-color: #f2e8dc;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.15);
 }
 
 .left-box {
-  width: 30%;
-  justify-content: flex-start;
+  flex: 1;
 }
 
 .name-box {
-  width: 40%;
-  justify-content: center;
+  flex: 2;
+  text-align: center;
 }
 
 .name-box h3 {
-  font-size: 35px;
-  color: white;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  color: #7f5a32;
   cursor: pointer;
+  font-weight: 700;
+  letter-spacing: 1.5px;
   user-select: none;
+  transition: color 0.3s ease;
+}
+
+.name-box h3:hover {
+  color: #b57e4e;
 }
 
 .right-box {
-  width: 30%;
+  flex: 1;
+  display: flex;
   justify-content: flex-end;
 }
 
-/* Hamburger button */
+/* Hamburger & Close buttons */
 
-.hamburger-btn {
-  font-size: 28px;
-  cursor: pointer;
+.hamburger-btn,
+.close-btn {
+  font-size: 1.8rem;
   background: none;
   border: none;
-  color: white;
-  padding: 5px 10px;
-  transition: background-color 0.2s ease;
-  border-radius: 4px;
+  color: #7f5a32;
+  cursor: pointer;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
 }
 
-.hamburger-btn:hover {
-  background-color: rgba(255, 255, 255, 0.15);
+.hamburger-btn:hover,
+.close-btn:hover {
+  background-color: rgba(127, 90, 50, 0.15);
 }
 
-/* Sidebar */
+/* ===== SIDEBAR ===== */
 
 .sidebar {
   position: fixed;
   top: 0;
-  left: -250px;
-  width: 250px;
-  height: 100%;
-  background-color: #333;
-  color: white;
-  padding: 20px;
-  box-sizing: border-box;
-  transition: left 0.3s ease;
-  z-index: 1200;
-  display: flex;
-  flex-direction: column;
+  left: -280px; /* yashirin holat */
+  width: 280px;
+  height: 100vh;
+  background-color: #f9f5f0;
+  color: #7f5a32;
+  padding: 30px 25px;
+  box-shadow: 3px 0 15px rgba(0,0,0,0.12);
+  transition: left 0.35s ease;
+  z-index: 1400;
+  border-right: 1px solid #d3c0a4;
 }
+
 
 .sidebar.open {
   left: 0;
 }
 
-.close-btn {
-  font-size: 30px;
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  align-self: flex-end;
-  margin-bottom: 20px;
-  padding: 5px 10px;
-  transition: background-color 0.2s ease;
-  border-radius: 4px;
-}
-
-.close-btn:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
-
 .sidebar ul {
   list-style: none;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  padding-left: 0;
+  gap: 22px;
 }
 
 .sidebar ul li {
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 12px 18px;
+  border-radius: 12px;
   cursor: pointer;
-  font-size: 18px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  transition: background-color 0.2s ease;
   user-select: none;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-.sidebar ul li:hover {
-  background-color: #444;
+.sidebar ul li:hover,
+.sidebar ul li:focus {
+  background-color: #bfa67a;
+  color: #fff;
 }
 
-/* Overlay */
+.sidebar ul li a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.content {
+  padding-top: 80px; /* header balandligi */
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+} 
+
+/* Overlay fon qorayishi */
 
 .overlay {
   position: fixed;
-  top: 0; 
-  left: 0;
-  width: 100vw; 
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 1100;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: rgba(127, 90, 50, 0.3);
+  z-index: 1350;
+  backdrop-filter: blur(2px);
 }
-
-/* Signin button */
+/* ===== SIGN IN BUTTON ===== */
 
 .signin-btn {
-  width: 180px;
-  height: 50px;
-  background-color: transparent;
-  border-radius: 30px;
-  font-size: 17px;
-  border: 1px solid white;
-  color: white;
+  width: 170px;
+  height: 48px;
+  border-radius: 40px;
+  background-color: #b57e4e;
+  border: none;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #fff;
   cursor: pointer;
-  transition: background-color 0.3s ease, border 0.3s ease;
-  user-select: none;
+  box-shadow: 0 4px 10px rgba(181, 126, 78, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .signin-btn:hover {
-  border: none;
-  background-color: #3c3d3d;
+  background-color: #7f5a32;
+  box-shadow: 0 6px 15px rgba(127, 90, 50, 0.7);
 }
 
-/* Home Page */
+/* ===== HOME PAGE ===== */
 
 .home-container {
-  width: 100%;
-  display: flex;
+  max-width: 90%;
+  margin: 20px auto;
+  
 }
 
-.main {
-  background-image: url('https://images.squarespace-cdn.com/content/v1/52cd6c35e4b00bc0dba09595/1579010513202-K7Z8U0ND58F1E7DXE1V2/west-mill-exclusive-use-wedding-venue-52.JPG');
-  width: 100%;
-  height: 100vh;
-  background-size: cover;
-  display: flex;
-  align-items: center;
+/* Slider */
+
+.slider-wrapper {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.15);
+  margin-bottom: 70px;
 }
 
-.text-btn {
-  width: 60%;
-  height: 400px;
+.slide img {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 20px;
+}
+
+.caption {
+  position: absolute;
+  bottom: 15px;
+  left: 30px;
+  color: #fff;
+  font-size: 1.6rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.7);
+}
+
+/* Bizning xizmatlar */
+
+.services-section {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.services-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  color: #7f5a32;
+  margin-bottom: 30px;
+}
+
+.services-section ul {
+  list-style: none;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  flex-direction: column;
-  margin-left: 120px;
   gap: 40px;
+  font-weight: 600;
+  color: #6a4a1a;
 }
 
-.text-home h2 {
-  font-size: 60px;
+.services-section ul li {
+  background-color: #f2e8dc;
+  padding: 15px 35px;
+  border-radius: 40px;
+  box-shadow: 0 6px 15px rgba(181, 126, 78, 0.2);
+  cursor: default;
+}
+
+/* Bog‘lanish */
+
+.contact-section {
+  max-width: 600px;
+  margin: 0 auto 80px;
+  text-align: center;
+}
+
+.contact-section h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  color: #7f5a32;
+  margin-bottom: 30px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 14px 18px;
+  font-size: 1.1rem;
+  border: 2px solid #d2b97d;
+  border-radius: 15px;
+  resize: none;
+  transition: border-color 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #7f5a32;
+  outline: none;
+  box-shadow: 0 0 8px rgba(127, 90, 50, 0.5);
+}
+
+.contact-form button {
+  background-color: #b57e4e;
   color: white;
+  padding: 16px 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(181, 126, 78, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.second-btn {
-  width: 250px;
-  height: 70px;
-  background-color: transparent;
+.contact-form button:hover {
+  background-color: #7f5a32;
+  box-shadow: 0 10px 35px rgba(127, 90, 50, 0.7);
+}
+
+/* Footer */
+
+.footer {
+  
+  text-align: center;
+  padding: 30px 20px;
+  background-color: #f2e8dc;
+  border-top: 1px solid #d2b97d;
+  font-size: 1rem;
+  color: #7f5a32;
+  font-weight: 600;
+  user-select: none;
+}
+
+.footer .social-icons {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+}
+
+.footer .social-icons a {
+  color: #7f5a32;
+  text-decoration: none;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.footer .social-icons a:hover {
+  color: #b57e4e;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+  .slide img {
+    height: 250px;
+  }
+  .services-section ul {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .services-section ul li {
+    padding: 12px 25px;
+    font-size: 1.1rem;
+  }
+  .contact-section {
+    max-width: 90vw;
+    margin-bottom: 50px;
+  }
+}
+
+/* ===== USER VENUES ===== */
+
+.toyxonalar-get {
+  max-width: 1100px;
+  margin: 140px auto 60px;
+  padding: 0 15px;
+}
+
+.toyxonalar-get h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #7f5a32;
+  margin-bottom: 40px;
+  user-select: none;
+}
+
+input[type="text"],
+select {
+  width: 230px;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border-radius: 18px;
+  border: 2px solid #d2b97d;
+  margin-right: 18px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+select:focus {
+  border-color: #7f5a32;
+  box-shadow: 0 0 8px rgba(127, 90, 50, 0.5);
+  outline: none;
+}
+
+.venue-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: flex-start;
+}
+
+.venue-card {
+  background-color: #fff8f0;
+  width: 320px;
   border-radius: 30px;
-  font-size: 17px;
-  border: 1px solid white;
+  overflow: hidden;
+  box-shadow: 0 12px 32px rgba(181, 126, 78, 0.3);
+  text-decoration: none;
+  color: #6a4a1a;
+  transition: box-shadow 0.35s ease;
+}
+
+.venue-card:hover {
+  box-shadow: 0 20px 50px rgba(127, 90, 50, 0.5);
+}
+
+.venue-card img {
+  width: 100%;
+  height: 210px;
+  object-fit: cover;
+  border-bottom: 4px solid #b57e4e;
+}
+
+.venue-info {
+  padding: 20px 25px;
+}
+
+.venue-info h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #7f5a32;
+}
+
+.venue-info p {
+  font-size: 1rem;
+  margin: 8px 0;
+  color: #6a4a1a;
+  line-height: 1.4;
+}
+
+/* ===== USER BOOKING FORM ===== */
+
+.get-bron {
+  max-width: 460px;
+  margin: 120px auto 60px;
+  background: #fff8f0;
+  padding: 40px 40px;
+  border-radius: 30px;
+  box-shadow: 0 12px 32px rgba(181, 126, 78, 0.2);
+}
+
+.get-bron h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #7f5a32;
+  user-select: none;
+}
+
+.get-bron label {
+  display: block;
+  margin-bottom: 14px;
+  font-weight: 600;
+  color: #6a4a1a;
+  font-size: 1rem;
+}
+
+.get-bron input[type="date"],
+.get-bron input[type="number"],
+.get-bron input[type="text"] {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 2px solid #d2b97d;
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.get-bron input:focus {
+  border-color: #7f5a32;
+  box-shadow: 0 0 8px rgba(127, 90, 50, 0.5);
+  outline: none;
+}
+
+.get-bron button {
+  width: 100%;
+  padding: 16px 0;
+  background-color: #b57e4e;
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(181, 126, 78, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.get-bron button:hover {
+  background-color: #7f5a32;
+  box-shadow: 0 10px 35px rgba(127, 90, 50, 0.7);
+}
+
+/* ===== RESPONSIVE ===== */
+
+@media (max-width: 992px) {
+  .main {
+    padding: 40px 25px;
+  }
+  .text-home h2 {
+    font-size: 2.7rem;
+  }
+  .toyxonalar-get {
+    max-width: 95%;
+    margin: 120px auto 40px;
+  }
+  .venue-card {
+    width: 45vw;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    height: 60px;
+    padding: 0 15px;
+  }
+  .name-box h3 {
+    font-size: 1.5rem;
+  }
+  .main {
+    max-width: 95vw;
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+  .text-home h2 {
+    font-size: 2rem;
+  }
+  .second-btn {
+    width: 100%;
+    padding: 18px 0;
+    font-size: 1.15rem;
+    border-radius: 40px;
+  }
+  .signin-btn {
+    width: 130px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  .toyxonalar-get {
+    margin: 90px 10px 40px;
+    padding: 0 10px;
+  }
+  .venue-card {
+    width: 90vw;
+  }
+  .get-bron {
+    margin: 80px 10px 40px;
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+}
+
+
+
+
+
+
+
+
+/* Login */
+
+
+.form-container {
+  max-width: 400px;
+  margin: auto;
+  background-color: #fff8f0;
+  padding: 40px 35px;
+  border-radius: 25px;
+  box-shadow: 0 14px 45px rgba(181, 126, 78, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  font-family: 'Montserrat', sans-serif;
+  color: #7f5a32;
+  user-select: none;
+}
+
+.form-container h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+  color: #7f5a32;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; /* inputlar va button orasidagi masofa */
+}
+
+.form-container input {
+  padding: 14px 20px;
+  font-size: 1.15rem;
+  border: 2.5px solid #d2b97d;
+  border-radius: 18px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  color: #5a4a29;
+}
+
+.form-container input::placeholder {
+  color: #a3875a;
+  font-weight: 500;
+}
+
+.form-container input:focus {
+  border-color: #b57e4e;
+  box-shadow: 0 0 10px rgba(181, 126, 78, 0.7);
+  outline: none;
+}
+
+.error-message {
+  color: #b94a4a;
+  font-weight: 600;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 8px;
+}
+
+.form-container button[type="submit"] {
+  padding: 16px 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 50px;
+  background: linear-gradient(90deg, #b57e4e 0%, #7f5a32 100%);
+  border: none;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s ease, border 0.3s ease;
+  box-shadow: 0 12px 30px rgba(181, 126, 78, 0.7);
+  transition: background 0.4s ease, box-shadow 0.4s ease;
+  user-select: none;
 }
 
-.second-btn:hover {
+.form-container button[type="submit"]:hover {
+  background: linear-gradient(90deg, #7f5a32 0%, #b57e4e 100%);
+  box-shadow: 0 15px 40px rgba(127, 90, 50, 0.8);
+}
+
+.switch-auth {
+  text-align: center;
+  font-size: 1rem;
+  color: #7f5a32;
+  font-weight: 600;
+}
+
+.switch-auth a {
+  color: #b57e4e;
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 5px;
+  transition: color 0.3s ease;
+}
+
+.switch-auth a:hover {
+  color: #7f5a32;
+}
+
+/* Responsive */
+
+@media (max-width: 480px) {
+  .form-container {
+    margin: 50px 15px 40px;
+    padding: 30px 25px;
+  }
+  .form-container h2 {
+    font-size: 2rem;
+  }
+  .form-container input {
+    font-size: 1rem;
+    padding: 12px 15px;
+  }
+  .form-container button[type="submit"] {
+    font-size: 1.1rem;
+    padding: 14px 0;
+  }
+  .switch-auth {
+    font-size: 0.95rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.5);
+  z-index: 1300;
+}
+
+.modal {
+  position: fixed;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 1400;
+  width: 300px;
+  text-align: center;
+  color: #292929;
+  font-family: Arial, sans-serif;
+}
+
+.modal h3 {
+  margin-bottom: 15px;
+}
+
+.modal p {
+  margin-bottom: 25px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 6px;
   border: none;
-  background-color: #3c3d3d;
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  color: #444;
+}
+
+.btn-cancel:hover {
+  background-color: #bbb;
+}
+
+.btn-confirm {
+  background-color: #b85c38;
+  color: white;
+  box-shadow: 0 4px 12px rgba(184, 92, 56, 0.7);
+}
+
+.btn-confirm:hover {
+  background-color: #9a4a2c;
+  box-shadow: 0 6px 18px rgba(154, 74, 44, 0.9);
 }
