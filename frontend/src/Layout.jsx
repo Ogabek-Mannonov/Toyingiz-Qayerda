@@ -5,7 +5,10 @@ import Header from './components/Header';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signin';
-import OwnerPanel from './owner/OwnerPanel';
+import OwnerPanel from './owner/OwnerPanel';  // OwnerPanel importi
+import OwnerVenueList from './owner/OwnerVenueList';
+import OwnerBookingList from './owner/OwnerBookingList';
+import OwnerVenueForm from './owner/OwnerAddVenue';  // Qo‘shish/tahrirlash formasi
 import AdminPanel from './admin/AdminPanel';
 import UserVenueList from './user/UserVenueList';
 import UserBookingForm from './user/UserBookingForm'; 
@@ -20,14 +23,14 @@ function Layout() {
   const hideHeaderPaths = [
     '/login', 
     '/signup', 
-    '/owner-panel', 
+    '/owner-panel',  // Owner panel
     '/admin-panel'
   ];
 
   const hideSidebarPaths = [
     '/login',
     '/signup',
-    '/owner-panel',
+    '/owner-panel',  // Owner panel
     '/admin-panel',
   ];
 
@@ -68,7 +71,16 @@ function Layout() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/owner-panel/*" element={<OwnerPanel />} />
+
+          {/* OwnerPanel ichidagi nested routelar */}
+          <Route path="/owner-panel" element={<OwnerPanel />}>
+            <Route index element={<OwnerVenueList />} />                    {/* /owner-panel */}
+            <Route path="venues" element={<OwnerVenueList />} />            {/* /owner-panel/venues */}
+            <Route path="add-venue" element={<OwnerVenueForm />} />         {/* /owner-panel/add-venue */}
+            <Route path="edit-venue/:id" element={<OwnerVenueForm />} />    {/* /owner-panel/edit-venue/:id */}
+            <Route path="bookings" element={<OwnerBookingList />} />        {/* /owner-panel/bookings */}
+          </Route>
+
           <Route path="/admin-panel/*" element={<AdminPanel />} />
           <Route path="/user/venues" element={<UserVenueList />} /> 
           <Route path="/user/venues/:id" element={<UserBookingForm />} /> 

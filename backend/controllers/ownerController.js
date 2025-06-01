@@ -15,16 +15,25 @@ exports.createVenue = async (req, res) => {
 
     const owner_id = req.user.id; // authMiddleware orqali
 
+    // Multer orqali yuklangan fayllar
+    const photos = req.files; // array bo‘lib keladi
+
+    // Agar kerak bo‘lsa, photos dan fayl nomlarini olish
+    const photoPaths = photos ? photos.map(file => `/uploads/${file.filename}`) : [];
+
+    // SQL so‘rovda photoPaths ni JSON sifatida saqlash uchun o‘zgartiring
+    // Faraz qilaylik, wedding_halls jadvalida photos jsonb tipi uchun maydon bor (uni yarating agar yo‘q bo‘lsa)
+    
     const result = await pool.query(
       `INSERT INTO wedding_halls 
-       (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id) 
-       VALUES ($1,$2,$3,$4,$5,$6,$7,'pending',$8) RETURNING *`,
-      [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id]
+       (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id, photos) 
+       VALUES ($1,$2,$3,$4,$5,$6,$7,'pending',$8,$9) RETURNING *`,
+      [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id, JSON.stringify(photoPaths)]
     );
 
     res.status(201).json({ venue: result.rows[0] });
   } catch (error) {
-    console.error(error);
+    console.error('createVenue error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
@@ -49,6 +58,7 @@ exports.updateVenue = async (req, res) => {
   try {
     const owner_id = req.user.id;
     const venueId = req.params.id;
+
     const {
       name,
       district_id,
@@ -59,13 +69,29 @@ exports.updateVenue = async (req, res) => {
       description
     } = req.body;
 
-    // Faqat o‘z to’yxonasini o‘zgartira oladi
-    const result = await pool.query(
-      `UPDATE wedding_halls SET
-       name=$1, district_id=$2, address=$3, capacity=$4, price_per_seat=$5, phone_number=$6, description=$7, updated_at=NOW()
-       WHERE hall_id=$8 AND owner_id=$9 RETURNING *`,
-      [name, district_id, address, capacity, price_per_seat, phone_number, description, venueId, owner_id]
-    );
+    const photos = req.files;
+    const photoPaths = photos ? photos.map(file => `/uploads/${file.filename}`) : null;
+
+    // Agar photoPaths bo‘lsa, photos maydonini yangilaymiz, aks holda eski saqlanadi
+    let queryText = `
+      UPDATE wedding_halls SET
+      name=$1, district_id=$2, address=$3, capacity=$4, price_per_seat=$5,
+      phone_number=$6, description=$7, updated_at=NOW()
+      WHERE hall_id=$8 AND owner_id=$9 RETURNING *`;
+
+    let queryParams = [name, district_id, address, capacity, price_per_seat, phone_number, description, venueId, owner_id];
+
+    if (photoPaths && photoPaths.length > 0) {
+      queryText = `
+        UPDATE wedding_halls SET
+        name=$1, district_id=$2, address=$3, capacity=$4, price_per_seat=$5,
+        phone_number=$6, description=$7, photos=$10, updated_at=NOW()
+        WHERE hall_id=$8 AND owner_id=$9 RETURNING *`;
+
+      queryParams = [name, district_id, address, capacity, price_per_seat, phone_number, description, venueId, owner_id, JSON.stringify(photoPaths)];
+    }
+
+    const result = await pool.query(queryText, queryParams);
 
     if (result.rowCount === 0) {
       return res.status(404).json({ message: 'To’yxona topilmadi yoki ruxsat yo‘q' });
@@ -73,7 +99,7 @@ exports.updateVenue = async (req, res) => {
 
     res.json({ venue: result.rows[0] });
   } catch (error) {
-    console.error(error);
+    console.error('updateVenue error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
