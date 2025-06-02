@@ -24,18 +24,16 @@ export default function Login() {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
       const { token, user } = response.data;
 
-      // Token va role ni saqlash
       localStorage.setItem('token', token);
       localStorage.setItem('userRole', user.role);
       localStorage.setItem('username', user.username);
 
-      // Rolga qarab yo'naltirish
       if (user.role === 'owner') {
         navigate('/owner-panel');
       } else if (user.role === 'admin') {
         navigate('/admin-panel');
       } else {
-        navigate('/'); // oddiy userlar uchun asosiy sahifa
+        navigate('/');
       }
     } catch (err) {
       if (err.response && err.response.data && err.response.data.error) {
@@ -44,6 +42,10 @@ export default function Login() {
         setError("Server bilan bog'lanishda xatolik yuz berdi");
       }
     }
+  };
+
+  const goToHome = () => {
+    navigate('/');
   };
 
   return (
@@ -70,6 +72,11 @@ export default function Login() {
         />
         <button type="submit">Kirish</button>
       </form>
+
+      <button onClick={goToHome} className="home-btn">
+        Asosiy sahifaga o'tish
+      </button>
+
       <p className="switch-auth">
         Hisobingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
       </p>

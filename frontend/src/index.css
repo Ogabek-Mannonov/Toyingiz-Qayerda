@@ -666,6 +666,28 @@ select:focus {
   color: #7f5a32;
 }
 
+
+
+.home-btn {
+  margin-top: 15px;
+  padding: 12px 0;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border-radius: 50px;
+  background-color: #7f5a32;
+  border: none;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(127, 90, 50, 0.7);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  user-select: none;
+}
+
+.home-btn:hover {
+  background-color: #b57e4e;
+  box-shadow: 0 10px 35px rgba(181, 126, 78, 0.7);
+}
+
 /* Responsive */
 
 @media (max-width: 480px) {
