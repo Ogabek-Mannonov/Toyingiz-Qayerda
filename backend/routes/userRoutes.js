@@ -23,4 +23,11 @@ router.get('/bookings', userController.getBookings);
 // Bronni bekor qilish
 router.patch('/bookings/:id/cancel', userController.cancelBooking);
 
+
+router.get('/profile', authMiddleware, userController.getProfile);
+
+
+router.put('/profile', authMiddleware, userController.updateProfile);
+
+
 module.exports = router;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useLocation, Routes, Route, useNavigate } from 'react-router-dom';
 
 import SidebarMenu from './components/SidebarMenu';  
 import Header from './components/Header';
@@ -13,19 +13,32 @@ import OwnerVenueForm from './owner/OwnerAddVenue';
 import AdminPanel from './admin/AdminPanel';
 import UserVenueList from './user/UserVenueList';
 import UserBookingForm from './user/UserBookingForm';
+import Profile from './components/Profile'; 
 import PrivateRoute from './components/PrivateRoute';
 
 function Layout() {
   const location = useLocation();
+  const navigate = useNavigate();
+
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Header va sidebar (hamburger) ni yashirish kerak bo‘lgan pathlar ro‘yxati
+  // Username holati Layout darajasida
+  const [username, setUsername] = useState(localStorage.getItem('username') || '');
+
   const hideHeaderPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
   const hideSidebarPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
 
-  // location.pathname bilan boshlangan joylarni tekshiramiz
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
   const isSidebarHidden = hideSidebarPaths.some(path => location.pathname.startsWith(path));
+
+  // Logout funksiyasi - localStoragedan ma'lumotlarni o'chirib, username ni ham tozalaydi
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('userRole');
+    localStorage.removeItem('username');
+    setUsername('');
+    navigate('/login');
+  };
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -35,15 +48,17 @@ function Layout() {
     if (sidebarOpen) setSidebarOpen(false);
   };
 
+  // Agar login qilganda username localStorage ga yozilsa, Layout uni avtomatik oladi
+  // Buni yanada real va dinamik qilish uchun boshqa mexanizmlar kerak (context yoki event bus)
+
   return (
     <>
-      {/* Agar header ko‘rsatish kerak bo‘lsa, Header va hamburger-ni chiqaramiz */}
-      {!isHeaderHidden && <Header toggleSidebar={toggleSidebar} />}
+      {!isHeaderHidden && <Header toggleSidebar={toggleSidebar} username={username} />}
 
       {!isSidebarHidden && (
         <>
           <div className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-            <SidebarMenu closeSidebar={closeSidebar} />
+            <SidebarMenu closeSidebar={closeSidebar} onLogout={handleLogout} />
           </div>
           {sidebarOpen && <div className="overlay" onClick={closeSidebar}></div>}
         </>
@@ -54,6 +69,15 @@ function Layout() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute roles={['user', 'owner', 'admin']}>
+                <Profile />
+              </PrivateRoute>
+            }
+          />
 
           <Route
             path="/owner-panel/*"

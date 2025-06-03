@@ -182,3 +182,64 @@ exports.cancelBooking = async (req, res) => {
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
+
+
+exports.getProfile = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: 'Avval tizimga kiring' });
+    }
+
+    const result = await pool.query(
+      `SELECT first_name, last_name, username, phone_number FROM users WHERE user_id = $1`,
+      [userId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Foydalanuvchi topilmadi' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Get Profile error:', error);
+    res.status(500).json({ error: 'Server xatosi' });
+  }
+};
+
+
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const userId = req.user?.id;
+    const { first_name, last_name, username, phone_number } = req.body;
+
+    if (!userId) {
+      return res.status(401).json({ message: 'Avval tizimga kiring' });
+    }
+
+    const updateQuery = `
+      UPDATE users
+      SET first_name = $1,
+          last_name = $2,
+          username = $3,
+          phone_number = $4,
+          updated_at = NOW()
+      WHERE user_id = $5
+      RETURNING first_name, last_name, username, phone_number
+    `;
+
+    const result = await pool.query(updateQuery, [first_name, last_name, username, phone_number, userId]);
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Foydalanuvchi topilmadi' });
+    }
+
+    res.json(result.rows[0]);
+
+  } catch (error) {
+    console.error('Update Profile error:', error);
+    res.status(500).json({ error: 'Server xatosi' });
+  }
+};

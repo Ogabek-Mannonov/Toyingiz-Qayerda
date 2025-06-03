@@ -16,5 +16,6 @@ router.get('/owners', adminController.getOwners);
 
 router.get('/bookings', adminController.getBookings);
 router.patch('/bookings/:id/cancel', adminController.cancelBooking);
+router.get('/venues/:id/bookings-calendar', adminController.getVenueBookingsCalendar);
 
 module.exports = router;

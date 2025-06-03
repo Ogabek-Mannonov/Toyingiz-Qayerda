@@ -320,3 +320,33 @@ exports.getDashboardStats = async (req, res) => {
     res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
   }
 };
+
+
+
+exports.getVenueBookingsCalendar = async (req, res) => {
+  try {
+    const venueId = req.params.id;
+
+    // To'yxona mavjudligini tekshirish va tasdiqlanganligini tekshirish
+    const venueCheck = await pool.query(
+      `SELECT * FROM wedding_halls WHERE hall_id = $1 AND status = 'approved'`,
+      [venueId]
+    );
+
+    if (venueCheck.rowCount === 0) {
+      return res.status(404).json({ message: "To'yxona topilmadi yoki tasdiqlanmagan" });
+    }
+
+    // To'yxona bo'yicha bronlarni olish
+    const bookingsRes = await pool.query(
+      `SELECT booking_date, status, number_of_guests, client_name, client_phone_number
+       FROM bookings WHERE hall_id = $1 ORDER BY booking_date ASC`,
+      [venueId]
+    );
+
+    res.json({ bookings: bookingsRes.rows });
+  } catch (error) {
+    console.error('Get Venue Bookings Calendar error:', error);
+    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+  }
+};

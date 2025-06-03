@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-
 const SidebarMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -20,14 +19,18 @@ const SidebarMenu = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    // Faqat kerakli localStorage itemlarini o'chirish
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('userRole');
+
     setShowLogoutConfirm(false);
     setIsOpen(false);
 
-    // Storage eventini qo‘lda chaqiramiz, Header yangilansin
-    window.dispatchEvent(new Event('storage'));
+    // Header va boshqa joylarni yangilash uchun maxsus event yuboriladi
+    window.dispatchEvent(new Event('usernameChange'));
 
-    navigate('/'); // Logoutdan keyin Home sahifaga yo'naltirish
+    navigate('/'); // Logoutdan keyin asosiy sahifaga yo'naltirish
   };
 
   return (
@@ -39,10 +42,18 @@ const SidebarMenu = () => {
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
         <button onClick={toggleSidebar} className="close-btn">&times;</button>
         <ul>
-          <li><Link to="/" onClick={toggleSidebar}>Bosh sahifa</Link></li>
-          <li><Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link></li>
-          <li><Link to="/profile" onClick={toggleSidebar}>Profil</Link></li>
-          <li><button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button></li>
+          <li>
+            <Link to="/" onClick={toggleSidebar}>Bosh sahifa</Link>
+          </li>
+          <li>
+            <Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link>
+          </li>
+          <li>
+            <Link to="/profile" onClick={toggleSidebar}>Profil</Link>
+          </li>
+          <li>
+            <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
+          </li>
         </ul>
       </div>
 
