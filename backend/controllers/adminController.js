@@ -2,87 +2,84 @@ const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 const upload = require('../middlewares/uploadMiddleware');
 
-// To’yxona va ownerni birga yaratish
-exports.createVenueWithOwner = [
-  upload.array('images', 5), // maksimal 5 ta rasm yuklash
-  async (req, res) => {
-    try {
-      const {
-        name,
-        district_name,
-        address,
-        capacity,
-        price_per_seat,
-        phone_number,
-        description,
-        owner_first_name,
-        owner_last_name,
-        owner_username,
-        owner_password,
-        owner_phone_number,
-      } = req.body;
+// To’yxona va ownerni birga yaratish (faqat async funksiya, upload middleware alohida beriladi)
+exports.createVenueWithOwner = async (req, res) => {
+  try {
+    const {
+      name,
+      district_name,
+      address,
+      capacity,
+      price_per_seat,
+      phone_number,
+      description,
+      owner_first_name,
+      owner_last_name,
+      owner_username,
+      owner_password,
+      owner_phone_number,
+    } = req.body;
 
-      // district_id olish
-      const districtResult = await pool.query(
-        'SELECT district_id FROM districts WHERE LOWER(name) = LOWER($1)',
-        [district_name]
-      );
-      if (districtResult.rows.length === 0) {
-        return res.status(400).json({ error: 'Rayon topilmadi' });
-      }
-      const district_id = districtResult.rows[0].district_id;
-
-      // Owner username tekshirish
-      const existingUser = await pool.query(
-        'SELECT * FROM users WHERE username = $1',
-        [owner_username]
-      );
-      if (existingUser.rows.length > 0) {
-        return res.status(400).json({ error: 'Bu username allaqachon mavjud' });
-      }
-
-      // Owner yaratish
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(owner_password, salt);
-      const ownerRole = 'owner';
-
-      const ownerResult = await pool.query(
-        `INSERT INTO users 
-         (first_name, last_name, username, password_hash, role, phone_number, created_at, updated_at) 
-         VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) RETURNING user_id`,
-        [owner_first_name, owner_last_name, owner_username, hashedPassword, ownerRole, owner_phone_number]
-      );
-      const owner_id = ownerResult.rows[0].user_id;
-
-      // To’yxona yaratish
-      const venueResult = await pool.query(
-        `INSERT INTO wedding_halls 
-         (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id) 
-         VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8) RETURNING hall_id`,
-        [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id]
-      );
-      const hall_id = venueResult.rows[0].hall_id;
-
-      // Rasm fayllarini saqlash
-      const files = req.files;
-      if (files && files.length > 0) {
-        const insertPromises = files.map(file => {
-          const image_url = `/uploads/${file.filename}`;
-          return pool.query(
-            'INSERT INTO hall_photos (hall_id, image_url) VALUES ($1, $2)',
-            [hall_id, image_url]
-          );
-        });
-        await Promise.all(insertPromises);
-      }
-
-      res.status(201).json({ message: 'To’yxona va owner muvaffaqiyatli yaratildi', hall_id, owner_id });
-    } catch (error) {
-      console.error('Create Venue and Owner error:', error);
-      res.status(500).json({ error: error.message || 'Server xatosi' });
+    // district_id olish
+    const districtResult = await pool.query(
+      'SELECT district_id FROM districts WHERE LOWER(name) = LOWER($1)',
+      [district_name]
+    );
+    if (districtResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Rayon topilmadi' });
     }
+    const district_id = districtResult.rows[0].district_id;
+
+    // Owner username tekshirish
+    const existingUser = await pool.query(
+      'SELECT * FROM users WHERE username = $1',
+      [owner_username]
+    );
+    if (existingUser.rows.length > 0) {
+      return res.status(400).json({ error: 'Bu username allaqachon mavjud' });
+    }
+
+    // Owner yaratish
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(owner_password, salt);
+    const ownerRole = 'owner';
+
+    const ownerResult = await pool.query(
+      `INSERT INTO users 
+       (first_name, last_name, username, password_hash, role, phone_number, created_at, updated_at) 
+       VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) RETURNING user_id`,
+      [owner_first_name, owner_last_name, owner_username, hashedPassword, ownerRole, owner_phone_number]
+    );
+    const owner_id = ownerResult.rows[0].user_id;
+
+    // To’yxona yaratish
+    const venueResult = await pool.query(
+      `INSERT INTO wedding_halls 
+       (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8) RETURNING hall_id`,
+      [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id]
+    );
+    const hall_id = venueResult.rows[0].hall_id;
+
+    // Rasm fayllarini saqlash
+    const files = req.files;
+    if (files && files.length > 0) {
+      const insertPromises = files.map(file => {
+        const image_url = `/uploads/${file.filename}`;
+        return pool.query(
+          'INSERT INTO hall_photos (hall_id, image_url) VALUES ($1, $2)',
+          [hall_id, image_url]
+        );
+      });
+      await Promise.all(insertPromises);
+    }
+
+    res.status(201).json({ message: 'To’yxona va owner muvaffaqiyatli yaratildi', hall_id, owner_id });
+  } catch (error) {
+    console.error('Create Venue and Owner error:', error);
+    res.status(500).json({ error: error.message || 'Server xatosi' });
   }
-];
+};
 
 // To’yxonalar ro’yxatini olish (filter va sort bilan)
 exports.getVenues = async (req, res) => {
@@ -158,6 +155,30 @@ exports.approveVenue = async (req, res) => {
 };
 
 // To’yxonani tahrirlash
+exports.getVenueById = async (req, res) => {
+  const venueId = req.params.id;
+  try {
+    const result = await pool.query(
+      `SELECT wh.*, d.district_id, d.name AS district_name, u.user_id AS owner_id, u.first_name || ' ' || u.last_name AS owner_name
+       FROM wedding_halls wh
+       JOIN districts d ON wh.district_id = d.district_id
+       JOIN users u ON wh.owner_id = u.user_id
+       WHERE wh.hall_id = $1`,
+      [venueId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "To'yxona topilmadi" });
+    }
+
+    res.json({ venue: result.rows[0] });
+  } catch (error) {
+    console.error('Get Venue by ID error:', error);
+    res.status(500).json({ error: 'Server xatosi' });
+  }
+};
+
+// To'yxonani yangilash (PUT /api/admin/venues/:id)
 exports.updateVenue = async (req, res) => {
   const venueId = req.params.id;
   const {
@@ -186,10 +207,9 @@ exports.updateVenue = async (req, res) => {
     res.json({ venue: result.rows[0] });
   } catch (error) {
     console.error('Update Venue error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: error.message || 'Server xatosi' });
   }
 };
-
 // To’yxonani o‘chirish
 exports.deleteVenue = async (req, res) => {
   const venueId = req.params.id;
@@ -321,8 +341,7 @@ exports.getDashboardStats = async (req, res) => {
   }
 };
 
-
-
+// To’yxona bron kalendari uchun ma’lumotlar
 exports.getVenueBookingsCalendar = async (req, res) => {
   try {
     const venueId = req.params.id;
@@ -348,5 +367,28 @@ exports.getVenueBookingsCalendar = async (req, res) => {
   } catch (error) {
     console.error('Get Venue Bookings Calendar error:', error);
     res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+  }
+};
+
+exports.getVenueById = async (req, res) => {
+  const venueId = req.params.id;
+  try {
+    const result = await pool.query(
+      `SELECT wh.*, d.name as district_name, u.first_name || ' ' || u.last_name as owner_name
+       FROM wedding_halls wh
+       JOIN districts d ON wh.district_id = d.district_id
+       JOIN users u ON wh.owner_id = u.user_id
+       WHERE wh.hall_id = $1`,
+      [venueId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'To’yxona topilmadi' });
+    }
+
+    res.json({ venue: result.rows[0] });
+  } catch (error) {
+    console.error('Get Venue By ID error:', error);
+    res.status(500).json({ error: 'Server xatosi' });
   }
 };

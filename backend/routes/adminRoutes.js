@@ -1,21 +1,41 @@
 const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
+const authMiddleware = require('../middlewares/authMiddleware'); // Token tekshirish middleware
 
+// Yangi to’yxona va owner yaratish (rasm yuklash middleware bilan birga)
+router.post('/venues-with-owner', authMiddleware, adminController.createVenueWithOwner);
 
-router.post('/venues-with-owner', adminController.createVenueWithOwner);
-router.get('/venues', adminController.getVenues);
-router.patch('/venues/:id/approve', adminController.approveVenue);
-router.put('/venues/:id', adminController.updateVenue);
-router.delete('/venues/:id', adminController.deleteVenue);
-router.get('/districts', adminController.getDistricts);
-router.get('/dashboard-stats', adminController.getDashboardStats);
+// To’yxonalar ro’yxati
+router.get('/venues', authMiddleware, adminController.getVenues);
 
+// To’yxonani tasdiqlash
+router.patch('/venues/:id/approve', authMiddleware, adminController.approveVenue);
 
-router.get('/owners', adminController.getOwners);
+// To’yxonani tahrirlash
+router.put('/venues/:id', authMiddleware, adminController.updateVenue);
 
-router.get('/bookings', adminController.getBookings);
-router.patch('/bookings/:id/cancel', adminController.cancelBooking);
-router.get('/venues/:id/bookings-calendar', adminController.getVenueBookingsCalendar);
+// To’yxonani o‘chirish
+router.delete('/venues/:id', authMiddleware, adminController.deleteVenue);
 
+// Rayonlar ro’yxati
+router.get('/districts', authMiddleware, adminController.getDistricts);
+
+// Dashboard statistikasi
+router.get('/dashboard-stats', authMiddleware, adminController.getDashboardStats);
+
+// To’yxona egalari ro’yxati
+router.get('/owners', authMiddleware, adminController.getOwners);
+
+// Bronlar ro’yxati
+router.get('/bookings', authMiddleware, adminController.getBookings);
+
+// Bronni bekor qilish
+router.patch('/bookings/:id/cancel', authMiddleware, adminController.cancelBooking);
+
+// To’yxona bron kalendari uchun ma’lumotlar
+router.get('/venues/:id/bookings-calendar', authMiddleware, adminController.getVenueBookingsCalendar);
+
+// adminRoutes.js
+router.get('/venues/:id', adminController.getVenueById);
 module.exports = router;

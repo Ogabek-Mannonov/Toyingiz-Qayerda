@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import VenueCalendar from './VenueCalendar';  // Kalendarga oid komponent
+import { useNavigate } from 'react-router-dom';
+import VenueCalendar from './VenueCalendar';
 
 export default function VenueList() {
   const [venues, setVenues] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Filter va sort uchun state
+  const navigate = useNavigate();
+
   const [filters, setFilters] = useState({
     sortBy: '',
     order: 'asc',
@@ -16,20 +18,24 @@ export default function VenueList() {
     district: '',
   });
 
-  // Rayonlar (districts) ro‘yxati, backenddan olinadi
   const [districts, setDistricts] = useState([]);
-
-  // Tanlangan to’yxona IDsi (kalendar uchun)
   const [selectedVenueId, setSelectedVenueId] = useState(null);
 
-  // Rayonlarni olish
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem('token');
+    return {
+      Authorization: token ? `Bearer ${token}` : ''
+    };
+  };
+
   useEffect(() => {
-    axios.get('http://localhost:5000/api/admin/districts')
+    axios.get('http://localhost:5000/api/admin/districts', {
+      headers: getAuthHeaders()
+    })
       .then(res => setDistricts(res.data.districts))
       .catch(() => setDistricts([]));
   }, []);
 
-  // To’yxonalarni olish (filters o‘zgarganda yoki birinchi renderda)
   useEffect(() => {
     fetchVenues();
   }, [filters]);
@@ -38,7 +44,6 @@ export default function VenueList() {
     setLoading(true);
     setError('');
 
-    // Query params tayyorlash
     const params = {};
     if (filters.sortBy) params.sortBy = filters.sortBy;
     if (filters.order) params.order = filters.order;
@@ -46,7 +51,10 @@ export default function VenueList() {
     if (filters.status) params.status = filters.status;
     if (filters.district) params.district = filters.district;
 
-    axios.get('http://localhost:5000/api/admin/venues', { params })
+    axios.get('http://localhost:5000/api/admin/venues', {
+      params,
+      headers: getAuthHeaders()
+    })
       .then(res => {
         setVenues(res.data.venues);
         setLoading(false);
@@ -63,7 +71,9 @@ export default function VenueList() {
   };
 
   const handleApprove = (id) => {
-    axios.patch(`http://localhost:5000/api/admin/venues/${id}/approve`)
+    axios.patch(`http://localhost:5000/api/admin/venues/${id}/approve`, null, {
+      headers: getAuthHeaders()
+    })
       .then(() => {
         fetchVenues();
       })
@@ -72,13 +82,12 @@ export default function VenueList() {
 
   const handleDelete = (id) => {
     if (window.confirm('To’yxonani o‘chirmoqchimisiz?')) {
-      axios.delete(`http://localhost:5000/api/admin/venues/${id}`)
+      axios.delete(`http://localhost:5000/api/admin/venues/${id}`, {
+        headers: getAuthHeaders()
+      })
         .then(() => {
           fetchVenues();
-          // Agar o'chirilgan to'yxona tanlangan bo'lsa kalendarni yopamiz
-          if (selectedVenueId === id) {
-            setSelectedVenueId(null);
-          }
+          if (selectedVenueId === id) setSelectedVenueId(null);
         })
         .catch(() => alert('O‘chirishda xatolik yuz berdi'));
     }
@@ -88,7 +97,6 @@ export default function VenueList() {
     <div>
       <h2>To’yxonalar Ro’yxati</h2>
 
-      {/* Filtrlar */}
       <div style={{ marginBottom: '20px' }}>
         <input
           type="text"
@@ -126,7 +134,6 @@ export default function VenueList() {
         </select>
       </div>
 
-      {/* Ro'yxat */}
       {loading ? (
         <p>Yuklanmoqda...</p>
       ) : error ? (
@@ -156,7 +163,9 @@ export default function VenueList() {
                   <td>{v.address}</td>
                   <td>{v.capacity}</td>
                   <td>{v.price_per_seat}</td>
-                  <td>{v.status}</td>
+                  <td style={{ color: v.status === 'approved' ? 'green' : 'red', fontWeight: 'bold' }}>
+                    {v.status === 'approved' ? 'Tasdiqlangan' : 'Tasdiqlanmagan'}
+                  </td>
                   <td>{v.owner_name}</td>
                   <td onClick={e => e.stopPropagation()}>
                     {v.status !== 'approved' && (
@@ -165,13 +174,21 @@ export default function VenueList() {
                     <button onClick={() => handleDelete(v.hall_id)} style={{ marginLeft: '10px' }}>
                       O‘chirish
                     </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        navigate(`/admin-panel/venues/edit/${v.hall_id}`);
+                      }}
+                      style={{ marginLeft: '10px' }}
+                    >
+                      Tahrirlash
+                    </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
 
-          {/* Kalendarni tanlangan to’yxona uchun ko‘rsatish */}
           {selectedVenueId && (
             <div style={{ marginTop: 30 }}>
               <VenueCalendar venueId={selectedVenueId} />
