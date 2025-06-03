@@ -181,3 +181,59 @@
   font-weight: 600;
   text-align: center;
 }
+
+
+
+
+
+/* Calendar */
+
+
+.calendar-grid {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 600px;
+  gap: 6px;
+}
+
+.calendar-day {
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  border-radius: 5px;
+  user-select: none;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+/* Ranglar */
+.calendar-day.past {
+  background-color: #d3d3d3;
+  color: #888;
+}
+
+.calendar-day.booked {
+  background-color: #ff6961;
+  color: white;
+}
+
+.calendar-day.cancelled {
+  background-color: #f9c8cb;
+  color: #a94442;
+}
+
+.calendar-day.available {
+  background-color: #77dd77;
+  color: black;
+}
+
+/* Booking info oynasi */
+.booking-info {
+  margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-width: 600px;
+  background-color: #f9f9f9;
+}
