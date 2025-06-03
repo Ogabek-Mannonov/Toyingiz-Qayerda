@@ -19,10 +19,9 @@ export default function VenueCalendar({ venueId }) {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        // Backenddan kelgan sanalarni faqat YYYY-MM-DD formatida saqlaymiz
         const formattedBookings = res.data.bookings.map(b => ({
           ...b,
-          booking_date: b.booking_date.split('T')[0], // faqat sana qismi
+          booking_date: b.booking_date.split('T')[0],
         }));
 
         setBookings(formattedBookings);
@@ -36,20 +35,17 @@ export default function VenueCalendar({ venueId }) {
     fetchBookings();
   }, [venueId]);
 
-  // Bugungi sana
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // soatni 00:00:00 qilib qo'yamiz
+  today.setHours(0, 0, 0, 0);
 
-  // Kalendar uchun kunlarni yaratamiz: 30 kun oldin va 60 kun keyingi kunlar (umumiy 90 kun)
   const days = [];
   for (let i = -15; i <= 30; i++) {
     const d = new Date();
     d.setDate(d.getDate() + i);
-    d.setHours(0, 0, 0, 0); // soatni 00:00:00 qilib qo'yamiz
+    d.setHours(0, 0, 0, 0);
     days.push(d);
   }
 
-  // Har bir kun uchun status aniqlash
   const getStatusForDate = (date) => {
     const dateStr = date.toISOString().slice(0, 10);
     const booking = bookings.find(b => b.booking_date === dateStr);
@@ -58,7 +54,6 @@ export default function VenueCalendar({ venueId }) {
     return 'available';
   };
 
-  // Kun ustiga bosilganda ma'lumot ko‘rsatish
   const handleDayClick = (date) => {
     const dateStr = date.toISOString().slice(0, 10);
     const booking = bookings.find(b => b.booking_date === dateStr);

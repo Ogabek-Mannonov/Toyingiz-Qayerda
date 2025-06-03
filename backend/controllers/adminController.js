@@ -1,10 +1,12 @@
 const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
-const upload = require('../middlewares/uploadMiddleware');
 
-// To’yxona va ownerni birga yaratish (faqat async funksiya, upload middleware alohida beriladi)
+// To’yxona va ownerni birga yaratish (fayl upload middleware alohida ishlaydi)
 exports.createVenueWithOwner = async (req, res) => {
   try {
+    // console.log(req.body);  // debugging uchun
+    // console.log(req.files); // debugging uchun
+
     const {
       name,
       district_name,
@@ -25,6 +27,7 @@ exports.createVenueWithOwner = async (req, res) => {
       'SELECT district_id FROM districts WHERE LOWER(name) = LOWER($1)',
       [district_name]
     );
+
     if (districtResult.rows.length === 0) {
       return res.status(400).json({ error: 'Rayon topilmadi' });
     }
@@ -109,7 +112,7 @@ exports.getVenues = async (req, res) => {
       whereClauses.push(`d.name = $${params.length}`);
     }
 
-    let whereClause = whereClauses.length ? ` WHERE ${whereClauses.join(' AND ')}` : '';
+    const whereClause = whereClauses.length ? ` WHERE ${whereClauses.join(' AND ')}` : '';
 
     let orderClause = ' ORDER BY wh.name ASC';
     if (sortBy) {
@@ -154,7 +157,7 @@ exports.approveVenue = async (req, res) => {
   }
 };
 
-// To’yxonani tahrirlash
+// To’yxonani tahrirlash uchun ma'lumot olish
 exports.getVenueById = async (req, res) => {
   const venueId = req.params.id;
   try {
@@ -178,7 +181,7 @@ exports.getVenueById = async (req, res) => {
   }
 };
 
-// To'yxonani yangilash (PUT /api/admin/venues/:id)
+// To'yxonani yangilash
 exports.updateVenue = async (req, res) => {
   const venueId = req.params.id;
   const {
@@ -210,6 +213,7 @@ exports.updateVenue = async (req, res) => {
     res.status(500).json({ error: error.message || 'Server xatosi' });
   }
 };
+
 // To’yxonani o‘chirish
 exports.deleteVenue = async (req, res) => {
   const venueId = req.params.id;
@@ -367,28 +371,5 @@ exports.getVenueBookingsCalendar = async (req, res) => {
   } catch (error) {
     console.error('Get Venue Bookings Calendar error:', error);
     res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
-  }
-};
-
-exports.getVenueById = async (req, res) => {
-  const venueId = req.params.id;
-  try {
-    const result = await pool.query(
-      `SELECT wh.*, d.name as district_name, u.first_name || ' ' || u.last_name as owner_name
-       FROM wedding_halls wh
-       JOIN districts d ON wh.district_id = d.district_id
-       JOIN users u ON wh.owner_id = u.user_id
-       WHERE wh.hall_id = $1`,
-      [venueId]
-    );
-
-    if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi' });
-    }
-
-    res.json({ venue: result.rows[0] });
-  } catch (error) {
-    console.error('Get Venue By ID error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
   }
 };

@@ -14,12 +14,19 @@ export default function OwnerList() {
     setLoading(true);
     setError('');
 
-    axios.get('http://localhost:5000/api/admin/owners')
+    const token = localStorage.getItem('token'); // Tokenni localStorage'dan olish
+
+    axios.get('http://localhost:5000/api/admin/owners', {
+      headers: {
+        Authorization: `Bearer ${token}`, // Authorization headerga token qo'shish
+      },
+    })
       .then(res => {
         setOwners(res.data.owners);
         setLoading(false);
       })
-      .catch(() => {
+      .catch(err => {
+        console.error('Egalarning ro‘yxatini olishda xatolik:', err);
         setError('Egalarning ro‘yxatini olishda xatolik yuz berdi');
         setLoading(false);
       });

@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const adminController = require('../controllers/adminController');
 const authMiddleware = require('../middlewares/authMiddleware'); // Token tekshirish middleware
+const upload = require('../middlewares/uploadMiddleware');
 
 // Yangi to’yxona va owner yaratish (rasm yuklash middleware bilan birga)
-router.post('/venues-with-owner', authMiddleware, adminController.createVenueWithOwner);
+router.post('/venues-with-owner', authMiddleware, upload.array('images'), adminController.createVenueWithOwner);
 
 // To’yxonalar ro’yxati
 router.get('/venues', authMiddleware, adminController.getVenues);

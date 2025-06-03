@@ -1,4 +1,4 @@
-/* ===== UMUMIY RESET VA TAYYORLIK ===== */
+/* ===== UMUMIY RESET VA TAYYORLIK =====
 
 *,
 *::before,
@@ -642,6 +642,7 @@ select:focus {
   user-select: none;
 }
 
+
 .form-container button[type="submit"]:hover {
   background: linear-gradient(90deg, #7f5a32 0%, #b57e4e 100%);
   box-shadow: 0 15px 40px rgba(127, 90, 50, 0.8);
@@ -787,4 +788,4 @@ select:focus {
 .btn-confirm:hover {
   background-color: #9a4a2c;
   box-shadow: 0 6px 18px rgba(154, 74, 44, 0.9);
-}
+} */

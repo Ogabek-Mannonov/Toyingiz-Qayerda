@@ -23,9 +23,7 @@ export default function VenueList() {
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem('token');
-    return {
-      Authorization: token ? `Bearer ${token}` : ''
-    };
+    return { Authorization: token ? `Bearer ${token}` : '' };
   };
 
   useEffect(() => {
@@ -43,7 +41,6 @@ export default function VenueList() {
   const fetchVenues = () => {
     setLoading(true);
     setError('');
-
     const params = {};
     if (filters.sortBy) params.sortBy = filters.sortBy;
     if (filters.order) params.order = filters.order;
@@ -74,9 +71,7 @@ export default function VenueList() {
     axios.patch(`http://localhost:5000/api/admin/venues/${id}/approve`, null, {
       headers: getAuthHeaders()
     })
-      .then(() => {
-        fetchVenues();
-      })
+      .then(() => fetchVenues())
       .catch(() => alert('Tasdiqlashda xatolik yuz berdi'));
   };
 
@@ -97,30 +92,29 @@ export default function VenueList() {
     <div>
       <h2>To’yxonalar Ro’yxati</h2>
 
-      <div style={{ marginBottom: '20px' }}>
+      <div className="filter-container">
         <input
           type="text"
           name="search"
           placeholder="Qidiruv..."
           value={filters.search}
           onChange={handleFilterChange}
-          style={{ marginRight: '10px' }}
         />
 
-        <select name="status" value={filters.status} onChange={handleFilterChange} style={{ marginRight: '10px' }}>
+        <select name="status" value={filters.status} onChange={handleFilterChange}>
           <option value="">Barchasi</option>
           <option value="approved">Tasdiqlangan</option>
           <option value="pending">Tasdiqlanmagan</option>
         </select>
 
-        <select name="district" value={filters.district} onChange={handleFilterChange} style={{ marginRight: '10px' }}>
+        <select name="district" value={filters.district} onChange={handleFilterChange}>
           <option value="">Rayon tanlash</option>
           {districts.map(d => (
             <option key={d.district_id} value={d.name}>{d.name}</option>
           ))}
         </select>
 
-        <select name="sortBy" value={filters.sortBy} onChange={handleFilterChange} style={{ marginRight: '10px' }}>
+        <select name="sortBy" value={filters.sortBy} onChange={handleFilterChange}>
           <option value="">Saralash</option>
           <option value="price_per_seat">Narx</option>
           <option value="capacity">Sig‘im</option>
@@ -142,7 +136,7 @@ export default function VenueList() {
         <p>Hech qanday to’yxona topilmadi</p>
       ) : (
         <>
-          <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%', cursor: 'pointer' }}>
+          <table className="admin-table" border="1" cellPadding="8" cellSpacing="0" style={{ cursor: 'pointer' }}>
             <thead>
               <tr>
                 <th>Nomi</th>
@@ -169,13 +163,12 @@ export default function VenueList() {
                   <td>{v.owner_name}</td>
                   <td onClick={e => e.stopPropagation()}>
                     {v.status !== 'approved' && (
-                      <button onClick={() => handleApprove(v.hall_id)}>Tasdiqlash</button>
+                      <button className="admin-btn approve" onClick={() => handleApprove(v.hall_id)}>Tasdiqlash</button>
                     )}
-                    <button onClick={() => handleDelete(v.hall_id)} style={{ marginLeft: '10px' }}>
-                      O‘chirish
-                    </button>
+                    <button className="admin-btn delete" onClick={() => handleDelete(v.hall_id)} style={{ marginLeft: '10px' }}>O‘chirish</button>
                     <button
-                      onClick={(e) => {
+                      className="admin-btn edit"
+                      onClick={e => {
                         e.stopPropagation();
                         navigate(`/admin-panel/venues/edit/${v.hall_id}`);
                       }}
@@ -190,9 +183,9 @@ export default function VenueList() {
           </table>
 
           {selectedVenueId && (
-            <div style={{ marginTop: 30 }}>
+            <div className="venue-calendar-wrapper">
               <VenueCalendar venueId={selectedVenueId} />
-              <button onClick={() => setSelectedVenueId(null)} style={{ marginTop: 10 }}>
+              <button className="close-calendar-btn" onClick={() => setSelectedVenueId(null)}>
                 Kalendarni yopish
               </button>
             </div>

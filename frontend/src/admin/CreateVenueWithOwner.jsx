@@ -22,11 +22,20 @@ export default function CreateVenueWithOwner() {
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
-  // Rayonlar ro'yxatini backenddan olish
   useEffect(() => {
-    axios.get('http://localhost:5000/api/admin/districts')
-      .then(res => setDistricts(res.data.districts))
-      .catch(() => setDistricts([]));
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Iltimos, tizimga kiring!');
+      return;
+    }
+
+    axios.get('http://localhost:5000/api/admin/districts', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(res => setDistricts(res.data.districts))
+    .catch(() => setError('Rayonlarni olishda xatolik yuz berdi'));
   }, []);
 
   const handleChange = (e) => {
@@ -49,6 +58,14 @@ export default function CreateVenueWithOwner() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setSuccessMessage('');
+
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('Iltimos, tizimga kiring!');
+      return;
+    }
 
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -62,9 +79,10 @@ export default function CreateVenueWithOwner() {
     });
 
     try {
-      const response = await axios.post('http://localhost:5000/api/admin/venues-with-owner', data, {
+      await axios.post('http://localhost:5000/api/admin/venues-with-owner', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`
         },
       });
       setSuccessMessage('To’yxona va egasi muvaffaqiyatli yaratildi!');
@@ -83,7 +101,6 @@ export default function CreateVenueWithOwner() {
         owner_phone_number: '',
         images: []
       });
-      setError('');
     } catch (error) {
       if (error.response && error.response.data && error.response.data.error) {
         setError(error.response.data.error);
@@ -97,15 +114,15 @@ export default function CreateVenueWithOwner() {
   };
 
   return (
-    <div className="create-venue-owner">
+    <div className='create-cont'>
       <h2>To'yxona va To'yxona egasini qo'shish</h2>
 
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form className="admin-form" onSubmit={handleSubmit}>
         <h3>To'yxona Ma'lumotlari</h3>
-        <div className="input-row">
+        <div style={{display: 'flex', gap: '15px'}}>
           <input
             type="text"
             name="name"
@@ -115,7 +132,6 @@ export default function CreateVenueWithOwner() {
             required
           />
 
-          {/* Tuman select */}
           <select
             name="district_name"
             value={formData.district_name}
@@ -129,7 +145,7 @@ export default function CreateVenueWithOwner() {
           </select>
         </div>
 
-        <div className="input-row">
+        <div style={{display: 'flex', gap: '15px'}}>
           <input
             type="text"
             name="address"
@@ -148,7 +164,7 @@ export default function CreateVenueWithOwner() {
           />
         </div>
 
-        <div className="input-row">
+        <div style={{display: 'flex', gap: '15px'}}>
           <input
             type="number"
             name="price_per_seat"
@@ -159,7 +175,7 @@ export default function CreateVenueWithOwner() {
           />
           <input
             type="text"
-            name="phone_number"  // <-- To'g'ri name attribute
+            name="phone_number"
             placeholder="Telefon raqam"
             value={formData.phone_number}
             onChange={handleChange}
@@ -168,7 +184,7 @@ export default function CreateVenueWithOwner() {
         </div>
 
         <textarea
-          name="description"  // <-- To'g'ri name attribute
+          name="description"
           placeholder="Tavsif"
           value={formData.description}
           onChange={handleChange}
@@ -176,7 +192,6 @@ export default function CreateVenueWithOwner() {
         />
 
         <input
-          className='desc'
           type="file"
           name="images"
           accept="image/*"
@@ -186,7 +201,7 @@ export default function CreateVenueWithOwner() {
 
         <h3>To'yxona Egasi Haqida Ma'lumot</h3>
 
-        <div className="input-row">
+        <div style={{display: 'flex', gap: '15px'}}>
           <input
             type="text"
             name="owner_first_name"
@@ -205,7 +220,7 @@ export default function CreateVenueWithOwner() {
           />
         </div>
 
-        <div className="input-row">
+        <div style={{display: 'flex', gap: '15px'}}>
           <input
             type="text"
             name="owner_username"

@@ -83,6 +83,7 @@ export default function Signup() {
           onChange={handleChange}
           required
           autoComplete="new-password"
+          className='password'
         />
         <button type="submit">Ro'yxatdan o'tish</button>
       </form>

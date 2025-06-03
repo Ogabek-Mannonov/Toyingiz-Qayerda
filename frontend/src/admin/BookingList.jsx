@@ -26,7 +26,10 @@ export default function BookingList() {
   }, [filters]);
 
   const fetchVenues = () => {
-    axios.get('http://localhost:5000/api/admin/venues')
+    const token = localStorage.getItem('token');
+    axios.get('http://localhost:5000/api/admin/venues', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then(res => setVenues(res.data.venues))
       .catch(() => setVenues([]));
   };
@@ -41,7 +44,12 @@ export default function BookingList() {
     if (filters.status) params.status = filters.status;
     if (filters.venue) params.venue = filters.venue;
 
-    axios.get('http://localhost:5000/api/admin/bookings', { params })
+    const token = localStorage.getItem('token');
+
+    axios.get('http://localhost:5000/api/admin/bookings', {
+      params,
+      headers: { Authorization: `Bearer ${token}` },
+    })
       .then(res => {
         setBookings(res.data.bookings);
         setLoading(false);
@@ -59,7 +67,11 @@ export default function BookingList() {
 
   const handleCancelBooking = (id) => {
     if (window.confirm('Bronni bekor qilmoqchimisiz?')) {
-      axios.patch(`http://localhost:5000/api/admin/bookings/${id}/cancel`)
+      const token = localStorage.getItem('token');
+
+      axios.patch(`http://localhost:5000/api/admin/bookings/${id}/cancel`, null, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
         .then(() => {
           fetchBookings();
           alert('Bron muvaffaqiyatli bekor qilindi');

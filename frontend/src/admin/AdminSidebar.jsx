@@ -5,11 +5,9 @@ export default function AdminSidebar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // LocalStorage tozalash
+    // LocalStorage'dan token va userRole o'chirish
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
-    // Boshqa user ma’lumotlari ham bo’lsa, kerak bo’lsa ularni ham o’chiring
-    // localStorage.removeItem('username');  // agar username ham saqlansa
 
     // Login sahifasiga yo'naltirish
     navigate('/login');
@@ -17,7 +15,7 @@ export default function AdminSidebar() {
 
   return (
     <div className='admin-sidebar'>
-      <div className="title">
+      <div className="admin-sidebar-title">
         <h2>Admin Panel</h2>
       </div>
 
@@ -38,8 +36,7 @@ export default function AdminSidebar() {
           <NavLink to="/admin-panel/bookings" className={({ isActive }) => isActive ? 'active' : ''}>Bronlar</NavLink>
         </div>
 
-        {/* Logout tugmasi */}
-        <div className='nav-box' style={{ cursor: 'pointer', color: '#ff4d4d', fontWeight: 'bold' }} onClick={handleLogout}>
+        <div className='nav-box logout' onClick={handleLogout} style={{ cursor: 'pointer' }}>
           Chiqish
         </div>
       </div>
