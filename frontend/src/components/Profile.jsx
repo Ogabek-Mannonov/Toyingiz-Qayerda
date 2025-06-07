@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../index.css'
+
 
 export default function ProfileEdit() {
   const [formData, setFormData] = useState({

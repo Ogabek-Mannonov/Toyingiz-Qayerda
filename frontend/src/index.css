@@ -1,24 +1,7 @@
-/* ===== UMUMIY RESET VA TAYYORLIK =====
-
-*,
-*::before,
-*::after {
-  margin: 0;
+* {
   padding: 0;
-  box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-  user-select: none;
-  scroll-behavior: smooth;
+  margin: 0;
 }
-
-body {
-  background: linear-gradient(135deg, #f9f7f1, #e8d9c7);
-  color: #3e3e3e;
-  min-height: 100vh;
-  line-height: 1.6;
-}
-
-/* ===== HEADER ===== */
 
 .header {
   position: fixed;
@@ -92,21 +75,20 @@ body {
 .sidebar {
   position: fixed;
   top: 0;
-  left: -280px; /* yashirin holat */
+  left: 0;
   width: 280px;
   height: 100vh;
   background-color: #f9f5f0;
-  color: #7f5a32;
+  transform: translateX(-100%);
+  transition: transform 0.35s ease;
+  z-index: 1400;
   padding: 30px 25px;
   box-shadow: 3px 0 15px rgba(0,0,0,0.12);
-  transition: left 0.35s ease;
-  z-index: 1400;
   border-right: 1px solid #d3c0a4;
 }
 
-
 .sidebar.open {
-  left: 0;
+  transform: translateX(0);
 }
 
 .sidebar ul {
@@ -142,11 +124,33 @@ body {
 }
 
 .content {
-  padding-top: 80px; /* header balandligi */
+  /* padding-top: 80px; header balandligi */
   min-height: 100vh;
   width: 100%;
   overflow-x: hidden;
 } 
+
+
+
+.logout-btn {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 12px 18px;
+  border-radius: 12px;
+  color: #7f5a32;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.logout-btn:hover {
+  background-color: #bfa67a;
+  color: #fff;
+}
+
 
 /* Overlay fon qorayishi */
 

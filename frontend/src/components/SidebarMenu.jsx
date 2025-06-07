@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../index.css'
 
 
 const SidebarMenu = () => {
@@ -52,10 +53,8 @@ const SidebarMenu = () => {
           <li>
             <Link to="/profile" onClick={toggleSidebar}>Profil</Link>
           </li>
-          <li>
-            <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
-          </li>
         </ul>
+            <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleSidebar}></div>}
