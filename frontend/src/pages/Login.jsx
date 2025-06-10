@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import '../index.css'
+import '../style/login.css'
 
 
 export default function Login() {
@@ -51,37 +51,40 @@ export default function Login() {
   };
 
   return (
-    <div className="form-container">
-      <h2>Kirish</h2>
-      {error && <p className="error-message">{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <input
-          name="username"
-          placeholder="Username"
-          value={formData.username}
-          onChange={handleChange}
-          required
-          autoComplete="username"
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Parol"
-          value={formData.password}
-          onChange={handleChange}
-          required
-          autoComplete="current-password"
-        />
-        <button type="submit">Kirish</button>
-      </form>
+    <div className="login-container">
 
-      <button onClick={goToHome} className="home-btn">
-        Asosiy sahifaga o'tish
-      </button>
+      <div className="form-container">
+        <h2>Kirish</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <input
+            name="username"
+            placeholder="Username"
+            value={formData.username}
+            onChange={handleChange}
+            required
+            autoComplete="username"
+          />
+          <input
+            type="password"
+            name="password"
+            placeholder="Parol"
+            value={formData.password}
+            onChange={handleChange}
+            required
+            autoComplete="current-password"
+          />
+          <button type="submit">Kirish</button>
+        </form>
 
-      <p className="switch-auth">
-        Hisobingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
-      </p>
+        <button onClick={goToHome} className="home-btn">
+          Asosiy sahifaga o'tish
+        </button>
+
+        <p className="switch-auth">
+          Hisobingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
+        </p>
+      </div>
     </div>
   );
 }
