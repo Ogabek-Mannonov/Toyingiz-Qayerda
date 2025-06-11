@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, Routes, Route, useNavigate } from 'react-router-dom';
 
 import SidebarMenu from './components/SidebarMenu';  
 import Header from './components/Header';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signin';  
@@ -21,8 +22,6 @@ function Layout() {
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  // Username holati Layout darajasida
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
 
   const hideHeaderPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
@@ -31,7 +30,6 @@ function Layout() {
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
   const isSidebarHidden = hideSidebarPaths.some(path => location.pathname.startsWith(path));
 
-  // Logout funksiyasi - localStoragedan ma'lumotlarni o'chirib, username ni ham tozalaydi
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
@@ -48,8 +46,11 @@ function Layout() {
     if (sidebarOpen) setSidebarOpen(false);
   };
 
-  // Agar login qilganda username localStorage ga yozilsa, Layout uni avtomatik oladi
-  // Buni yanada real va dinamik qilish uchun boshqa mexanizmlar kerak (context yoki event bus)
+  // Footer faqat foydalanuvchi ko‘radigan sahifalarda ko‘rinadi
+  const showFooter =
+    location.pathname.startsWith('/user') ||
+    location.pathname === '/' ||
+    location.pathname === '/profile';
 
   return (
     <>
@@ -120,6 +121,8 @@ function Layout() {
             }
           />
         </Routes>
+
+        {showFooter && <Footer />} {/* Faqat user uchun ko‘rsatiladi */}
       </div>
     </>
   );

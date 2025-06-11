@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import '../index.css'
-
+import '../style/profile-edit.css';
 
 export default function ProfileEdit() {
   const [formData, setFormData] = useState({
@@ -22,9 +21,6 @@ export default function ProfileEdit() {
         const response = await axios.get('http://localhost:5000/api/user/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        // Backenddan user ma'lumotlari shunday keladi deb taxmin qilamiz:
-        // { first_name, last_name, username, phone_number }
         setFormData(response.data);
       } catch (err) {
         setError('Profil ma’lumotlarini olishda xatolik yuz berdi');
@@ -32,7 +28,6 @@ export default function ProfileEdit() {
         setLoading(false);
       }
     };
-
     fetchProfile();
   }, []);
 
@@ -49,82 +44,77 @@ export default function ProfileEdit() {
 
     try {
       const token = localStorage.getItem('token');
-
       await axios.put('http://localhost:5000/api/user/profile', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setSuccess('Profil muvaffaqiyatli yangilandi');
-
-      // localStorage dagi username ni yangilash
       localStorage.setItem('username', formData.username);
-
-      // Custom event chaqirish (Header yangilanishi uchun)
       window.dispatchEvent(new Event('usernameChanged'));
-
     } catch (err) {
       setError('Profilni yangilashda xatolik yuz berdi');
     }
   };
 
-  if (loading) return <p>Yuklanmoqda...</p>;
+  if (loading) return <p className="loading-text">Yuklanmoqda...</p>;
 
   return (
-    <div>
-      <h2>Profilni tahrirlash</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {success && <p style={{ color: 'green' }}>{success}</p>}
+    <div className="profile-container">
+      <div className="profile-edit-container">
+        <h2 className="form-title">Profilni tahrirlash</h2>
+        {error && <p className="error-message">{error}</p>}
+        {success && <p className="success-message">{success}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          Ism:
-          <input
-            type="text"
-            name="first_name"
-            value={formData.first_name}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
+        <form onSubmit={handleSubmit} className="profile-form">
+          <label className="form-label">
+            Ism:
+            <input
+              type="text"
+              name="first_name"
+              value={formData.first_name}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+          </label>
 
-        <label>
-          Familiya:
-          <input
-            type="text"
-            name="last_name"
-            value={formData.last_name}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
+          <label className="form-label">
+            Familiya:
+            <input
+              type="text"
+              name="last_name"
+              value={formData.last_name}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+          </label>
 
-        <label>
-          Username:
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
+          <label className="form-label">
+            Username:
+            <input
+              type="text"
+              name="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+              className="form-input"
+            />
+          </label>
 
-        <label>
-          Telefon raqam:
-          <input
-            type="text"
-            name="phone_number"
-            value={formData.phone_number}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
+          <label className="form-label">
+            Telefon raqam:
+            <input
+              type="text"
+              name="phone_number"
+              value={formData.phone_number}
+              onChange={handleChange}
+              className="form-input"
+            />
+          </label>
 
-        <button type="submit">Saqlash</button>
-      </form>
+          <button type="submit" className="save-button">Saqlash</button>
+        </form>
+      </div>
     </div>
   );
 }

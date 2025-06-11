@@ -315,10 +315,9 @@
 /* Footer */
 
 .footer {
-
   text-align: center;
   padding: 30px 20px;
-  background-color: #f2e8dc;
+  background-color: ;
   border-top: 1px solid #d2b97d;
   font-size: 1rem;
   color: #7f5a32;
@@ -655,4 +654,3 @@ select:focus {
   box-shadow: 0 6px 18px rgba(154, 74, 44, 0.9);
 }
 
-*/
