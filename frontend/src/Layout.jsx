@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation, Routes, Route, useNavigate } from 'react-router-dom';
 
-import SidebarMenu from './components/SidebarMenu';  
+import SidebarMenu from './components/SidebarMenu';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Signup from './pages/Signin';  
+import Signup from './pages/Signin';
 import OwnerPanel from './owner/OwnerPanel';
 import OwnerVenueList from './owner/OwnerVenueList';
 import OwnerBookingList from './owner/OwnerBookingList';
@@ -14,7 +14,7 @@ import OwnerVenueForm from './owner/OwnerAddVenue';
 import AdminPanel from './admin/AdminPanel';
 import UserVenueList from './user/UserVenueList';
 import UserBookingForm from './user/UserBookingForm';
-import Profile from './components/Profile'; 
+import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
 
 function Layout() {
@@ -24,12 +24,14 @@ function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
 
+  // Header va Sidebar yashiriladigan pathlar
   const hideHeaderPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
   const hideSidebarPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
 
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
   const isSidebarHidden = hideSidebarPaths.some(path => location.pathname.startsWith(path));
 
+  // Logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
@@ -38,15 +40,10 @@ function Layout() {
     navigate('/login');
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+  const closeSidebar = () => sidebarOpen && setSidebarOpen(false);
 
-  const closeSidebar = () => {
-    if (sidebarOpen) setSidebarOpen(false);
-  };
-
-  // Footer faqat foydalanuvchi ko‘radigan sahifalarda ko‘rinadi
+  // Footer faqat foydalanuvchi sahifalari va bosh sahifada ko‘rinadi
   const showFooter =
     location.pathname.startsWith('/user') ||
     location.pathname === '/' ||
@@ -67,10 +64,12 @@ function Layout() {
 
       <div className="content" onClick={closeSidebar} style={{ flex: 1 }}>
         <Routes>
+          {/* 🔓 Ochiq sahifalar */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
+          {/* 🔒 Profile (faqat login bo‘lganlar uchun) */}
           <Route
             path="/profile"
             element={
@@ -80,6 +79,7 @@ function Layout() {
             }
           />
 
+          {/* 🔒 Owner sahifalari */}
           <Route
             path="/owner-panel/*"
             element={
@@ -95,6 +95,7 @@ function Layout() {
             <Route path="bookings" element={<OwnerBookingList />} />
           </Route>
 
+          {/* 🔒 Admin panel */}
           <Route
             path="/admin-panel/*"
             element={
@@ -104,25 +105,13 @@ function Layout() {
             }
           />
 
-          <Route
-            path="/user/venues"
-            element={
-              <PrivateRoute roles={['user']}>
-                <UserVenueList />
-              </PrivateRoute>
-            }
-          />
-          <Route
-            path="/user/venues/:id"
-            element={
-              <PrivateRoute roles={['user']}>
-                <UserBookingForm />
-              </PrivateRoute>
-            }
-          />
+          {/* 🔓 User sahifalari (ochiq kirish) */}
+          <Route path="/user/venues" element={<UserVenueList />} />
+          <Route path="/user/venues/:id" element={<UserBookingForm />} />
         </Routes>
 
-        {showFooter && <Footer />} {/* Faqat user uchun ko‘rsatiladi */}
+        {/* Footer faqat user, home, yoki profile sahifalarda */}
+        {showFooter && <Footer />}
       </div>
     </>
   );

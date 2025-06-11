@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import "../index.css";
 
 export default function UserVenueList() {
@@ -10,6 +10,8 @@ export default function UserVenueList() {
   const [search, setSearch] = useState('');
   const [filterDistrict, setFilterDistrict] = useState('');
   const [districts, setDistricts] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchDistricts();
@@ -47,6 +49,16 @@ export default function UserVenueList() {
     }
   };
 
+  // 🔒 To’yxona ustiga bosilganda token tekshiriladi
+  const handleVenueClick = (hallId) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate(`/user/venues/${hallId}`);
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <div className='toyxonalar-get'>
       <h2>Tasdiqlangan To’yxonalar</h2>
@@ -76,7 +88,12 @@ export default function UserVenueList() {
       ) : (
         <div className="venue-cards">
           {venues.map((v) => (
-            <Link key={v.hall_id} to={`/user/venues/${v.hall_id}`} className="venue-card">
+            <div 
+              key={v.hall_id} 
+              className="venue-card" 
+              onClick={() => handleVenueClick(v.hall_id)}
+              style={{ cursor: 'pointer' }}
+            >
               <img 
                 src={v.photos.length > 0 ? `http://localhost:5000${v.photos[0]}` : 'https://via.placeholder.com/300x200?text=No+Image'} 
                 alt={v.name} 
@@ -88,7 +105,7 @@ export default function UserVenueList() {
                 <p>Narx: {v.price_per_seat} so‘m / o‘rindiq</p>
                 <p>Manzil: {v.address}</p>
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       )}
