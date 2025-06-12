@@ -4,16 +4,22 @@ import { useLocation, Routes, Route, useNavigate } from 'react-router-dom';
 import SidebarMenu from './components/SidebarMenu';
 import Header from './components/Header';
 import Footer from './components/Footer';
+
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signin';
+
 import OwnerPanel from './owner/OwnerPanel';
 import OwnerVenueList from './owner/OwnerVenueList';
 import OwnerBookingList from './owner/OwnerBookingList';
 import OwnerVenueForm from './owner/OwnerAddVenue';
+
 import AdminPanel from './admin/AdminPanel';
+
 import UserVenueList from './user/UserVenueList';
 import UserBookingForm from './user/UserBookingForm';
+import UserBookingList from './user/UserBookingList'; // ✅ Qo‘shilgan
+
 import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
 
@@ -24,14 +30,12 @@ function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [username, setUsername] = useState(localStorage.getItem('username') || '');
 
-  // Header va Sidebar yashiriladigan pathlar
   const hideHeaderPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
   const hideSidebarPaths = ['/login', '/signup', '/admin-panel', '/owner-panel'];
 
   const isHeaderHidden = hideHeaderPaths.some(path => location.pathname.startsWith(path));
   const isSidebarHidden = hideSidebarPaths.some(path => location.pathname.startsWith(path));
 
-  // Logout
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
@@ -43,7 +47,6 @@ function Layout() {
   const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
   const closeSidebar = () => sidebarOpen && setSidebarOpen(false);
 
-  // Footer faqat foydalanuvchi sahifalari va bosh sahifada ko‘rinadi
   const showFooter =
     location.pathname.startsWith('/user') ||
     location.pathname === '/' ||
@@ -69,7 +72,7 @@ function Layout() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* 🔒 Profile (faqat login bo‘lganlar uchun) */}
+          {/* 🔒 Profile */}
           <Route
             path="/profile"
             element={
@@ -79,7 +82,7 @@ function Layout() {
             }
           />
 
-          {/* 🔒 Owner sahifalari */}
+          {/* 🔒 Owner panel */}
           <Route
             path="/owner-panel/*"
             element={
@@ -105,12 +108,21 @@ function Layout() {
             }
           />
 
-          {/* 🔓 User sahifalari (ochiq kirish) */}
+          {/* 🔓 User sahifalari */}
           <Route path="/user/venues" element={<UserVenueList />} />
           <Route path="/user/venues/:id" element={<UserBookingForm />} />
+
+          {/* 🔒 User Booking ro‘yxati */}
+          <Route
+            path="/user/bookings"
+            element={
+              <PrivateRoute roles={['user']}>
+                <UserBookingList />
+              </PrivateRoute>
+            }
+          />
         </Routes>
 
-        {/* Footer faqat user, home, yoki profile sahifalarda */}
         {showFooter && <Footer />}
       </div>
     </>

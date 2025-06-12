@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import '../index.css'
-
+import '../index.css';
 
 const SidebarMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,7 +20,6 @@ const SidebarMenu = () => {
   };
 
   const handleLogout = () => {
-    // Faqat kerakli localStorage itemlarini o'chirish
     localStorage.removeItem('token');
     localStorage.removeItem('username');
     localStorage.removeItem('userRole');
@@ -29,10 +27,8 @@ const SidebarMenu = () => {
     setShowLogoutConfirm(false);
     setIsOpen(false);
 
-    // Header va boshqa joylarni yangilash uchun maxsus event yuboriladi
     window.dispatchEvent(new Event('usernameChange'));
-
-    navigate('/'); // Logoutdan keyin asosiy sahifaga yo'naltirish
+    navigate('/');
   };
 
   return (
@@ -51,10 +47,13 @@ const SidebarMenu = () => {
             <Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link>
           </li>
           <li>
+            <Link to="/user/bookings" onClick={toggleSidebar}>Mening bronlarim</Link> {/* ✅ Qo‘shilgan */}
+          </li>
+          <li>
             <Link to="/profile" onClick={toggleSidebar}>Profil</Link>
           </li>
         </ul>
-            <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
+        <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleSidebar}></div>}

@@ -1,0 +1,89 @@
+.user-booking {
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.title {
+  text-align: center;
+  font-size: 2rem;
+  color: #7f5a32;
+  margin-bottom: 2rem;
+}
+
+.loading,
+.error,
+.empty {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #7f5a32;
+}
+
+.booking-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.booking-card {
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+  padding: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-4px);
+}
+
+.booking-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #7f5a32;
+}
+
+.booking-card p {
+  margin: 4px 0;
+  color: #7f5a32;
+}
+
+.status {
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+
+.status.confirmed {
+  color: #fff;
+  background-color: #4CAF50;
+}
+
+.status.pending {
+  color: #fff;
+  background-color: #FF9800;
+}
+
+.status.cancelled {
+  color: #fff;
+  background-color: #f44336;
+}
+
+.cancel-btn {
+  margin-top: 1rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancel-btn:hover {
+  background-color: #d32f2f;
+}
