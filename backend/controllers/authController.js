@@ -17,7 +17,7 @@ exports.signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Role default user
-    const role = 'user';
+    const role = req.body.role || 'user';
 
     // Foydalanuvchini yaratish
     const newUser = await pool.query(
