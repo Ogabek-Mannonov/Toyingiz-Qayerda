@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './bookingList.css';
 
 export default function BookingList() {
   const [bookings, setBookings] = useState([]);
@@ -13,7 +14,6 @@ export default function BookingList() {
     venue: '',
   });
 
-  // To’yxonalar ro’yxatini olish filtr uchun
   const [venues, setVenues] = useState([]);
 
   useEffect(() => {
@@ -81,11 +81,10 @@ export default function BookingList() {
   };
 
   return (
-    <div>
+    <div className="booking-list-container">
       <h2>Bronlar Ro’yxati</h2>
 
-      {/* Filtrlar */}
-      <div style={{ marginBottom: '20px' }}>
+      <div className="booking-filters">
         <select name="status" value={filters.status} onChange={handleFilterChange}>
           <option value="">Barchasi</option>
           <option value="upcoming">Yaqinlashayotgan</option>
@@ -112,15 +111,14 @@ export default function BookingList() {
         </select>
       </div>
 
-      {/* Jadval */}
       {loading ? (
-        <p>Yuklanmoqda...</p>
+        <p className="booking-message loading">Yuklanmoqda...</p>
       ) : error ? (
-        <p style={{ color: 'red' }}>{error}</p>
+        <p className="booking-message error">{error}</p>
       ) : bookings.length === 0 ? (
-        <p>Bronlar topilmadi</p>
+        <p className="booking-message">Bronlar topilmadi</p>
       ) : (
-        <table border="1" cellPadding="8" cellSpacing="0" style={{ width: '100%' }}>
+        <table className="booking-table">
           <thead>
             <tr>
               <th>Bron ID</th>

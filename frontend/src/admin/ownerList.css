@@ -1,0 +1,104 @@
+.owner-list-container {
+  background-color: #1e1e1e;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 1200px;
+  margin: 40px auto;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+}
+
+.owner-list-container h2 {
+  color: #00bcd4;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.owner-filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.owner-filters input,
+.owner-filters select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background-color: #2c2c2c;
+  color: #f1f1f1;
+  font-size: 16px;
+  width: 100%;
+  max-width: 300px;
+}
+
+.owner-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #2c2c2c;
+}
+
+.owner-table thead {
+  background-color: #00bcd4;
+  color: #1e1e1e;
+  text-align: left;
+}
+
+.owner-table th,
+.owner-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid #444;
+}
+
+.owner-table tbody tr:hover {
+  background-color: #3a3a3a;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  background-color: #00bcd4;
+  color: #1e1e1e;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.pagination button:hover {
+  background-color: #0097a7;
+}
+
+.pagination button.active {
+  background-color: #ffffff;
+  color: #00bcd4;
+  font-weight: bold;
+}
+
+.owner-message {
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.owner-message.error {
+  background-color: #ff5252;
+  color: white;
+}
+
+.owner-message.loading {
+  color: #00bcd4;
+}

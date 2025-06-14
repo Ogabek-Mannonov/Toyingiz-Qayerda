@@ -1,15 +1,14 @@
-import React from 'react'
-import { NavLink, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import './adminSidebar.css';
 
 export default function AdminSidebar() {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
 
   const handleLogout = () => {
-    // LocalStorage'dan token va userRole o'chirish
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
-
-    // Login sahifasiga yo'naltirish
     navigate('/login');
   };
 
@@ -27,7 +26,7 @@ export default function AdminSidebar() {
           <NavLink to="/admin-panel/venues" className={({ isActive }) => isActive ? 'active' : ''}>To'yxonalar</NavLink>
         </div>
         <div className='nav-box'>
-          <NavLink to="/admin-panel/createvenueowner" className={({ isActive }) => isActive ? 'active' : ''}>To'yxona Va To'yxona Egalarini Qo'shish</NavLink>
+          <NavLink to="/admin-panel/createvenueowner" className={({ isActive }) => isActive ? 'active' : ''}>To'yxona Va Egalar Qo'shish</NavLink>
         </div>
         <div className='nav-box'>
           <NavLink to="/admin-panel/owners" className={({ isActive }) => isActive ? 'active' : ''}>Egalari</NavLink>
@@ -36,10 +35,22 @@ export default function AdminSidebar() {
           <NavLink to="/admin-panel/bookings" className={({ isActive }) => isActive ? 'active' : ''}>Bronlar</NavLink>
         </div>
 
-        <div className='nav-box logout' onClick={handleLogout} style={{ cursor: 'pointer' }}>
+        <div className='nav-box logout' onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
           Chiqish
         </div>
       </div>
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <p>Rostdan ham chiqmoqchimisiz?</p>
+            <div className="modal-buttons">
+              <button className="confirmm-btn" onClick={handleLogout}>Ha, chiqaman</button>
+              <button className="cancell-btn" onClick={() => setShowModal(false)}>Bekor qilish</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
-  )
+  );
 }

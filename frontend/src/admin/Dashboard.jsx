@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './dashboard.css';
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -12,10 +13,9 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    // Backend URL to'g'ri ekanligini tekshiring
     axios.get('http://localhost:5000/api/admin/dashboard-stats', {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token'), // agar autentifikatsiya kerak bo‘lsa
+        Authorization: 'Bearer ' + localStorage.getItem('token'),
       }
     })
       .then(res => {
@@ -57,4 +57,4 @@ export default function Dashboard() {
       </div>
     </div>
   );
-}
+} 

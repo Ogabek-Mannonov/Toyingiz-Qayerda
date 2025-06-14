@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './createVenueWithOwner.css';
 
 export default function CreateVenueWithOwner() {
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ export default function CreateVenueWithOwner() {
     images: []
   });
 
+  const [fileNames, setFileNames] = useState([]);
   const [districts, setDistricts] = useState([]);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -52,6 +54,7 @@ export default function CreateVenueWithOwner() {
       ...formData,
       images: e.target.files
     });
+    setFileNames(Array.from(e.target.files).map(f => f.name));
     setError('');
     setSuccessMessage('');
   };
@@ -101,13 +104,12 @@ export default function CreateVenueWithOwner() {
         owner_phone_number: '',
         images: []
       });
+      setFileNames([]);
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.error) {
+      if (error.response?.data?.error) {
         setError(error.response.data.error);
-      } else if (error.response && error.response.data) {
-        setError(error.response.data.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
       } else {
-        setError('Server bilan bog‘lanishda xatolik yuz berdi');
+        setError(error.response?.data?.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
       }
       setSuccessMessage('');
     }
@@ -122,22 +124,9 @@ export default function CreateVenueWithOwner() {
 
       <form className="admin-form" onSubmit={handleSubmit}>
         <h3>To'yxona Ma'lumotlari</h3>
-        <div style={{display: 'flex', gap: '15px'}}>
-          <input
-            type="text"
-            name="name"
-            placeholder="To'yxona Nomi"
-            value={formData.name}
-            onChange={handleChange}
-            required
-          />
-
-          <select
-            name="district_name"
-            value={formData.district_name}
-            onChange={handleChange}
-            required
-          >
+        <div>
+          <input type="text" name="name" placeholder="To'yxona Nomi" value={formData.name} onChange={handleChange} required />
+          <select name="district_name" value={formData.district_name} onChange={handleChange} required>
             <option value="">Tumanni tanlang</option>
             {districts.map(d => (
               <option key={d.district_id} value={d.name}>{d.name}</option>
@@ -145,108 +134,52 @@ export default function CreateVenueWithOwner() {
           </select>
         </div>
 
-        <div style={{display: 'flex', gap: '15px'}}>
-          <input
-            type="text"
-            name="address"
-            placeholder="Manzil"
-            value={formData.address}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="number"
-            name="capacity"
-            placeholder="Joylar Soni"
-            value={formData.capacity}
-            onChange={handleChange}
-            required
-          />
+        <div>
+          <input type="text" name="address" placeholder="Manzil" value={formData.address} onChange={handleChange} required />
+          <input type="number" name="capacity" placeholder="Joylar Soni" value={formData.capacity} onChange={handleChange} required />
         </div>
 
-        <div style={{display: 'flex', gap: '15px'}}>
-          <input
-            type="number"
-            name="price_per_seat"
-            placeholder="Bir O'rindiq Narxi"
-            value={formData.price_per_seat}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="phone_number"
-            placeholder="Telefon raqam"
-            value={formData.phone_number}
-            onChange={handleChange}
-            required
-          />
+        <div>
+          <input type="number" name="price_per_seat" placeholder="Bir O'rindiq Narxi" value={formData.price_per_seat} onChange={handleChange} required />
+          <input type="text" name="phone_number" placeholder="Telefon raqam" value={formData.phone_number} onChange={handleChange} required />
         </div>
 
-        <textarea
-          name="description"
-          placeholder="Tavsif"
-          value={formData.description}
-          onChange={handleChange}
-          rows={4}
-        />
+        <textarea name="description" placeholder="Tavsif" value={formData.description} onChange={handleChange} rows={4} />
 
+        {/* Fayl yuklash chiroyli ko‘rinishda */}
+        <label htmlFor="file-upload" className="custom-file-upload">
+          <span className="upload-icon">📁</span> Rasmlar tanlang
+        </label>
         <input
+          id="file-upload"
           type="file"
           name="images"
           accept="image/*"
           onChange={handleFileChange}
           multiple
+          className="hidden-file"
         />
+        {fileNames.length > 0 && (
+          <ul className="file-name-list">
+            {fileNames.map((name, idx) => (
+              <li key={idx}>{name}</li>
+            ))}
+          </ul>
+        )}
 
         <h3>To'yxona Egasi Haqida Ma'lumot</h3>
 
-        <div style={{display: 'flex', gap: '15px'}}>
-          <input
-            type="text"
-            name="owner_first_name"
-            placeholder="Ism"
-            value={formData.owner_first_name}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="owner_last_name"
-            placeholder="Familiya"
-            value={formData.owner_last_name}
-            onChange={handleChange}
-            required
-          />
+        <div>
+          <input type="text" name="owner_first_name" placeholder="Ism" value={formData.owner_first_name} onChange={handleChange} required />
+          <input type="text" name="owner_last_name" placeholder="Familiya" value={formData.owner_last_name} onChange={handleChange} required />
         </div>
 
-        <div style={{display: 'flex', gap: '15px'}}>
-          <input
-            type="text"
-            name="owner_username"
-            placeholder="Username"
-            value={formData.owner_username}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="owner_password"
-            placeholder="Password"
-            value={formData.owner_password}
-            onChange={handleChange}
-            required
-          />
+        <div>
+          <input type="text" name="owner_username" placeholder="Username" value={formData.owner_username} onChange={handleChange} required />
+          <input type="password" name="owner_password" placeholder="Password" value={formData.owner_password} onChange={handleChange} required />
         </div>
 
-        <input
-          type="text"
-          name="owner_phone_number"
-          placeholder="Telefon raqam"
-          value={formData.owner_phone_number}
-          onChange={handleChange}
-          required
-        />
+        <input type="text" name="owner_phone_number" placeholder="Telefon raqam" value={formData.owner_phone_number} onChange={handleChange} required />
 
         <button type="submit">Yuborish</button>
       </form>
