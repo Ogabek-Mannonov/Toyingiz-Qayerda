@@ -39,7 +39,7 @@ function UserBookingList() {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.patch(`/api/user/bookings/${bookingId}/cancel`, {}, {
+      await axios.patch(`http://localhost:5000/api/user/bookings/${bookingId}/cancel`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 
