@@ -30,21 +30,34 @@ exports.getVenueById = async (req, res) => {
   try {
     const venueId = req.params.id;
 
-    const venue = await pool.query(
-      `SELECT * FROM wedding_halls WHERE hall_id = $1 AND status = 'approved'`,
+    const venueQuery = await pool.query(
+      `SELECT 
+         wh.*, 
+         d.name AS district_name,
+         COALESCE(
+           json_agg(hp.image_url) FILTER (WHERE hp.hall_id IS NOT NULL), 
+           '[]'
+         ) AS photos
+       FROM wedding_halls wh
+       JOIN districts d ON wh.district_id = d.district_id
+       LEFT JOIN hall_photos hp ON wh.hall_id = hp.hall_id
+       WHERE wh.hall_id = $1 AND wh.status = 'approved'
+       GROUP BY wh.hall_id, d.name`,
       [venueId]
     );
 
-    if (venue.rowCount === 0) {
+    if (venueQuery.rowCount === 0) {
       return res.status(404).json({ message: 'To’yxona topilmadi' });
     }
 
-    res.json({ venue: venue.rows[0] });
+    res.json({ venue: venueQuery.rows[0] });
+
   } catch (error) {
     console.error('Get Venue By ID error:', error);
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
+
 
 // Yakka to’yxonaning barcha bronlarini olish
 exports.getVenueBookings = async (req, res) => {

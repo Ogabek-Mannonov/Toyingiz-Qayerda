@@ -19,6 +19,7 @@ import AdminPanel from './admin/AdminPanel';
 import UserVenueList from './user/UserVenueList';
 import UserBookingForm from './user/UserBookingForm';
 import UserBookingList from './user/UserBookingList'; // ✅ Qo‘shilgan
+import VenueDetails from './user/VenueDetails';
 
 import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
@@ -110,7 +111,8 @@ function Layout() {
 
           {/* 🔓 User sahifalari */}
           <Route path="/user/venues" element={<UserVenueList />} />
-          <Route path="/user/venues/:id" element={<UserBookingForm />} />
+          <Route path="/user/venues/:hallId" element={<VenueDetails />} />
+          <Route path="/user/book/:id" element={<UserBookingForm />} />
 
           {/* 🔒 User Booking ro‘yxati */}
           <Route
