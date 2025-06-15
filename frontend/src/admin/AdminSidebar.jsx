@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import './adminSidebar.css';
+import './admin style/adminSidebar.css'
 
 export default function AdminSidebar() {
   const navigate = useNavigate();

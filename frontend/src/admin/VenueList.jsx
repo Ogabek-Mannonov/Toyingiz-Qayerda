@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import VenueCalendar from './VenueCalendar';
-import './venue-list.css';
+import './admin style/venue-list.css'
+
 
 
 export default function VenueList() {

@@ -7,8 +7,9 @@ import VenueList from './VenueList'
 import OwnerList from './OwnerList'
 import CreateVenueWithOwner from './CreateVenueWithOwner'
 import BookingList from './BookingList'
+import EditVenue from './EditVenue'
 
-import './adminPanel.css'
+import './admin style/AdminPanel.css'
 
 export default function AdminPanel() {
   return (
@@ -18,6 +19,7 @@ export default function AdminPanel() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="venues" element={<VenueList />} />
+          <Route path="venues/edit/:id" element={<EditVenue />} />
           <Route path="createvenueowner" element={<CreateVenueWithOwner />} />
           <Route path="owners" element={<OwnerList />} />
           <Route path="bookings" element={<BookingList />} />

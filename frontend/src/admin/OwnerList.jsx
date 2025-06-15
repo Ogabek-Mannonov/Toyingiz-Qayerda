@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './ownerList.css';
+import './admin style/ownerList.css'
+
 
 export default function OwnerList() {
   const [owners, setOwners] = useState([]);

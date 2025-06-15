@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './dashboard.css';
+import './admin style/dashboard.css'
+
 
 export default function Dashboard() {
   const [stats, setStats] = useState({

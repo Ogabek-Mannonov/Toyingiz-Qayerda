@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import './createVenueWithOwner.css';
+import './admin style/createVenueWithOwner.css';
 
 export default function CreateVenueWithOwner() {
   const [formData, setFormData] = useState({
@@ -50,11 +50,12 @@ export default function CreateVenueWithOwner() {
   };
 
   const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
     setFormData({
       ...formData,
-      images: e.target.files
+      images: files
     });
-    setFileNames(Array.from(e.target.files).map(f => f.name));
+    setFileNames(files.map(f => f.name));
     setError('');
     setSuccessMessage('');
   };
@@ -73,7 +74,7 @@ export default function CreateVenueWithOwner() {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
       if (key === 'images') {
-        Array.from(formData[key]).forEach((file) => {
+        formData.images.forEach((file) => {
           data.append('images', file);
         });
       } else {
@@ -88,7 +89,8 @@ export default function CreateVenueWithOwner() {
           Authorization: `Bearer ${token}`
         },
       });
-      setSuccessMessage('To’yxona va egasi muvaffaqiyatli yaratildi!');
+
+      setSuccessMessage("To’yxona va egasi muvaffaqiyatli yaratildi!");
       setFormData({
         name: '',
         district_name: '',
@@ -106,11 +108,7 @@ export default function CreateVenueWithOwner() {
       });
       setFileNames([]);
     } catch (error) {
-      if (error.response?.data?.error) {
-        setError(error.response.data.error);
-      } else {
-        setError(error.response?.data?.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
-      }
+      setError(error.response?.data?.error || error.response?.data?.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
       setSuccessMessage('');
     }
   };
@@ -146,7 +144,6 @@ export default function CreateVenueWithOwner() {
 
         <textarea name="description" placeholder="Tavsif" value={formData.description} onChange={handleChange} rows={4} />
 
-        {/* Fayl yuklash chiroyli ko‘rinishda */}
         <label htmlFor="file-upload" className="custom-file-upload">
           <span className="upload-icon">📁</span> Rasmlar tanlang
         </label>

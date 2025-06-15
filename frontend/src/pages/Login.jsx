@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
-import '../style/login.css'
-
+import { useNavigate, useLocation, Link } from 'react-router-dom';
+import '../style/login.css';
 
 export default function Login() {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [formData, setFormData] = useState({
     username: '',
@@ -13,6 +13,16 @@ export default function Login() {
   });
 
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  useEffect(() => {
+    if (location.state && location.state.successMessage) {
+      setSuccessMessage(location.state.successMessage);
+
+      // URLdagi state ni tozalash (refreshda yana ko‘rinmasligi uchun)
+      window.history.replaceState({}, document.title);
+    }
+  }, [location]);
 
   const handleChange = e => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,6 +31,7 @@ export default function Login() {
   const handleSubmit = async e => {
     e.preventDefault();
     setError('');
+    setSuccessMessage('');
 
     try {
       const response = await axios.post('http://localhost:5000/api/auth/login', formData);
@@ -52,10 +63,12 @@ export default function Login() {
 
   return (
     <div className="login-container">
-
       <div className="form-container">
         <h2>Kirish</h2>
+
+        {successMessage && <p className="success-message">{successMessage}</p>}
         {error && <p className="error-message">{error}</p>}
+
         <form onSubmit={handleSubmit}>
           <input
             name="username"

@@ -1,0 +1,85 @@
+/* Asosiy konteyner */
+.edit-venue-container {
+  max-width: 700px;
+  margin: 30px auto;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
+  /* Scroll chiqmasligi uchun: */
+  height: calc(100vh - 80px); /* header bor bo‘lsa, uni chegirasiz */
+  overflow-y: auto;
+}
+
+/* Sarlavha */
+.edit-venue-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 25px;
+  color: #333;
+}
+
+/* Forma */
+.edit-venue-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Input va select lar */
+.edit-venue-container input[type="text"],
+.edit-venue-container input[type="number"],
+.edit-venue-container textarea,
+.edit-venue-container select {
+  padding: 10px 10px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  transition: border 0.3s;
+}
+
+.edit-venue-container input:focus,
+.edit-venue-container textarea:focus,
+.edit-venue-container select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Button */
+.edit-venue-container button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 14px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.edit-venue-container button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Xatolik va muvaffaqiyatli xabarlar */
+.edit-venue-container p {
+  font-size: 12px;
+  text-align: center;
+}
+
+.edit-venue-container p.error {
+  color: red;
+}
+
+.edit-venue-container p.success {
+  color: green;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .edit-venue-container {
+    margin: 20px;
+    padding: 20px;
+  }
+}
