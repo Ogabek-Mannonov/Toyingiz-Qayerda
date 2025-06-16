@@ -1,0 +1,26 @@
+.owner-dashboard {
+  padding: 20px;
+}
+
+.stats-cards {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  flex: 1;
+  min-width: 180px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.booking-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}

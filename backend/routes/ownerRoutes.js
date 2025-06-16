@@ -25,4 +25,7 @@ router.get('/bookings', ownerController.getBookings);
 // Bronni bekor qilish
 router.patch('/bookings/:id/cancel', ownerController.cancelBooking);
 
+router.get('/stats', ownerController.getStats);
+
+
 module.exports = router;

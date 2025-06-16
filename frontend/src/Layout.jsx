@@ -13,6 +13,7 @@ import OwnerPanel from './owner/OwnerPanel';
 import OwnerVenueList from './owner/OwnerVenueList';
 import OwnerBookingList from './owner/OwnerBookingList';
 import OwnerVenueForm from './owner/OwnerAddVenue';
+import OwnerDashboard from './owner/OwnerDashboard';
 
 import AdminPanel from './admin/AdminPanel';
 
@@ -92,7 +93,7 @@ function Layout() {
               </PrivateRoute>
             }
           >
-            <Route index element={<OwnerVenueList />} />
+             <Route index element={<OwnerDashboard />} />
             <Route path="venues" element={<OwnerVenueList />} />
             <Route path="add-venue" element={<OwnerVenueForm />} />
             <Route path="edit-venue/:id" element={<OwnerVenueForm />} />

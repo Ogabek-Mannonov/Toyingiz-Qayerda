@@ -153,3 +153,46 @@ exports.cancelBooking = async (req, res) => {
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
+
+exports.getStats = async (req, res) => {
+  try {
+    const owner_id = req.user.id;
+
+    const totalVenuesResult = await pool.query(
+      `SELECT COUNT(*) FROM wedding_halls WHERE owner_id = $1`,
+      [owner_id]
+    );
+
+    const upcomingBookingsResult = await pool.query(
+      `SELECT COUNT(*) FROM bookings 
+       WHERE hall_id IN (SELECT hall_id FROM wedding_halls WHERE owner_id = $1)
+       AND booking_date > CURRENT_DATE`,
+      [owner_id]
+    );
+
+    const todayBookingsResult = await pool.query(
+      `SELECT COUNT(*) FROM bookings 
+       WHERE hall_id IN (SELECT hall_id FROM wedding_halls WHERE owner_id = $1)
+       AND booking_date = CURRENT_DATE`,
+      [owner_id]
+    );
+
+    const cancelledBookingsResult = await pool.query(
+      `SELECT COUNT(*) FROM bookings 
+       WHERE hall_id IN (SELECT hall_id FROM wedding_halls WHERE owner_id = $1)
+       AND status = 'cancelled'`,
+      [owner_id]
+    );
+
+    res.json({
+      totalVenues: parseInt(totalVenuesResult.rows[0].count),
+      upcomingBookings: parseInt(upcomingBookingsResult.rows[0].count),
+      todayBookings: parseInt(todayBookingsResult.rows[0].count),
+      cancelledBookings: parseInt(cancelledBookingsResult.rows[0].count),
+    });
+  } catch (error) {
+    console.error('getStats error:', error);
+    res.status(500).json({ error: 'Statistikani olishda xatolik yuz berdi' });
+  }
+};
+
