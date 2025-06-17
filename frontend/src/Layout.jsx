@@ -24,6 +24,7 @@ import VenueDetails from './user/VenueDetails';
 
 import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
+import EditVenue from './owner/EditVenueOwner';
 
 function Layout() {
   const location = useLocation();
@@ -93,10 +94,11 @@ function Layout() {
               </PrivateRoute>
             }
           >
-             <Route index element={<OwnerDashboard />} />
+            <Route index element={<OwnerDashboard />} />
             <Route path="venues" element={<OwnerVenueList />} />
             <Route path="add-venue" element={<OwnerVenueForm />} />
             <Route path="edit-venue/:id" element={<OwnerVenueForm />} />
+            <Route path="edit-venue-form/:venueId" element={<EditVenue />} /> {/* <- bu o'zgaradi */}
             <Route path="bookings" element={<OwnerBookingList />} />
           </Route>
 

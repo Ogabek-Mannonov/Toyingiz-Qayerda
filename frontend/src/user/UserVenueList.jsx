@@ -40,7 +40,14 @@ export default function UserVenueList() {
       if (filterDistrict) params.district = filterDistrict;
 
       const res = await axios.get('http://localhost:5000/api/user/venues', { params });
-      setVenues(res.data.venues);
+
+      // JSON string sifatida kelgan bo‘lsa, uni parse qilish
+      const venuesWithParsedPhotos = res.data.venues.map(v => ({
+        ...v,
+        photos: typeof v.photos === 'string' ? JSON.parse(v.photos) : v.photos
+      }));
+
+      setVenues(venuesWithParsedPhotos);
     } catch (err) {
       setError('To’yxonalarni olishda xatolik yuz berdi');
       console.error(err);
@@ -49,7 +56,6 @@ export default function UserVenueList() {
     }
   };
 
-  // 🔒 To’yxona ustiga bosilganda token tekshiriladi
   const handleVenueClick = (hallId) => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -64,11 +70,11 @@ export default function UserVenueList() {
       <h2>Tasdiqlangan To’yxonalar</h2>
 
       <div style={{ marginBottom: '15px' }}>
-        <input 
-          type="text" 
-          placeholder="Qidiruv..." 
-          value={search} 
-          onChange={e => setSearch(e.target.value)} 
+        <input
+          type="text"
+          placeholder="Qidiruv..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
         />
 
         <select value={filterDistrict} onChange={e => setFilterDistrict(e.target.value)}>
@@ -87,26 +93,35 @@ export default function UserVenueList() {
         <p>To’yxona topilmadi</p>
       ) : (
         <div className="venue-cards">
-          {venues.map((v) => (
-            <div 
-              key={v.hall_id} 
-              className="venue-card" 
-              onClick={() => handleVenueClick(v.hall_id)}
-              style={{ cursor: 'pointer' }}
-            >
-              <img 
-                src={v.photos.length > 0 ? `http://localhost:5000${v.photos[0]}` : 'https://via.placeholder.com/300x200?text=No+Image'} 
-                alt={v.name} 
-              />
-              <div className="venue-info">
-                <h3>{v.name}</h3>
-                <p>Sig‘im: {v.capacity}</p>
-                <p>Telefon: {v.phone_number}</p>
-                <p>Narx: {v.price_per_seat} so‘m / o‘rindiq</p>
-                <p>Manzil: {v.address}</p>
+          {venues.map((v) => {
+            console.log(v.photos[0]); // ✅ LOGNI TASHQARIDA QO‘YING
+
+            return (
+              <div
+                key={v.hall_id}
+                className="venue-card"
+                onClick={() => handleVenueClick(v.hall_id)}
+                style={{ cursor: 'pointer' }}
+              >
+                <img
+                  src={
+                    v.photos && v.photos.length > 0
+                      ? `http://localhost:5000${v.photos[0]}`
+                      : '/uploads/no-image.png'
+                  }
+                  alt={v.name}
+                />
+                <div className="venue-info">
+                  <h3>{v.name}</h3>
+                  <p>Sig‘im: {v.capacity}</p>
+                  <p>Telefon: {v.phone_number}</p>
+                  <p>Narx: {v.price_per_seat} so‘m / o‘rindiq</p>
+                  <p>Manzil: {v.address}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
         </div>
       )}
     </div>

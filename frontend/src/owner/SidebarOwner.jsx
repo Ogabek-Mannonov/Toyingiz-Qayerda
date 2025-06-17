@@ -28,7 +28,7 @@ export default function SidebarOwner() {
 
   const links = [
     { to: '/owner-panel', label: 'Bosh sahifa', icon: <FaHome /> },
-    { to: '/owner-panel/venues', label: "To'yxonalar ro'yxati", icon: <FaList /> },
+    { to: '/owner-panel/venues', label: "To'yxonalarim", icon: <FaList /> },
     { to: '/owner-panel/add-venue', label: "To'yxona qo'shish", icon: <FaPlus /> },
     { to: '/owner-panel/bookings', label: "Bronlarni ko'rish", icon: <FaCalendarCheck /> },
     { to: '/profile', label: 'Profil', icon: <FaUser /> },

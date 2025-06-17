@@ -196,3 +196,32 @@ exports.getStats = async (req, res) => {
   }
 };
 
+
+// DELETE /api/owner/venues/:id
+exports.deleteVenue = async (req, res) => {
+  try {
+    const owner_id = req.user.id;
+    const venueId = req.params.id;
+
+    // To‘yxona egasiga tegishli ekanligini tekshirish
+    const check = await pool.query(
+      `SELECT * FROM wedding_halls WHERE hall_id = $1 AND owner_id = $2`,
+      [venueId, owner_id]
+    );
+
+    if (check.rowCount === 0) {
+      return res.status(404).json({ message: "To'yxona topilmadi yoki ruxsat yo'q" });
+    }
+
+    await pool.query(`DELETE FROM wedding_halls WHERE hall_id = $1 AND owner_id = $2`, [
+      venueId,
+      owner_id,
+    ]);
+
+    res.json({ message: "To'yxona o'chirildi" });
+  } catch (error) {
+    console.error("deleteVenue error:", error);
+    res.status(500).json({ error: "Server xatosi" });
+  }
+};
+

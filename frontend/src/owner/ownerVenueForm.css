@@ -1,0 +1,96 @@
+.owner-venue-form-container {
+  max-width: 600px;
+  margin: 15px auto;
+  padding: 18px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.owner-venue-form-container h2 {
+  margin-bottom: 20px;
+  font-size: 22px;
+  color: #333;
+  text-align: center;
+}
+
+.owner-venue-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.owner-venue-form input,
+.owner-venue-form select,
+.owner-venue-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.owner-venue-form input:focus,
+.owner-venue-form select:focus,
+.owner-venue-form textarea:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.owner-venue-form button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.owner-venue-form button:hover {
+  background-color: #0056b3;
+}
+
+.success-text {
+  color: green;
+  text-align: center;
+  margin-bottom: 2px;
+}
+
+.error-text {
+  color: red;
+  text-align: center;
+}
+
+
+.image-upload-wrapper {
+  border: 2px dashed #aaa;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.image-upload-wrapper:hover {
+  background-color: #f1f1f1;
+}
+
+.image-upload-wrapper input[type="file"] {
+  display: none;
+}
+
+.image-upload-label {
+  display: inline-block;
+  font-size: 16px;
+  color: #555;
+}
+
+.image-preview-count {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #333;
+}

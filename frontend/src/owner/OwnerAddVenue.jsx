@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './ownerVenueForm.css'
 
 export default function OwnerVenueForm({ venueId, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -85,7 +86,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
 
       // Rasm fayllarini ham FormData ga qo‘shamiz (multiple)
       for (let i = 0; i < images.length; i++) {
-        data.append('photos', images[i]);  // backendda multer 'photos' maydonini qabul qilishi kerak
+        data.append('images', images[i]);  // backendda multer 'photos' maydonini qabul qilishi kerak
       }
 
       if (venueId) {
@@ -130,12 +131,12 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
   if (loading) return <p>Yuklanmoqda...</p>;
 
   return (
-    <div style={{ marginTop: '20px', maxWidth: '500px' }}>
+    <div className="owner-venue-form-container">
       <h2>{venueId ? 'To’yxonani Tahrirlash' : 'Yangi To’yxona Qo‘shish'}</h2>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      {success && <p style={{color: 'green'}}>{success}</p>}
+      {error && <p className="error-text">{error}</p>}
+      {success && <p className="success-text">{success}</p>}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+      <form onSubmit={handleSubmit} className="owner-venue-form">
         <input
           name="name"
           placeholder="To’yxona nomi"
@@ -144,7 +145,6 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
           required
         />
 
-        {/* Rayonlarni select orqali tanlash */}
         <select
           name="district_id"
           value={formData.district_id}
@@ -199,17 +199,27 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
           rows="4"
         />
 
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFileChange}
-        />
+        <label htmlFor="file-upload" className="image-upload-wrapper">
+          <span className="image-upload-label">📁 Rasm(lar)ni tanlang yoki bu yerga bosing</span>
+          <input
+            id="file-upload"
+            type="file"
+            name='images'
+            multiple
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+          {images.length > 0 && (
+            <div className="image-preview-count">{images.length} ta rasm tanlangan</div>
+          )}
+        </label>
 
-        <button type="submit" style={{ marginTop: '10px' }}>
+
+        <button type="submit">
           {venueId ? 'Yangilash' : 'Qo‘shish'}
         </button>
       </form>
     </div>
   );
+
 }

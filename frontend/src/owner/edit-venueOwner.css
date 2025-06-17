@@ -1,0 +1,70 @@
+/* src/pages/owner/edit-venue-owner.css */
+
+.edit-owner-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fefefe;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-owner-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #222;
+  font-size: 24px;
+}
+
+.edit-owner-loading,
+.edit-owner-error,
+.edit-owner-success {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.edit-owner-error {
+  color: red;
+}
+
+.edit-owner-success {
+  color: green;
+}
+
+.edit-owner-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.edit-owner-label {
+  font-weight: bold;
+}
+
+.edit-owner-form input,
+.edit-owner-form textarea {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.edit-owner-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.edit-owner-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.edit-owner-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}

@@ -1,0 +1,49 @@
+.venue-list-container {
+  padding: 20px;
+}
+
+.venue-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.venue-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.venue-table th,
+.venue-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.venue-table th {
+  background-color: #f5f5f5;
+}
+
+.edit-btn,
+.delete-btn {
+  padding: 6px 12px;
+  margin-right: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
