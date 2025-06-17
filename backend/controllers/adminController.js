@@ -182,37 +182,92 @@ exports.getVenueById = async (req, res) => {
 };
 
 // To'yxonani yangilash
-exports.updateVenue = async (req, res) => {
-  const venueId = req.params.id;
-  const {
-    name,
-    district_id,
-    address,
-    capacity,
-    price_per_seat,
-    phone_number,
-    description,
-    owner_id,
-    status
-  } = req.body;
+const path = require('path');
+const fs = require('fs');
 
+exports.updateVenue = async (req, res) => {
   try {
-    const result = await pool.query(
-      `UPDATE wedding_halls SET 
-        name=$1, district_id=$2, address=$3, capacity=$4, price_per_seat=$5, phone_number=$6, description=$7, owner_id=$8, status=$9, updated_at=NOW()
-       WHERE hall_id=$10 RETURNING *`,
-      [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id, status, venueId]
+    const { id } = req.params;
+    const {
+      name,
+      district_id,
+      address,
+      capacity,
+      price_per_seat,
+      phone_number,
+      description,
+      status,
+      owner_id
+    } = req.body;
+
+    // Eski rasmlarni olish
+    const oldImagesResult = await pool.query(
+      'SELECT image_url FROM hall_photos WHERE hall_id = $1',
+      [id]
+    );
+    const oldImages = oldImagesResult.rows;
+
+    // Eski rasmlarni o‘chirish (agar yangi rasmlar kelsa)
+    if (req.files && req.files.length > 0 && oldImages.length > 0) {
+      for (const image of oldImages) {
+        const filePath = path.join(__dirname, '..', image.image_url); // uploads/filename.jpg
+        fs.unlink(filePath, err => {
+          if (err) console.error('Rasm o‘chirishda xatolik:', err);
+        });
+      }
+
+      // Eski rasm yozuvlarini bazadan o‘chirish
+      await pool.query('DELETE FROM hall_photos WHERE hall_id = $1', [id]);
+    }
+
+    // Yangi rasm yozuvlarini bazaga qo‘shish
+    if (req.files && req.files.length > 0) {
+      const insertPromises = req.files.map(file => {
+        const image_url = `/uploads/${file.filename}`;
+        return pool.query(
+          'INSERT INTO hall_photos (hall_id, image_url) VALUES ($1, $2)',
+          [id, image_url]
+        );
+      });
+      await Promise.all(insertPromises);
+    }
+
+    // wedding_halls jadvalini yangilash
+    await pool.query(
+      `UPDATE wedding_halls SET
+        name = $1,
+        district_id = $2,
+        address = $3,
+        capacity = $4,
+        price_per_seat = $5,
+        phone_number = $6,
+        description = $7,
+        status = $8,
+        owner_id = $9,
+        updated_at = NOW()
+      WHERE hall_id = $10`,
+      [
+        name,
+        district_id,
+        address,
+        capacity,
+        price_per_seat,
+        phone_number,
+        description,
+        status,
+        owner_id,
+        id
+      ]
     );
 
-    if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi' });
-    }
-    res.json({ venue: result.rows[0] });
-  } catch (error) {
-    console.error('Update Venue error:', error);
-    res.status(500).json({ error: error.message || 'Server xatosi' });
+    res.status(200).json({ message: "To'yxona yangilandi" });
+  } catch (err) {
+    console.error('Tahrirlashda xatolik:', err);
+    res.status(500).json({ error: 'Server xatosi' });
   }
 };
+
+
 
 // To’yxonani o‘chirish
 exports.deleteVenue = async (req, res) => {
