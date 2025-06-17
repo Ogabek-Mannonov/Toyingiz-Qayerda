@@ -26,6 +26,8 @@ router.patch('/bookings/:id/cancel', userController.cancelBooking);
 
 router.get('/profile', authMiddleware, userController.getProfile);
 
+router.get('/venues/:id/booked-dates', userController.getBookedDates);
+
 
 router.put('/profile', authMiddleware, userController.updateProfile);
 

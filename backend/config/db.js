@@ -14,10 +14,10 @@ const pool = new Pool({
 // Ulana olishni test qilish
 pool.connect()
   .then(() => {
-    console.log('✅ PostgreSQLga muvaffaqiyatli ulanildi (localhost)');
+    console.log('PostgreSQLga muvaffaqiyatli ulanildi (localhost)');
   })
   .catch((err) => {
-    console.error('❌ PostgreSQL ulanishida xatolik (localhost):', err);
+    console.error('PostgreSQL ulanishida xatolik (localhost):', err);
   });
 
 module.exports = pool;

@@ -96,6 +96,17 @@ exports.createBooking = async (req, res) => {
       return res.status(401).json({ message: 'Avval tizimga kiring' });
     }
 
+    // 0. Avval bu sanaga bron mavjudmi – tekshiramiz
+    const existingBooking = await pool.query(
+      `SELECT * FROM bookings 
+       WHERE hall_id = $1 AND booking_date = $2 AND status != 'cancelled'`,
+      [hall_id, booking_date]
+    );
+
+    if (existingBooking.rowCount > 0) {
+      return res.status(400).json({ message: `Bu sana allaqachon band qilingan.` });
+    }
+
     // 1. To'yxonani sig'imini va statusini olish
     const venueResult = await pool.query(
       'SELECT capacity FROM wedding_halls WHERE hall_id = $1 AND status = $2',
@@ -108,22 +119,13 @@ exports.createBooking = async (req, res) => {
 
     const capacity = venueResult.rows[0].capacity;
 
-    // 2. Ushbu kunga allaqachon bron qilingan odamlar sonini olish
-    const existingGuestsResult = await pool.query(
-      `SELECT COALESCE(SUM(number_of_guests), 0) AS total_guests 
-       FROM bookings 
-       WHERE hall_id = $1 AND booking_date = $2 AND status != 'cancelled'`,
-      [hall_id, booking_date]
-    );
-
-    const totalGuestsBooked = parseInt(existingGuestsResult.rows[0].total_guests, 10);
     const requestedGuests = parseInt(number_of_guests, 10);
 
-    if (totalGuestsBooked + requestedGuests > capacity) {
+    if (requestedGuests > capacity) {
       return res.status(400).json({ message: `Bu to'yxonaning sig'imi ${capacity} kishiga mo'ljallangan` });
     }
 
-    // 3. Bron yaratish
+    // 2. Bron yaratish
     const result = await pool.query(
       `INSERT INTO bookings (hall_id, user_id, booking_date, number_of_guests, client_name, client_phone_number, status, created_at, updated_at)
        VALUES ($1, $2, $3, $4, $5, $6, 'upcoming', NOW(), NOW())
@@ -254,5 +256,22 @@ exports.updateProfile = async (req, res) => {
   } catch (error) {
     console.error('Update Profile error:', error);
     res.status(500).json({ error: 'Server xatosi' });
+  }
+};
+
+
+// userController.js
+exports.getBookedDates = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const result = await pool.query(
+      `SELECT booking_date, status FROM bookings WHERE hall_id = $1`,
+      [id]
+    );
+
+    res.json({ bookings: result.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Band sanalarni olishda xatolik' });
   }
 };
