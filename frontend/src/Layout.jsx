@@ -19,12 +19,13 @@ import AdminPanel from './admin/AdminPanel';
 
 import UserVenueList from './user/UserVenueList';
 import UserBookingForm from './user/UserBookingForm';
-import UserBookingList from './user/UserBookingList'; // ✅ Qo‘shilgan
+import UserBookingList from './user/UserBookingList';
 import VenueDetails from './user/VenueDetails';
 
 import Profile from './components/Profile';
 import PrivateRoute from './components/PrivateRoute';
 import EditVenue from './owner/EditVenueOwner';
+import OwnerProfileEdit from './owner/OwnerProfileEdit';
 
 function Layout() {
   const location = useLocation();
@@ -70,22 +71,23 @@ function Layout() {
 
       <div className="content" onClick={closeSidebar} style={{ flex: 1 }}>
         <Routes>
-          {/* 🔓 Ochiq sahifalar */}
+          {/* Ochiq sahifalar */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          {/* 🔒 Profile */}
+          {/* Profile */}
           <Route
             path="/profile"
             element={
-              <PrivateRoute roles={['user', 'owner', 'admin']}>
+              <PrivateRoute roles={['user']}>
                 <Profile />
               </PrivateRoute>
             }
           />
 
-          {/* 🔒 Owner panel */}
+
+          {/* Owner panel */}
           <Route
             path="/owner-panel/*"
             element={
@@ -100,9 +102,10 @@ function Layout() {
             <Route path="edit-venue/:id" element={<OwnerVenueForm />} />
             <Route path="edit-venue-form/:venueId" element={<EditVenue />} /> {/* <- bu o'zgaradi */}
             <Route path="bookings" element={<OwnerBookingList />} />
+            <Route path="profile" element={<OwnerProfileEdit />} />
           </Route>
 
-          {/* 🔒 Admin panel */}
+          {/* Admin panel */}
           <Route
             path="/admin-panel/*"
             element={
@@ -112,12 +115,12 @@ function Layout() {
             }
           />
 
-          {/* 🔓 User sahifalari */}
+          {/* User sahifalari */}
           <Route path="/user/venues" element={<UserVenueList />} />
           <Route path="/user/venues/:hallId" element={<VenueDetails />} />
           <Route path="/user/book/:id" element={<UserBookingForm />} />
 
-          {/* 🔒 User Booking ro‘yxati */}
+          {/* User Booking ro‘yxati */}
           <Route
             path="/user/bookings"
             element={

@@ -31,7 +31,7 @@ export default function SidebarOwner() {
     { to: '/owner-panel/venues', label: "To'yxonalarim", icon: <FaList /> },
     { to: '/owner-panel/add-venue', label: "To'yxona qo'shish", icon: <FaPlus /> },
     { to: '/owner-panel/bookings', label: "Bronlarni ko'rish", icon: <FaCalendarCheck /> },
-    { to: '/profile', label: 'Profil', icon: <FaUser /> },
+    { to: '/owner-panel/profile', label: 'Profil', icon: <FaUser /> },
   ];
 
   return (
@@ -56,7 +56,7 @@ export default function SidebarOwner() {
 
       <div className="logout-btnn" onClick={handleLogout}>
         <FaSignOutAlt />
-        <span>Chiqish ({username || 'Foydalanuvchi'})</span>
+        <span>Chiqish </span>
       </div>
     </nav>
   );

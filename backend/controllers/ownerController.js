@@ -225,3 +225,63 @@ exports.deleteVenue = async (req, res) => {
   }
 };
 
+
+
+exports.getOwnerProfile = async (req, res) => {
+  try {
+    const ownerId = req.user?.id; // Token orqali olingan user_id
+
+    if (!ownerId) {
+      return res.status(401).json({ message: 'Avval tizimga kiring' });
+    }
+
+    const result = await pool.query(
+      `SELECT first_name, last_name, username, phone_number 
+       FROM users 
+       WHERE user_id = $1 AND role = 'owner'`,
+      [ownerId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Owner topilmadi' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Owner profilini olishda xatolik:', error);
+    res.status(500).json({ error: 'Server xatosi' });
+  }
+};
+
+
+exports.updateOwnerProfile = async (req, res) => {
+  try {
+    const ownerId = req.user?.id;
+    const { first_name, last_name, username, phone_number } = req.body;
+
+    if (!ownerId) {
+      return res.status(401).json({ message: 'Avval tizimga kiring' });
+    }
+
+    const result = await pool.query(
+      `UPDATE users SET 
+         first_name = $1,
+         last_name = $2,
+         username = $3,
+         phone_number = $4,
+         updated_at = NOW()
+       WHERE user_id = $5 AND role = 'owner'
+       RETURNING first_name, last_name, username, phone_number`,
+      [first_name, last_name, username, phone_number, ownerId]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Owner topilmadi yoki ruxsat yo‘q' });
+    }
+
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Owner profilini yangilashda xatolik:', error);
+    res.status(500).json({ error: 'Server xatosi' });
+  }
+};

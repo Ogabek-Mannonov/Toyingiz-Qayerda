@@ -79,11 +79,19 @@ export default function VenueCalendar({ venueId }) {
       <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: 600 }}>
         {days.map(day => {
           const status = getStatusForDate(day);
+          const dateStr = day.toISOString().slice(0, 10);
+          const booking = bookings.find(b => b.booking_date === dateStr);
+
           const bgColor =
             status === 'past' ? '#d3d3d3' :
-            status === 'booked' ? '#ff6961' :
-            status === 'cancelled' ? '#fddde6' :
-            '#77dd77';
+              status === 'booked' ? '#ff6961' :
+                status === 'cancelled' ? '#fddde6' :
+                  '#77dd77';
+
+          // Title text
+          const title = booking
+            ? `Mijoz: ${booking.client_name || 'Noma’lum'}\nTelefon: ${booking.client_phone_number || 'Noma’lum'}\nStatus: ${booking.status}`
+            : day.toLocaleDateString();
 
           return (
             <div
@@ -100,12 +108,13 @@ export default function VenueCalendar({ venueId }) {
                 borderRadius: 5,
                 userSelect: 'none',
               }}
-              title={day.toLocaleDateString()}
+              title={title}
             >
               {day.getDate()}
             </div>
           );
         })}
+
       </div>
 
       {selectedDateInfo && (

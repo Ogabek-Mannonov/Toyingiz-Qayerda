@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 // Middlewarelar
 app.use(cors());
 
-// Body parser o‘rniga express ichidagi parserlardan foydalanamiz
+// Body parser o‘rniga express ichidagi parserlardan foydalanish uchun
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -33,12 +33,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/owner', ownerRoutes);
 app.use('/api/user', userRoutes);
 
-// Test uchun oddiy route
-app.get('/', (req, res) => {
-  res.send('Server ishlayapti...');
-});
 
-// Serverni ishga tushirish
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portida ishga tushdi`);
 });

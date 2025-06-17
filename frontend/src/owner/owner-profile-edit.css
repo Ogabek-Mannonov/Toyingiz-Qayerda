@@ -1,0 +1,100 @@
+/* Bosh konteyner */
+.owner-profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px 20px;
+  background-color: #f7f9fc;
+  min-height: 100vh;
+}
+
+/* Ichki konteyner */
+.owner-profile-edit-container {
+  background: #fff;
+  padding: 30px 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Sarlavha */
+.form-title {
+  text-align: center;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+/* Xatolik va muvaffaqiyatli xabarlar */
+.error-message {
+  color: #e74c3c;
+  background: #fcebea;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.success-message {
+  color: #2ecc71;
+  background: #eafaf1;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+/* Forma */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Label */
+.form-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  color: #555;
+}
+
+/* Input */
+.form-input {
+  padding: 10px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 6px;
+  font-size: 15px;
+  transition: border 0.3s;
+}
+
+.form-input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+/* Tugma */
+.save-button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+/* Yuklanmoqda */
+.loading-text {
+  font-size: 16px;
+  text-align: center;
+  color: #666;
+}
