@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../index.css';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import '../style/sidebar.css';
 
 const SidebarMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -26,34 +27,42 @@ const SidebarMenu = () => {
 
     setShowLogoutConfirm(false);
     setIsOpen(false);
-
     window.dispatchEvent(new Event('usernameChange'));
     navigate('/');
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <>
-      <button onClick={toggleSidebar} className="hamburger-btn">
-        &#9776;
-      </button>
+      <button onClick={toggleSidebar} className="hamburger-btn">&#9776;</button>
 
       <div className={`sidebar ${isOpen ? 'open' : ''}`}>
-        <button onClick={toggleSidebar} className="close-btn">&times;</button>
-        <ul>
-          <li>
-            <Link to="/" onClick={toggleSidebar}>Bosh sahifa</Link>
-          </li>
-          <li>
-            <Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link>
-          </li>
-          <li>
-            <Link to="/user/bookings" onClick={toggleSidebar}>Mening bronlarim</Link> {/* ✅ Qo‘shilgan */}
-          </li>
-          <li>
-            <Link to="/profile" onClick={toggleSidebar}>Profil</Link>
-          </li>
-        </ul>
-        <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
+        <div className="sidebar-header">
+          <button onClick={toggleSidebar} className="close-btn">&times;</button>
+        </div>
+
+        <div className="sidebar-body">
+          <ul>
+            <li className={isActive('/') ? 'active' : ''}>
+              <Link to="/" onClick={toggleSidebar}>Bosh sahifa</Link>
+            </li>
+            <li className={isActive('/user/venues') ? 'active' : ''}>
+              <Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link>
+            </li>
+            <li className={isActive('/user/bookings') ? 'active' : ''}>
+              <Link to="/user/bookings" onClick={toggleSidebar}>Mening bronlarim</Link>
+            </li>
+            <li className={isActive('/profile') ? 'active' : ''}>
+              <Link to="/profile" onClick={toggleSidebar}>Profil</Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="sidebar-footer">
+          <Link to="/support" onClick={toggleSidebar} className="support-link">Support xizmat</Link>
+          <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
+        </div>
       </div>
 
       {isOpen && <div className="overlay" onClick={toggleSidebar}></div>}
