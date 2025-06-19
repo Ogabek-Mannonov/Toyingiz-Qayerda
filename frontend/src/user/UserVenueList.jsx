@@ -41,7 +41,7 @@ export default function UserVenueList() {
 
       const res = await axios.get('http://localhost:5000/api/user/venues', { params });
 
-      // JSON string sifatida kelgan bo‘lsa, uni parse qilish
+      // JSON string sifatida kelgan bo'lsa, uni parse qilish
       const venuesWithParsedPhotos = res.data.venues.map(v => ({
         ...v,
         photos: typeof v.photos === 'string' ? JSON.parse(v.photos) : v.photos
@@ -94,7 +94,7 @@ export default function UserVenueList() {
       ) : (
         <div className="venue-cards">
           {venues.map((v) => {
-            console.log(v.photos[0]); // ✅ LOGNI TASHQARIDA QO‘YING
+            console.log(v.photos[0]); 
 
             return (
               <div
@@ -113,9 +113,9 @@ export default function UserVenueList() {
                 />
                 <div className="venue-info">
                   <h3>{v.name}</h3>
-                  <p>Sig‘im: {v.capacity}</p>
+                  <p>Sig'im: {v.capacity}</p>
                   <p>Telefon: {v.phone_number}</p>
-                  <p>Narx: {v.price_per_seat} so‘m / o‘rindiq</p>
+                  <p>Narx: {v.price_per_seat} so'm / o'rindiq</p>
                   <p>Manzil: {v.address}</p>
                 </div>
               </div>
