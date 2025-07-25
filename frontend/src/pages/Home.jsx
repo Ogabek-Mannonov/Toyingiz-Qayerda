@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import '../index.css'
-
+import "../index.css";
 
 export default function Home() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "+998", // <-- Default +998
+    email: "",
+    message: "",
+  });
+
+  const [status, setStatus] = useState("");
 
   const sliderSettings = {
     dots: true,
@@ -23,23 +29,74 @@ export default function Home() {
     {
       url: "https://images.squarespace-cdn.com/content/v1/52cd6c35e4b00bc0dba09595/1579010513202-K7Z8U0ND58F1E7DXE1V2/west-mill-exclusive-use-wedding-venue-52.JPG",
       alt: "To'y zalining gozal korinishi",
-      caption: "Eng unutilmas kuningiz uchun eng chiroyli toy zallari"
+      caption: "Eng unutilmas kuningiz uchun eng chiroyli toy zallari",
     },
     {
       url: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2VkZGluZyUyMHZlbnVlfGVufDB8fDB8fHww",
       alt: "Dekoratsiya namunasi",
-      caption: "Nafis bezaklar bilan sizning toyingiz yanada gozal"
+      caption: "Nafis bezaklar bilan sizning toyingiz yanada gozal",
     },
     {
       url: "https://www.venuereport.com/media/cache/resolve/venue_gallery_big/uploads/2016%252F05%252Ffort-denison-5.jpg",
       alt: "Bayramning baxtiyor lahzalari",
-      caption: "Baxtli onlarni biz bilan baham koring"
+      caption: "Baxtli onlarni biz bilan baham koring",
     },
   ];
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Telefon raqamga faqat raqam qo‘shish va +998 ni o‘zgartirmaslik
+  const handlePhoneChange = (e) => {
+    const input = e.target.value;
+
+    if (!input.startsWith("+998")) return; // +998 ni saqlab qolish
+
+    const onlyDigits = input.replace(/\D/g, ""); // faqat raqam
+    const phone = "+998" + onlyDigits.slice(3, 12); // +998 dan keyin 9 raqam
+
+    setFormData((prev) => ({
+      ...prev,
+      phone,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await fetch("http://localhost:5000/api/send-to-telegram", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (res.ok) {
+        setStatus("Xabar yuborildi!");
+        setFormData({
+          name: "",
+          phone: "+998",
+          email: "",
+          message: "",
+        });
+      } else {
+        setStatus("Xatolik yuz berdi.");
+      }
+    } catch (err) {
+      console.error("Xatolik:", err);
+      setStatus("Xatolik yuz berdi.");
+    }
+  };
+
   return (
     <div className="home-container">
-      
       {/* SLIDER */}
       <div className="slider-wrapper">
         <Slider {...sliderSettings}>
@@ -52,26 +109,56 @@ export default function Home() {
         </Slider>
       </div>
 
-      {/* BIZNING XIZMATLAR */}
+      {/* XIZMATLAR */}
       <section className="services-section">
         <h2>Bizning xizmatlarimiz</h2>
         <ul>
           <li>Toy zallari bron qilish</li>
-          <li>Ovqatlanish va banqet xizmati</li>
+          <li>Ovqatlanish va banket xizmati</li>
           <li>Bezash va dekoratsiya</li>
           <li>Foto va video suratga olish</li>
         </ul>
       </section>
 
-      {/* BIZ BILAN BOGLANING */}
+      {/* CONTACT FORM */}
       <section className="contact-section">
-        <h2>Biz bilan boglaning</h2>
-        <form className="contact-form">
-          <input type="text" placeholder="Ismingiz" required />
-          <input type="email" placeholder="Emailingiz" required />
-          <textarea placeholder="Xabaringiz" rows="5" required></textarea>
+        <h2>Biz bilan bog'laning</h2>
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <input
+            type="text"
+            name="name"
+            placeholder="Ismingiz"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="+998901234567"
+            value={formData.phone}
+            onChange={handlePhoneChange}
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Emailingiz"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
+          <textarea
+            name="message"
+            placeholder="Xabaringiz"
+            rows="5"
+            value={formData.message}
+            onChange={handleChange}
+            required
+          ></textarea>
           <button type="submit">Yuborish</button>
         </form>
+        {status && <p className="status-message">{status}</p>}
       </section>
     </div>
   );
