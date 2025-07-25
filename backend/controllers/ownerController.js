@@ -285,3 +285,26 @@ exports.updateOwnerProfile = async (req, res) => {
     res.status(500).json({ error: 'Server xatosi' });
   }
 };
+
+
+// Bitta to’yxonani olish
+exports.getVenueById = async (req, res) => {
+  try {
+    const ownerId = req.user.id;
+    const hallId = req.params.id;
+
+    const result = await db.query(
+      'SELECT * FROM venues WHERE hall_id = $1 AND owner_id = $2',
+      [hallId, ownerId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'To’yxona topilmadi yoki sizga tegishli emas' });
+    }
+
+    res.status(200).json({ venue: result.rows[0] });
+  } catch (err) {
+    console.error('Venue by ID xatolik:', err);
+    res.status(500).json({ message: 'Server xatosi' });
+  }
+};

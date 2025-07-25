@@ -33,4 +33,7 @@ router.delete('/venues/:id', authMiddleware, ownerController.deleteVenue);
 router.get('/profile', authMiddleware, ownerController.getOwnerProfile);
 router.put('/profile', authMiddleware, ownerController.updateOwnerProfile);
 
+// Bitta to’yxonani olish
+router.get('/venues/:id', ownerController.getVenueById);
+
 module.exports = router;
