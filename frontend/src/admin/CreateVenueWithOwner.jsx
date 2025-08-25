@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import './admin style/createVenueWithOwner.css';
+import './admin style/map.css'; // faqat map uchun qo‘shildi
 
 export default function CreateVenueWithOwner() {
   const [formData, setFormData] = useState({
@@ -16,6 +19,8 @@ export default function CreateVenueWithOwner() {
     owner_username: '',
     owner_password: '',
     owner_phone_number: '',
+    latitude: '',   // yangi
+    longitude: '',  // yangi
     images: []
   });
 
@@ -104,6 +109,8 @@ export default function CreateVenueWithOwner() {
         owner_username: '',
         owner_password: '',
         owner_phone_number: '',
+        latitude: '',
+        longitude: '',
         images: []
       });
       setFileNames([]);
@@ -111,6 +118,23 @@ export default function CreateVenueWithOwner() {
       setError(error.response?.data?.error || error.response?.data?.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
       setSuccessMessage('');
     }
+  };
+
+  // Leaflet map ichida marker qo‘yish komponenti
+  const LocationMarker = () => {
+    useMapEvents({
+      click(e) {
+        setFormData({
+          ...formData,
+          latitude: e.latlng.lat,
+          longitude: e.latlng.lng,
+        });
+      },
+    });
+
+    return formData.latitude && formData.longitude ? (
+      <Marker position={[formData.latitude, formData.longitude]} />
+    ) : null;
   };
 
   return (
@@ -143,6 +167,34 @@ export default function CreateVenueWithOwner() {
         </div>
 
         <textarea name="description" placeholder="Tavsif" value={formData.description} onChange={handleChange} rows={4} />
+
+        {/* 🌍 Map qo‘shilgan qism */}
+        <h3>Lokatsiya</h3>
+        <div className="map-container">
+          <MapContainer center={[41.2995, 69.2401]} zoom={12} className="map">
+            <TileLayer
+              attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <LocationMarker />
+          </MapContainer>
+          <div className="coords">
+            <input
+              type="text"
+              name="latitude"
+              value={formData.latitude}
+              placeholder="Kenglik (lat)"
+              readOnly
+            />
+            <input
+              type="text"
+              name="longitude"
+              value={formData.longitude}
+              placeholder="Uzunlik (lng)"
+              readOnly
+            />
+          </div>
+        </div>
 
         <label htmlFor="file-upload" className="custom-file-upload">
           <span className="upload-icon">📁</span> Rasmlar tanlang

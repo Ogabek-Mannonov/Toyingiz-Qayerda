@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
 import './venue-details.css';
 
 export default function VenueDetails() {
@@ -69,6 +71,22 @@ export default function VenueDetails() {
           <p><strong>Rayon:</strong> {venue.district_name}</p>
           <p><strong>Tavsif:</strong> {venue.description}</p>
         </div>
+
+        {/* MAP qismi */}
+        {venue.latitude && venue.longitude && (
+          <div className="venue-map">
+            <MapContainer
+              center={[venue.latitude, venue.longitude]}
+              zoom={15}
+              style={{ height: "400px", width: "100%", borderRadius: "10px", marginTop: "15px" }}
+            >
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
+              <Marker position={[venue.latitude, venue.longitude]}>
+                <Popup>{venue.name}</Popup>
+              </Marker>
+            </MapContainer>
+          </div>
+        )}
 
         <button onClick={handleBook} className="book-button">
           Bron qilish

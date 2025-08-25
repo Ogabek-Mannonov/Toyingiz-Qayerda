@@ -4,9 +4,6 @@ const bcrypt = require('bcryptjs');
 // To’yxona va ownerni birga yaratish (fayl upload middleware alohida ishlaydi)
 exports.createVenueWithOwner = async (req, res) => {
   try {
-    // console.log(req.body);  // debugging uchun
-    // console.log(req.files); // debugging uchun
-
     const {
       name,
       district_name,
@@ -20,6 +17,8 @@ exports.createVenueWithOwner = async (req, res) => {
       owner_username,
       owner_password,
       owner_phone_number,
+      latitude,       // ⬅️ yangi qo‘shildi
+      longitude       // ⬅️ yangi qo‘shildi
     } = req.body;
 
     // district_id olish
@@ -55,12 +54,12 @@ exports.createVenueWithOwner = async (req, res) => {
     );
     const owner_id = ownerResult.rows[0].user_id;
 
-    // To’yxona yaratish
+    // To’yxona yaratish (latitude / longitude qo‘shildi)
     const venueResult = await pool.query(
       `INSERT INTO wedding_halls 
-       (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id) 
-       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8) RETURNING hall_id`,
-      [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id]
+       (name, district_id, address, capacity, price_per_seat, phone_number, description, status, owner_id, latitude, longitude) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, 'pending', $8, $9, $10) RETURNING hall_id`,
+      [name, district_id, address, capacity, price_per_seat, phone_number, description, owner_id, latitude, longitude]
     );
     const hall_id = venueResult.rows[0].hall_id;
 
@@ -83,6 +82,7 @@ exports.createVenueWithOwner = async (req, res) => {
     res.status(500).json({ error: error.message || 'Server xatosi' });
   }
 };
+
 
 // To’yxonalar ro’yxatini olish (filter va sort bilan)
 exports.getVenues = async (req, res) => {
