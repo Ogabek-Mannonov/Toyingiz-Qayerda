@@ -52,7 +52,7 @@ export default function Login() {
       if (err.response && err.response.data && err.response.data.error) {
         setError(err.response.data.error);
       } else {
-        setError("Server bilan bog'lanishda xatolik yuz berdi");
+        setError("Server connection error");
       }
     }
   };
@@ -64,7 +64,7 @@ export default function Login() {
   return (
     <div className="login-container">
       <div className="form-container">
-        <h2>Kirish</h2>
+        <h2>Sign In</h2>
 
         {successMessage && <p className="success-message">{successMessage}</p>}
         {error && <p className="error-message">{error}</p>}
@@ -81,21 +81,21 @@ export default function Login() {
           <input
             type="password"
             name="password"
-            placeholder="Parol"
+            placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             required
             autoComplete="current-password"
           />
-          <button type="submit">Kirish</button>
+          <button type="submit">Sign In</button>
         </form>
 
         <button onClick={goToHome} className="home-btn">
-          Asosiy sahifaga o'tish
+          Back to Home
         </button>
 
         <p className="switch-auth">
-          Hisobingiz yo'qmi? <Link to="/signup">Ro'yxatdan o'tish</Link>
+          Don't have an account? <Link to="/signup">Sign Up</Link>
         </p>
       </div>
     </div>

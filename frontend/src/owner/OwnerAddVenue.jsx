@@ -25,7 +25,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         const res = await axios.get('/api/admin/districts'); // kerakli endpoint
         setDistricts(res.data.districts || []);
       } catch (err) {
-        console.error('Rayonlarni olishda xatolik:', err);
+        console.error('Error fetching districts:', err);
       }
     };
 
@@ -45,7 +45,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         });
         setFormData(res.data.venue);
       } catch (err) {
-        setError('Ma’lumotlarni olishda xatolik yuz berdi');
+        setError('Error fetching data');
       } finally {
         setLoading(false);
       }
@@ -97,7 +97,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
             'Content-Type': 'multipart/form-data',
           }
         });
-        setSuccess('To’yxona ma’lumotlari yangilandi');
+        setSuccess('Venue updated successfully');
       } else {
         // Yangi qo‘shish (POST)
         await axios.post('/api/owner/venues', data, {
@@ -106,7 +106,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
             'Content-Type': 'multipart/form-data',
           }
         });
-        setSuccess('To’yxona muvaffaqiyatli qo‘shildi');
+        setSuccess('Venue added successfully');
 
         // Formni tozalash
         setFormData({
@@ -124,7 +124,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
       if (onSuccess) onSuccess();
 
     } catch (err) {
-      setError('Amal bajarishda xatolik yuz berdi');
+      setError('An error occurred');
     }
   };
 
@@ -132,7 +132,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
 
   return (
     <div className="owner-venue-form-container">
-      <h2>{venueId ? 'To’yxonani Tahrirlash' : 'Yangi To’yxona Qo‘shish'}</h2>
+      <h2>{venueId ? 'Edit Venue' : 'Add New Venue'}</h2>
       {error && <p className="error-text">{error}</p>}
       {success && <p className="success-text">{success}</p>}
 
@@ -151,7 +151,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
           onChange={handleChange}
           required
         >
-          <option value="">Rayonni tanlang</option>
+          <option value="">Select District</option>
           {districts.map(d => (
             <option key={d.district_id} value={d.district_id}>
               {d.name}
@@ -169,7 +169,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         <input
           name="capacity"
           type="number"
-          placeholder="Sig‘imi"
+          placeholder="Capacity"
           value={formData.capacity}
           onChange={handleChange}
           min="1"
@@ -178,7 +178,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         <input
           name="price_per_seat"
           type="number"
-          placeholder="O‘rindiq narxi"
+          placeholder="Price per Seat"
           value={formData.price_per_seat}
           onChange={handleChange}
           min="0"
@@ -193,14 +193,14 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         />
         <textarea
           name="description"
-          placeholder="Qo‘shimcha ma’lumot"
+          placeholder="Additional Description"
           value={formData.description}
           onChange={handleChange}
           rows="4"
         />
 
         <label htmlFor="file-upload" className="image-upload-wrapper">
-          <span className="image-upload-label">📁 Rasm(lar)ni tanlang yoki bu yerga bosing</span>
+          <span className="image-upload-label">📁 Choose image(s) or click here</span>
           <input
             id="file-upload"
             type="file"
@@ -210,13 +210,13 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
             onChange={handleFileChange}
           />
           {images.length > 0 && (
-            <div className="image-preview-count">{images.length} ta rasm tanlangan</div>
+            <div className="image-preview-count">{images.length} images selected</div>
           )}
         </label>
 
 
         <button type="submit">
-          {venueId ? 'Yangilash' : 'Qo‘shish'}
+          {venueId ? 'Update Venue' : 'Add Venue'}
         </button>
       </form>
     </div>

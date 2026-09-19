@@ -36,14 +36,14 @@ export default function UserBookingForm() {
         setBookedDates(dates);
       } catch (err) {
         console.error(err);
-        setError('Band qilingan sanalarni olishda xatolik yuz berdi');
+        setError('Failed to load booked dates');
       }
     };
 
     if (storedToken) {
       fetchBookedDates();
     } else {
-      setError('Token topilmadi. Iltimos, qayta login qiling.');
+      setError('Token not found. Please log in again.');
     }
   }, [hallId]);
 
@@ -62,7 +62,7 @@ export default function UserBookingForm() {
     }
 
     if (bookedDates.includes(formData.booking_date)) {
-      setError('Tanlangan sana allaqachon band qilingan.');
+      setError('The selected date is already booked.');
       return;
     }
 
@@ -73,7 +73,7 @@ export default function UserBookingForm() {
         { headers: { Authorization: 'Bearer ' + token } }
       );
 
-      setSuccess('Bron muvaffaqiyatli yaratildi!');
+      setSuccess('Booking created successfully!');
       setFormData({
         booking_date: '',
         number_of_guests: '',
@@ -81,7 +81,7 @@ export default function UserBookingForm() {
         client_phone_number: '',
       });
     } catch (err) {
-      setError(err.response?.data?.message || 'Bron qilishda xatolik yuz berdi');
+      setError(err.response?.data?.message || 'Failed to create booking');
     }
   };
 
@@ -104,12 +104,12 @@ export default function UserBookingForm() {
 
   return (
     <div className='get-bron'>
-      <h3>Bron qilish</h3>
+      <h3>Book Venue</h3>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
 
       <div>
-        <p><strong>Band qilingan sanalar:</strong></p>
+        <p><strong>Booked Dates:</strong></p>
         <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: 500 }}>
           {days.map(day => {
             const status = getStatusForDate(day);
@@ -121,16 +121,25 @@ export default function UserBookingForm() {
               <div
                 key={day.toISOString()}
                 title={day.toISOString().slice(0, 10)}
+                onClick={() => {
+                  if (status === 'available') {
+                    setFormData({ ...formData, booking_date: day.toISOString().slice(0, 10) });
+                    setError('');
+                  }
+                }}
                 style={{
                   width: 40,
                   height: 40,
                   margin: 3,
                   textAlign: 'center',
                   lineHeight: '40px',
-                  backgroundColor: bgColor,
+                  backgroundColor: formData.booking_date === day.toISOString().slice(0, 10) ? '#3b82f6' : bgColor,
+                  color: formData.booking_date === day.toISOString().slice(0, 10) ? 'white' : 'black',
                   borderRadius: 5,
-                  cursor: 'default',
+                  cursor: status === 'available' ? 'pointer' : 'not-allowed',
                   userSelect: 'none',
+                  boxShadow: formData.booking_date === day.toISOString().slice(0, 10) ? '0 4px 8px rgba(59,130,246,0.4)' : 'none',
+                  transition: 'all 0.2s ease'
                 }}
               >
                 {day.getDate()}
@@ -187,7 +196,7 @@ export default function UserBookingForm() {
           />
         </label>
         <br />
-        <button type="submit">Bron qilish</button>
+        <button type="submit">Book Venue</button>
       </form>
     </div>
   );

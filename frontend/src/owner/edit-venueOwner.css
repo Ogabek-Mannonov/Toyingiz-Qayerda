@@ -1,34 +1,47 @@
 /* src/pages/owner/edit-venue-owner.css */
 
 .edit-owner-container {
-  max-width: 600px;
+  max-width: 650px;
   margin: 40px auto;
-  padding: 20px;
-  background-color: #fefefe;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.08);
+  font-family: 'Poppins', sans-serif;
 }
 
 .edit-owner-title {
   text-align: center;
-  margin-bottom: 20px;
-  color: #222;
-  font-size: 24px;
+  margin-bottom: 30px;
+  color: #1e40af;
+  font-size: 26px;
+  font-weight: 700;
 }
 
-.edit-owner-loading,
-.edit-owner-error,
-.edit-owner-success {
+.edit-owner-loading {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #64748b;
 }
 
 .edit-owner-error {
-  color: red;
+  color: #ef4444;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+  background-color: #fef2f2;
+  padding: 12px;
+  border-radius: 8px;
 }
 
 .edit-owner-success {
-  color: green;
+  color: #10b981;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+  background-color: #ecfdf5;
+  padding: 12px;
+  border-radius: 8px;
 }
 
 .edit-owner-form {
@@ -38,15 +51,27 @@
 }
 
 .edit-owner-label {
-  font-weight: bold;
+  font-weight: 600;
+  color: #334155;
+  margin-bottom: -5px;
 }
 
 .edit-owner-form input,
 .edit-owner-form textarea {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 14px 18px;
+  border: 2px solid #bfdbfe;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  color: #334155;
+  transition: all 0.3s ease;
+}
+
+.edit-owner-form input:focus,
+.edit-owner-form textarea:focus {
+  border-color: #3b82f6;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .edit-owner-form textarea {
@@ -54,17 +79,43 @@
   min-height: 100px;
 }
 
+.edit-owner-form input[type="file"] {
+  border: 2px dashed #bfdbfe;
+  padding: 20px;
+  background-color: #f8fafc;
+  cursor: pointer;
+  text-align: center;
+}
+
+.edit-owner-form input[type="file"]:hover {
+  background-color: #eff6ff;
+  border-color: #3b82f6;
+}
+
 .edit-owner-button {
-  background-color: #007bff;
+  padding: 16px;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
   border: none;
-  padding: 10px;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  margin-top: 15px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.edit-owner-button:hover:not(:disabled) {
+  background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+  transform: translateY(-2px);
 }
 
 .edit-owner-button:disabled {
-  background-color: #aaa;
+  background: #cbd5e1;
+  color: #64748b;
   cursor: not-allowed;
+  box-shadow: none;
 }

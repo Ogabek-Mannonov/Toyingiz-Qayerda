@@ -19,7 +19,7 @@
 }
 
 .header.scrolled {
-  background-color: #f2e8dc;
+  background-color: #eff6ff;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
 }
 
@@ -33,9 +33,9 @@
 }
 
 .name-box h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2.5rem;
-  color: #7f5a32;
+  color: #1e40af;
   cursor: pointer;
   font-weight: 700;
   letter-spacing: 1.5px;
@@ -44,7 +44,7 @@
 }
 
 .name-box h3:hover {
-  color: #b57e4e;
+  color: #3b82f6;
 }
 
 .right-box {
@@ -60,7 +60,7 @@
   font-size: 1.8rem;
   background: none;
   border: none;
-  color: #7f5a32;
+  color: #1e40af;
   cursor: pointer;
   padding: 6px 12px;
   border-radius: 6px;
@@ -69,7 +69,7 @@
 
 .hamburger-btn:hover,
 .close-btn:hover {
-  background-color: rgba(127, 90, 50, 0.15);
+  background-color: rgba(30, 64, 175, 0.15);
 }
 
 /* ===== SIGN IN BUTTON ===== */
@@ -78,19 +78,19 @@
   width: 170px;
   height: 48px;
   border-radius: 40px;
-  background-color: #b57e4e;
+  background-color: #3b82f6;
   border: none;
   font-weight: 700;
   font-size: 1.1rem;
   color: #fff;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(181, 126, 78, 0.5);
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.5);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .signin-btn:hover {
-  background-color: #7f5a32;
-  box-shadow: 0 6px 15px rgba(127, 90, 50, 0.7);
+  background-color: #1e40af;
+  box-shadow: 0 6px 15px rgba(30, 64, 175, 0.7);
 }
 
 /* ===== HOME PAGE ===== */
@@ -136,9 +136,9 @@
 }
 
 .services-section h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2.8rem;
-  color: #7f5a32;
+  color: #1e40af;
   margin-bottom: 30px;
 }
 
@@ -148,14 +148,14 @@
   justify-content: center;
   gap: 40px;
   font-weight: 600;
-  color: #6a4a1a;
+  color: #475569;
 }
 
 .services-section ul li {
-  background-color: #f2e8dc;
+  background-color: #eff6ff;
   padding: 15px 35px;
   border-radius: 40px;
-  box-shadow: 0 6px 15px rgba(181, 126, 78, 0.2);
+  box-shadow: 0 6px 15px rgba(59, 130, 246, 0.2);
   cursor: default;
 }
 
@@ -169,9 +169,9 @@
 }
 
 .contact-section h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2.6rem;
-  color: #7f5a32;
+  color: #1e40af;
   margin-bottom: 30px;
 }
 
@@ -185,7 +185,7 @@
 .contact-form textarea {
   padding: 14px 18px;
   font-size: 1.1rem;
-  border: 2px solid #d2b97d;
+  border: 2px solid #bfdbfe;
   border-radius: 15px;
   resize: none;
   transition: border-color 0.3s ease;
@@ -193,13 +193,13 @@
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-  border-color: #7f5a32;
+  border-color: #1e40af;
   outline: none;
-  box-shadow: 0 0 8px rgba(127, 90, 50, 0.5);
+  box-shadow: 0 0 8px rgba(30, 64, 175, 0.5);
 }
 
 .contact-form button {
-  background-color: #b57e4e;
+  background-color: #3b82f6;
   color: white;
   padding: 16px 0;
   font-size: 1.25rem;
@@ -207,14 +207,14 @@
   border-radius: 50px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(181, 126, 78, 0.5);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 20px;
 }
 
 .contact-form button:hover {
-  background-color: #7f5a32;
-  box-shadow: 0 10px 35px rgba(127, 90, 50, 0.7);
+  background-color: #1e40af;
+  box-shadow: 0 10px 35px rgba(30, 64, 175, 0.7);
 }
 
 /* Footer */
@@ -229,7 +229,7 @@
   padding: 1rem;
   z-index: 100;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
-  color: #7f5a32;
+  color: #1e40af;
 }
 
 .footer .social-icons {
@@ -240,14 +240,14 @@
 }
 
 .footer .social-icons a {
-  color: #7f5a32;
+  color: #1e40af;
   text-decoration: none;
   font-weight: 700;
   transition: color 0.3s ease;
 }
 
 .footer .social-icons a:hover {
-  color: #b57e4e;
+  color: #3b82f6;
 }
 
 /* RESPONSIVE */
@@ -282,10 +282,10 @@
 }
 
 .toyxonalar-get h2 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2.8rem;
   font-weight: 700;
-  color: #7f5a32;
+  color: #1e40af;
   margin-bottom: 40px;
   user-select: none;
 }
@@ -296,15 +296,15 @@ select {
   padding: 14px 16px;
   font-size: 1rem;
   border-radius: 18px;
-  border: 2px solid #d2b97d;
+  border: 2px solid #bfdbfe;
   margin-right: 18px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 input[type="text"]:focus,
 select:focus {
-  border-color: #7f5a32;
-  box-shadow: 0 0 8px rgba(127, 90, 50, 0.5);
+  border-color: #1e40af;
+  box-shadow: 0 0 8px rgba(30, 64, 175, 0.5);
   outline: none;
 }
 
@@ -316,27 +316,27 @@ select:focus {
 }
 
 .venue-card {
-  background-color: #fff8f0;
+  background-color: #f8fafc;
   width: 320px;
   border-radius: 30px;
   overflow: hidden;
-  box-shadow: 0 12px 32px rgba(181, 126, 78, 0.3);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.3);
   text-decoration: none;
-  color: #6a4a1a;
+  color: #475569;
   transition: box-shadow 0.35s ease;
   margin-bottom: 30px;
   margin-top: 30px;
 }
 
 .venue-card:hover {
-  box-shadow: 0 20px 50px rgba(127, 90, 50, 0.5);
+  box-shadow: 0 20px 50px rgba(30, 64, 175, 0.5);
 }
 
 .venue-card img {
   width: 100%;
   height: 210px;
   object-fit: cover;
-  border-bottom: 4px solid #b57e4e;
+  border-bottom: 4px solid #3b82f6;
 }
 
 .venue-info {
@@ -344,17 +344,17 @@ select:focus {
 }
 
 .venue-info h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 14px;
-  color: #7f5a32;
+  color: #1e40af;
 }
 
 .venue-info p {
   font-size: 1rem;
   margin: 8px 0;
-  color: #6a4a1a;
+  color: #475569;
   line-height: 1.4;
 }
 
@@ -363,17 +363,17 @@ select:focus {
 .get-bron {
   max-width: 460px;
   margin: 120px auto 60px;
-  background: #fff8f0;
+  background: #f8fafc;
   padding: 40px 40px;
   border-radius: 30px;
-  box-shadow: 0 12px 32px rgba(181, 126, 78, 0.2);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.2);
 }
 
 .get-bron h3 {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Poppins', sans-serif;
   font-size: 2rem;
   margin-bottom: 30px;
-  color: #7f5a32;
+  color: #1e40af;
   user-select: none;
 }
 
@@ -381,7 +381,7 @@ select:focus {
   display: block;
   margin-bottom: 14px;
   font-weight: 600;
-  color: #6a4a1a;
+  color: #475569;
   font-size: 1rem;
 }
 
@@ -391,36 +391,36 @@ select:focus {
   width: 100%;
   padding: 14px 16px;
   border-radius: 18px;
-  border: 2px solid #d2b97d;
+  border: 2px solid #bfdbfe;
   font-size: 1.1rem;
   margin-bottom: 24px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .get-bron input:focus {
-  border-color: #7f5a32;
-  box-shadow: 0 0 8px rgba(127, 90, 50, 0.5);
+  border-color: #1e40af;
+  box-shadow: 0 0 8px rgba(30, 64, 175, 0.5);
   outline: none;
 }
 
 .get-bron button {
   width: 100%;
   padding: 16px 0;
-  background-color: #b57e4e;
+  background-color: #3b82f6;
   color: white;
   font-size: 1.25rem;
   font-weight: 700;
   border-radius: 50px;
   border: none;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(181, 126, 78, 0.5);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.5);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   user-select: none;
 }
 
 .get-bron button:hover {
-  background-color: #7f5a32;
-  box-shadow: 0 10px 35px rgba(127, 90, 50, 0.7);
+  background-color: #1e40af;
+  box-shadow: 0 10px 35px rgba(30, 64, 175, 0.7);
 }
 
 /* ===== RESPONSIVE ===== */
@@ -553,14 +553,14 @@ select:focus {
 }
 
 .btn-confirm {
-  background-color: #b85c38;
+  background-color: #2563eb;
   color: white;
-  box-shadow: 0 4px 12px rgba(184, 92, 56, 0.7);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.7);
 }
 
 .btn-confirm:hover {
-  background-color: #9a4a2c;
-  box-shadow: 0 6px 18px rgba(154, 74, 44, 0.9);
+  background-color: #1d4ed8;
+  box-shadow: 0 6px 18px rgba(29, 78, 216, 0.9);
 }
 
 

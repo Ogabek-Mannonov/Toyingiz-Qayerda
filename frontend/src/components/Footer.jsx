@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <p className="footer-title">© 2025 To'yxona. Barcha huquqlar himoyalangan.</p>
+        <p className="footer-title">© 2025 Venue. All rights reserved.</p>
         <div className="social-icons">
           <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
           <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>

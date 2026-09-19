@@ -115,7 +115,7 @@ export default function UserVenueList() {
                   <h3>{v.name}</h3>
                   <p>Capacity: {v.capacity}</p>
                   <p>Phone: {v.phone_number}</p>
-                  <p>Price: {v.price_per_seat} UZS / seat</p>
+                  <p>Price: ${v.price_per_seat} / seat</p>
                   <p>Address: {v.address}</p>
                 </div>
               </div>

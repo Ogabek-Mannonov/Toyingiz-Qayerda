@@ -26,7 +26,7 @@ export default function OwnerVenueList() {
   };
 
   const handleDelete = async (venueId) => {
-    const confirm = window.confirm("To'yxonani o'chirishni istaysizmi?");
+    const confirm = window.confirm("Are you sure you want to delete this venue?");
     if (!confirm) return;
 
     try {
@@ -36,7 +36,7 @@ export default function OwnerVenueList() {
       });
       fetchVenues();
     } catch (err) {
-      alert("To'yxonani o'chirishda xatolik yuz berdi");
+      alert("Error deleting venue");
     }
   };
 
@@ -50,20 +50,23 @@ export default function OwnerVenueList() {
 
   return (
     <div className="venue-list-container">
-      <h2 className="venue-title">Sizning Venues</h2>
+      <div className="list-header">
+        <h2 className="venue-title">My Venues</h2>
+      </div>
 
-      {loading && <p>Loading...</p>}
+      {loading && <p className="loading-text">Loading...</p>}
       {error && <p className="error">{error}</p>}
-      {!loading && venues.length === 0 && <p>To'yxona topilmadi</p>}
+      {!loading && venues.length === 0 && <p className="empty-text">No venues found.</p>}
 
       {!loading && venues.length > 0 && (
-        <table className="venue-table">
+        <div className="table-wrapper">
+          <table className="venue-table">
           <thead>
             <tr>
-              <th>Nomi</th>
-              <th>Addressi</th>
-              <th>Capacityi</th>
-              <th>Pricei</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Capacity</th>
+              <th>Price (per seat)</th>
               <th>Phone</th>
               <th>Status</th>
               <th>Actions</th>
@@ -75,17 +78,18 @@ export default function OwnerVenueList() {
                 <td>{v.name}</td>
                 <td>{v.address}</td>
                 <td>{v.capacity}</td>
-                <td>{v.price_per_seat} so'm</td>
+                <td>${v.price_per_seat}</td>
                 <td>{v.phone_number}</td>
                 <td>{v.status}</td>
                 <td>
-                  <button onClick={() => handleEdit(v.hall_id)} className="edit-btn">Tahrirlash</button>
-                  <button onClick={() => handleDelete(v.hall_id)} className="delete-btn">O'chirish</button>
+                  <button onClick={() => handleEdit(v.hall_id)} className="edit-btn">Edit</button>
+                  <button onClick={() => handleDelete(v.hall_id)} className="delete-btn">Delete</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       )}
     </div>
   );

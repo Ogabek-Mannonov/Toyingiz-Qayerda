@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import './ownerVenueList.css'; // Reuse table styles
 
 export default function OwnerBookingList() {
   const [bookings, setBookings] = useState([]);
@@ -23,7 +24,7 @@ export default function OwnerBookingList() {
   };
 
   const cancelBooking = async (bookingId) => {
-    if (!window.confirm('Are you sure you want to cancel this booking??')) return;
+    if (!window.confirm('Are you sure you want to cancel this booking?')) return;
 
     try {
       const token = localStorage.getItem('token');
@@ -41,29 +42,52 @@ export default function OwnerBookingList() {
   }, []);
 
   return (
-    <div style={{ marginTop: '40px' }}>
-      <h2>Sizning Bookingsingiz</h2>
-      {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {!loading && bookings.length === 0 && <p>Bron topilmadi</p>}
+    <div className="venue-list-container">
+      <div className="list-header">
+        <h2 className="venue-title">My Bookings</h2>
+      </div>
 
-      <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
-        {bookings.map(b => (
-          <li key={b.booking_id} style={{ marginBottom: '15px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
-            <strong>{b.venue_name}</strong><br />
-            Date: {new Date(b.booking_date).toLocaleDateString()}<br />
-            Holat: <em>{b.status}</em>
-            {b.status !== 'cancelled' && (
-              <button
-                onClick={() => cancelBooking(b.booking_id)}
-                style={{ marginLeft: '15px', padding: '5px 10px', cursor: 'pointer' }}
-              >
-                Cancel
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+      {loading && <p className="loading-text">Loading...</p>}
+      {error && <p className="error">{error}</p>}
+      {!loading && bookings.length === 0 && <p className="empty-text">No bookings found.</p>}
+
+      {!loading && bookings.length > 0 && (
+        <div className="table-wrapper">
+          <table className="venue-table">
+            <thead>
+              <tr>
+                <th>Venue Name</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {bookings.map(b => (
+                <tr key={b.booking_id}>
+                  <td>{b.venue_name}</td>
+                  <td>{new Date(b.booking_date).toLocaleDateString()}</td>
+                  <td>
+                    <span className={`status-badge ${b.status}`}>
+                      {b.status}
+                    </span>
+                  </td>
+                  <td>
+                    {b.status !== 'cancelled' && (
+                      <button
+                        onClick={() => cancelBooking(b.booking_id)}
+                        className="delete-btn"
+                      >
+                        Cancel
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }

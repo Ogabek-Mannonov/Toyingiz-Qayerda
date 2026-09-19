@@ -52,7 +52,7 @@ export default function Header() {
         <SidebarMenu />
       </div>
       <div className="name-box">
-        <h3>To'yingiz Qayerda ?</h3>
+        <h3>Where is your wedding?</h3>
       </div>
       <div className="right-box">
         {username ? (

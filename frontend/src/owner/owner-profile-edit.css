@@ -1,100 +1,104 @@
-/* Bosh konteyner */
 .owner-profile-container {
+  padding: 40px;
   display: flex;
   justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  background-color: #f7f9fc;
-  min-height: 100vh;
+  align-items: flex-start;
+  font-family: 'Poppins', sans-serif;
 }
 
-/* Ichki konteyner */
 .owner-profile-edit-container {
-  background: #fff;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.08);
   width: 100%;
   max-width: 500px;
+  border: 1px solid #e2e8f0;
 }
 
-/* Sarlavha */
 .form-title {
   text-align: center;
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 25px;
+  font-size: 26px;
+  color: #1e40af;
+  font-weight: 700;
+  margin-bottom: 30px;
+  margin-top: 0;
 }
 
-/* Xatolik va muvaffaqiyatli xabarlar */
 .error-message {
-  color: #e74c3c;
-  background: #fcebea;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-size: 14px;
+  color: #ef4444;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+  background-color: #fef2f2;
+  padding: 12px;
+  border-radius: 8px;
 }
 
 .success-message {
-  color: #2ecc71;
-  background: #eafaf1;
-  padding: 10px;
-  border-radius: 6px;
-  margin-bottom: 15px;
-  font-size: 14px;
+  color: #10b981;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+  background-color: #ecfdf5;
+  padding: 12px;
+  border-radius: 8px;
 }
 
-/* Forma */
 .profile-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
 }
 
-/* Label */
 .form-label {
   display: flex;
   flex-direction: column;
-  font-size: 15px;
-  color: #555;
+  font-weight: 600;
+  color: #334155;
+  font-size: 14px;
 }
 
-/* Input */
 .form-input {
-  padding: 10px 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 6px;
+  padding: 14px 18px;
+  border: 2px solid #bfdbfe;
+  border-radius: 12px;
   font-size: 15px;
-  transition: border 0.3s;
+  font-family: 'Poppins', sans-serif;
+  color: #334155;
+  transition: all 0.3s ease;
+  margin-top: 8px;
 }
 
 .form-input:focus {
-  border-color: #007bff;
+  border-color: #3b82f6;
   outline: none;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
-/* Tugma */
 .save-button {
-  margin-top: 10px;
-  background-color: #007bff;
+  padding: 16px;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
   border: none;
-  padding: 12px;
+  border-radius: 12px;
   font-size: 16px;
-  border-radius: 8px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  margin-top: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .save-button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+  transform: translateY(-2px);
 }
 
-/* Yuklanmoqda */
 .loading-text {
   font-size: 16px;
   text-align: center;
-  color: #666;
+  color: #64748b;
 }

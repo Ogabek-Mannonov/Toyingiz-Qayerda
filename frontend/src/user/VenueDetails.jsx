@@ -19,7 +19,7 @@ export default function VenueDetails() {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        setError("Token topilmadi. Iltimos, qaytadan tizimga kiring.");
+        setError("Token not found. Please log in again.");
         return;
       }
 
@@ -32,7 +32,7 @@ export default function VenueDetails() {
       setVenue(res.data.venue);
     } catch (err) {
       console.error(err);
-      setError("To’yxona ma’lumotlarini olishda xatolik yuz berdi");
+      setError("Failed to load venue details");
     }
   };
 
@@ -56,7 +56,7 @@ export default function VenueDetails() {
             />
           ))
         ) : (
-          <p>Rasmlar mavjud emas</p>
+          <p>No images available</p>
         )}
       </div>
 
@@ -64,12 +64,12 @@ export default function VenueDetails() {
         <h2 className="venue-title">{venue.name}</h2>
 
         <div className="venue-info">
-          <p><strong>Capacityi:</strong> {venue.capacity} kishi</p>
-          <p><strong>Pricei:</strong> {venue.price_per_seat.toLocaleString()} so‘m / o‘rindiq</p>
+          <p><strong>Capacity:</strong> {venue.capacity} people</p>
+          <p><strong>Price:</strong> ${venue.price_per_seat.toLocaleString()} / seat</p>
           <p><strong>Phone:</strong> {venue.phone_number}</p>
           <p><strong>Address:</strong> {venue.address}</p>
-          <p><strong>Rayon:</strong> {venue.district_name}</p>
-          <p><strong>Tavsif:</strong> {venue.description}</p>
+          <p><strong>District:</strong> {venue.district_name}</p>
+          <p><strong>Description:</strong> {venue.description}</p>
         </div>
 
         {/* MAP qismi */}
@@ -89,7 +89,7 @@ export default function VenueDetails() {
         )}
 
         <button onClick={handleBook} className="book-button">
-          Bron qilish
+          Book Now
         </button>
       </div>
     </div>

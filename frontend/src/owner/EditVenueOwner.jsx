@@ -44,7 +44,7 @@ export default function EditVenue() {
         });
       } catch (err) {
         console.error(err);
-        setError("Ma'lumotlarni yuklashda xatolik yuz berdi");
+        setError("Error fetching data");
       } finally {
         setLoading(false);
       }
@@ -86,11 +86,11 @@ export default function EditVenue() {
         }
       });
 
-      setSuccess("To’yxona muvaffaqiyatli yangilandi!");
+      setSuccess("Venue updated successfully!");
       setTimeout(() => navigate('/owner-panel/venues'), 1500);
     } catch (err) {
       console.error(err);
-      setError("Yangilashda xatolik yuz berdi");
+      setError("Error updating venue");
     } finally {
       setLoading(false);
     }
@@ -98,14 +98,14 @@ export default function EditVenue() {
 
   return (
     <div className="edit-owner-container">
-      <h2 className="edit-owner-title">To’yxonani Tahrirlash</h2>
+      <h2 className="edit-owner-title">Edit Venue</h2>
 
       {loading && <p className="edit-owner-loading">Loading...</p>}
       {error && <p className="edit-owner-error">{error}</p>}
       {success && <p className="edit-owner-success">{success}</p>}
 
       <form onSubmit={handleSubmit} className="edit-owner-form" encType="multipart/form-data">
-        <label className="edit-owner-label">Nomi:</label>
+        <label className="edit-owner-label">Venue Name:</label>
         <input
           type="text"
           name="name"
@@ -114,7 +114,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Hududi (district_id):</label>
+        <label className="edit-owner-label">District ID:</label>
         <input
           type="text"
           name="district_id"
@@ -132,7 +132,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Capacityi:</label>
+        <label className="edit-owner-label">Capacity:</label>
         <input
           type="number"
           name="capacity"
@@ -141,7 +141,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Pricei (bir o‘rindiqqa):</label>
+        <label className="edit-owner-label">Price (per seat):</label>
         <input
           type="number"
           name="price_per_seat"
@@ -150,7 +150,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Phone Numberi:</label>
+        <label className="edit-owner-label">Phone Number:</label>
         <input
           type="text"
           name="phone_number"
@@ -159,14 +159,14 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Tavsifi:</label>
+        <label className="edit-owner-label">Description:</label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
         />
 
-        <label className="edit-owner-label">Yangi rasmlar (ixtiyoriy):</label>
+        <label className="edit-owner-label">New Images (optional):</label>
         <input
           type="file"
           multiple
@@ -175,7 +175,7 @@ export default function EditVenue() {
         />
 
         <button type="submit" className="edit-owner-button" disabled={loading}>
-          Yangilash
+          Update Venue
         </button>
       </form>
     </div>

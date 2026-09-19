@@ -27,11 +27,11 @@ export default function SidebarOwner() {
   };
 
   const links = [
-    { to: '/owner-panel', label: 'Bosh sahifa', icon: <FaHome /> },
-    { to: '/owner-panel/venues', label: "Venuesim", icon: <FaList /> },
-    { to: '/owner-panel/add-venue', label: "To'yxona qo'shish", icon: <FaPlus /> },
-    { to: '/owner-panel/bookings', label: "Bookingsni ko'rish", icon: <FaCalendarCheck /> },
-    { to: '/owner-panel/profile', label: 'Profil', icon: <FaUser /> },
+    { to: '/owner-panel', label: 'Home', icon: <FaHome /> },
+    { to: '/owner-panel/venues', label: "My Venues", icon: <FaList /> },
+    { to: '/owner-panel/add-venue', label: "Add Venue", icon: <FaPlus /> },
+    { to: '/owner-panel/bookings', label: "View Bookings", icon: <FaCalendarCheck /> },
+    { to: '/owner-panel/profile', label: 'Profile', icon: <FaUser /> },
   ];
 
   return (

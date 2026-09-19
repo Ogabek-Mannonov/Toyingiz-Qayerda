@@ -1,12 +1,13 @@
 .venue-details-card {
   max-width: 900px;
   margin: 2rem auto;
-  background: #fff;
+  background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 30px rgba(59, 130, 246, 0.1);
   overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin-top: 100px;
+  margin-bottom: 120px; /* Precents overlap with footer */
 }
 
 .venue-images {
@@ -39,14 +40,14 @@
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1.2rem;
-  color: #2c3e50;
+  color: #1e40af;
   text-align: center;
 }
 
 .venue-info p {
   font-size: 1.1rem;
   margin: 0.5rem 0;
-  color: #555;
+  color: #475569;
 }
 
 .book-button {
@@ -54,17 +55,22 @@
   display: block;
   width: 100%;
   padding: 0.9rem;
-  font-size: 1.1rem;
-  background: #27ae60;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  font-family: 'Poppins', sans-serif;
 }
 
 .book-button:hover {
-  background: #1e8449;
+  background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.6);
+  transform: translateY(-2px);
 }
 
 .loading, .error {

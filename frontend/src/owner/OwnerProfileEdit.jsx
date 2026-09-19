@@ -23,7 +23,7 @@ export default function OwnerProfileEdit() {
         });
         setFormData(response.data);
       } catch (err) {
-        setError('Profil ma’lumotlarini olishda xatolik yuz berdi');
+        setError('Error fetching profile data');
       } finally {
         setLoading(false);
       }
@@ -47,11 +47,11 @@ export default function OwnerProfileEdit() {
       await axios.put('/api/owner/profile', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setSuccess('Profil muvaffaqiyatli yangilandi');
+      setSuccess('Profile updated successfully');
       localStorage.setItem('username', formData.username);
       window.dispatchEvent(new Event('usernameChanged'));
     } catch (err) {
-      setError('Profilni yangilashda xatolik yuz berdi');
+      setError('Error updating profile');
     }
   };
 
@@ -60,7 +60,7 @@ export default function OwnerProfileEdit() {
   return (
     <div className="owner-profile-container">
       <div className="owner-profile-edit-container">
-        <h2 className="form-title">Profilni tahrirlash</h2>
+        <h2 className="form-title">Edit Profile</h2>
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
 
@@ -112,7 +112,7 @@ export default function OwnerProfileEdit() {
             />
           </label>
 
-          <button type="submit" className="save-button">Saqlash</button>
+          <button type="submit" className="save-button">Save Changes</button>
         </form>
       </div>
     </div>

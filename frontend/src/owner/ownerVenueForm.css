@@ -1,82 +1,102 @@
 .owner-venue-form-container {
-  max-width: 600px;
-  margin: 15px auto;
-  padding: 18px;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 650px;
+  margin: 40px auto;
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.08);
+  font-family: 'Poppins', sans-serif;
 }
 
 .owner-venue-form-container h2 {
-  margin-bottom: 20px;
-  font-size: 22px;
-  color: #333;
+  margin-bottom: 30px;
+  font-size: 26px;
+  color: #1e40af;
   text-align: center;
+  font-weight: 700;
 }
 
 .owner-venue-form {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 20px;
 }
 
 .owner-venue-form input,
 .owner-venue-form select,
 .owner-venue-form textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 14px 18px;
+  border: 2px solid #bfdbfe;
+  border-radius: 12px;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  color: #334155;
+  transition: all 0.3s ease;
 }
 
 .owner-venue-form input:focus,
 .owner-venue-form select:focus,
 .owner-venue-form textarea:focus {
-  border-color: #007bff;
+  border-color: #3b82f6;
   outline: none;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
 }
 
 .owner-venue-form button {
-  padding: 12px;
-  background-color: #007bff;
+  padding: 16px;
+  background: linear-gradient(90deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  margin-top: 10px;
+  font-family: 'Poppins', sans-serif;
 }
 
 .owner-venue-form button:hover {
-  background-color: #0056b3;
+  background: linear-gradient(90deg, #1d4ed8 0%, #3b82f6 100%);
+  box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
+  transform: translateY(-2px);
 }
 
 .success-text {
-  color: green;
+  color: #10b981;
   text-align: center;
-  margin-bottom: 2px;
+  margin-bottom: 20px;
+  font-weight: 500;
+  background-color: #ecfdf5;
+  padding: 12px;
+  border-radius: 8px;
 }
 
 .error-text {
-  color: red;
+  color: #ef4444;
   text-align: center;
+  margin-bottom: 20px;
+  font-weight: 500;
+  background-color: #fef2f2;
+  padding: 12px;
+  border-radius: 8px;
 }
 
 
 .image-upload-wrapper {
-  border: 2px dashed #aaa;
-  padding: 20px;
-  border-radius: 12px;
+  border: 2px dashed #bfdbfe;
+  padding: 30px;
+  border-radius: 16px;
   text-align: center;
-  background-color: #f9f9f9;
+  background-color: #f8fafc;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .image-upload-wrapper:hover {
-  background-color: #f1f1f1;
+  background-color: #eff6ff;
+  border-color: #3b82f6;
 }
 
 .image-upload-wrapper input[type="file"] {
@@ -84,13 +104,15 @@
 }
 
 .image-upload-label {
-  display: inline-block;
-  font-size: 16px;
-  color: #555;
+  display: block;
+  font-size: 15px;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .image-preview-count {
-  margin-top: 8px;
+  margin-top: 12px;
   font-size: 14px;
-  color: #333;
+  color: #3b82f6;
+  font-weight: 600;
 }
