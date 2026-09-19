@@ -27,7 +27,7 @@ export default function BookingList() {
 
   const fetchVenues = () => {
     const token = localStorage.getItem('token');
-    axios.get('http://localhost:5000/api/admin/venues', {
+    axios.get('/api/admin/venues', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(res => setVenues(res.data.venues))
@@ -46,7 +46,7 @@ export default function BookingList() {
 
     const token = localStorage.getItem('token');
 
-    axios.get('http://localhost:5000/api/admin/bookings', {
+    axios.get('/api/admin/bookings', {
       params,
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -69,7 +69,7 @@ export default function BookingList() {
     if (window.confirm('Bronni bekor qilmoqchimisiz?')) {
       const token = localStorage.getItem('token');
 
-      axios.patch(`http://localhost:5000/api/admin/bookings/${id}/cancel`, null, {
+      axios.patch(`/api/admin/bookings/${id}/cancel`, null, {
         headers: { Authorization: `Bearer ${token}` },
       })
         .then(() => {

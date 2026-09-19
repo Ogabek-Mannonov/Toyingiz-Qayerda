@@ -70,7 +70,7 @@ export default function Home() {
     e.preventDefault();
 
     try {
-      const res = await fetch("http://localhost:5000/api/send-to-telegram", {
+      const res = await fetch("/api/send-to-telegram", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

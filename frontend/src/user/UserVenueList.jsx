@@ -23,7 +23,7 @@ export default function UserVenueList() {
 
   const fetchDistricts = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/admin/districts');
+      const res = await axios.get('/api/admin/districts');
       setDistricts(res.data.districts);
     } catch (err) {
       console.error('Rayonlarni olishda xatolik', err);
@@ -39,7 +39,7 @@ export default function UserVenueList() {
       if (search) params.search = search;
       if (filterDistrict) params.district = filterDistrict;
 
-      const res = await axios.get('http://localhost:5000/api/user/venues', { params });
+      const res = await axios.get('/api/user/venues', { params });
 
       // JSON string sifatida kelgan bo'lsa, uni parse qilish
       const venuesWithParsedPhotos = res.data.venues.map(v => ({
@@ -106,7 +106,7 @@ export default function UserVenueList() {
                 <img
                   src={
                     v.photos && v.photos.length > 0
-                      ? `http://localhost:5000${v.photos[0]}`
+                      ? `${v.photos[0]}`
                       : '/uploads/no-image.png'
                   }
                   alt={v.name}

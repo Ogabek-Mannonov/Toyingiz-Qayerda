@@ -16,7 +16,7 @@ function UserBookingList() {
         return;
       }
 
-      const res = await axios.get('http://localhost:5000/api/user/bookings', {
+      const res = await axios.get('/api/user/bookings', {
         headers: { Authorization: `Bearer ${token}` }
       });
 
@@ -39,7 +39,7 @@ function UserBookingList() {
     try {
       const token = localStorage.getItem('token');
 
-      await axios.patch(`http://localhost:5000/api/user/bookings/${bookingId}/cancel`, {}, {
+      await axios.patch(`/api/user/bookings/${bookingId}/cancel`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

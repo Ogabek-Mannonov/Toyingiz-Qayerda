@@ -9,6 +9,7 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const ownerRoutes = require('./routes/ownerRoutes');
 const userRoutes = require('./routes/userRoutes');
+const errorHandler = require('./middlewares/errorHandler');
 
 dotenv.config();
 
@@ -51,6 +52,9 @@ app.post('/api/send-to-telegram', async (req, res) => {
     res.status(500).json({ success: false, message: 'Xatolik yuz berdi' });
   }
 });
+
+// Xatoliklarni ushlovchi global middleware (eng oxirida bo'lishi shart)
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Server ${PORT} portida ishga tushdi`);

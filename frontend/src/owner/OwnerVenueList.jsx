@@ -14,7 +14,7 @@ export default function OwnerVenueList() {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/owner/venues', {
+      const res = await axios.get('/api/owner/venues', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setVenues(res.data.venues);
@@ -31,7 +31,7 @@ export default function OwnerVenueList() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`http://localhost:5000/api/owner/venues/${venueId}`, {
+      await axios.delete(`/api/owner/venues/${venueId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchVenues();

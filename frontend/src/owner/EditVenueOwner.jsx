@@ -27,7 +27,7 @@ export default function EditVenue() {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/owner/venues/${venueId}`, {
+        const res = await axios.get(`/api/owner/venues/${venueId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -79,7 +79,7 @@ export default function EditVenue() {
         form.append('images', photos[i]);
       }
 
-      await axios.put(`http://localhost:5000/api/owner/venues/${venueId}`, form, {
+      await axios.put(`/api/owner/venues/${venueId}`, form, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

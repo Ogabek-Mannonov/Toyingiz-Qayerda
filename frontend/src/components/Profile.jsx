@@ -18,7 +18,7 @@ export default function ProfileEdit() {
     const fetchProfile = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/user/profile', {
+        const response = await axios.get('/api/user/profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setFormData(response.data);
@@ -44,7 +44,7 @@ export default function ProfileEdit() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.put('http://localhost:5000/api/user/profile', formData, {
+      await axios.put('/api/user/profile', formData, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setSuccess('Profil muvaffaqiyatli yangilandi');

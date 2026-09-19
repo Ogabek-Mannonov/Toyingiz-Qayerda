@@ -36,7 +36,7 @@ export default function CreateVenueWithOwner() {
       return;
     }
 
-    axios.get('http://localhost:5000/api/admin/districts', {
+    axios.get('/api/admin/districts', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -88,7 +88,7 @@ export default function CreateVenueWithOwner() {
     });
 
     try {
-      await axios.post('http://localhost:5000/api/admin/venues-with-owner', data, {
+      await axios.post('/api/admin/venues-with-owner', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`

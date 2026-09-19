@@ -17,7 +17,7 @@ export default function OwnerDashboard() {
 
     const fetchStats = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/owner/stats', {
+        const res = await axios.get('/api/owner/stats', {
           headers: {
             Authorization: `Bearer ${token}`,
           },

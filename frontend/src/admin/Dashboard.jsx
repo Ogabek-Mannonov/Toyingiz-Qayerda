@@ -14,7 +14,7 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/admin/dashboard-stats', {
+    axios.get('/api/admin/dashboard-stats', {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token'),
       }

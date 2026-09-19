@@ -11,7 +11,7 @@ export default function OwnerBookingList() {
     setError('');
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/owner/bookings', {
+      const res = await axios.get('/api/owner/bookings', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBookings(res.data.bookings);
@@ -27,7 +27,7 @@ export default function OwnerBookingList() {
 
     try {
       const token = localStorage.getItem('token');
-      await axios.patch(`http://localhost:5000/api/owner/bookings/${bookingId}/cancel`, {}, {
+      await axios.patch(`/api/owner/bookings/${bookingId}/cancel`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchBookings();

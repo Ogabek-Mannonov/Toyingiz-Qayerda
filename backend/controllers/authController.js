@@ -2,8 +2,12 @@ const pool = require('../config/db');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-exports.signup = async (req, res) => {
+exports.signup = async (req, res, next) => {
   const { first_name, last_name, username, password, phone_number } = req.body;
+
+  if (!first_name || !username || !password || !phone_number) {
+    return res.status(400).json({ success: false, error: "Barcha majburiy maydonlarni to'ldiring!" });
+  }
 
   try {
     // Username borligini tekshirish
@@ -36,15 +40,18 @@ exports.signup = async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    res.status(201).json({ token, user });
+    res.status(201).json({ success: true, token, user });
   } catch (error) {
-    console.error('Signup error:', error);
-    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+    next(error);
   }
 };
 
-exports.login = async (req, res) => {
-  const { username, password } = req.body;  // Yoki agar siz email ishlatsangiz: const { email, password } = req.body;
+exports.login = async (req, res, next) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ success: false, error: "Username va parol kiritilishi shart!" });
+  }
 
   try {
 
@@ -52,7 +59,7 @@ exports.login = async (req, res) => {
     const userResult = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
 
     if (userResult.rows.length === 0) {
-      return res.status(400).json({ error: 'Foydalanuvchi topilmadi' });  // Bu yerda ham email emas, username so‘zini ishlating
+      return res.status(400).json({ success: false, error: "Foydalanuvchi topilmadi yoki parol noto'g'ri" });
     }
 
     const user = userResult.rows[0];
@@ -60,7 +67,7 @@ exports.login = async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return res.status(400).json({ error: 'Parol noto‘g‘ri' });
+      return res.status(400).json({ success: false, error: "Foydalanuvchi topilmadi yoki parol noto'g'ri" });
     }
 
     const token = jwt.sign(
@@ -78,9 +85,8 @@ exports.login = async (req, res) => {
       phone_number: user.phone_number,
     };
 
-    res.json({ token, user: userData });
+    res.json({ success: true, token, user: userData });
   } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+    next(error);
   }
 };

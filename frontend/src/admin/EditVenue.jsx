@@ -37,10 +37,10 @@ export default function EditVenue() {
     const fetchData = async () => {
       try {
         const [districtRes, venueRes] = await Promise.all([
-          axios.get('http://localhost:5000/api/admin/districts', {
+          axios.get('/api/admin/districts', {
             headers: getAuthHeaders()
           }),
-          axios.get(`http://localhost:5000/api/admin/venues/${id}`, {
+          axios.get(`/api/admin/venues/${id}`, {
             headers: getAuthHeaders()
           })
         ]);
@@ -103,7 +103,7 @@ export default function EditVenue() {
         data.append('images', img);
       });
 
-      await axios.put(`http://localhost:5000/api/admin/venues/${id}`, data, {
+      await axios.put(`/api/admin/venues/${id}`, data, {
         headers: {
           ...getAuthHeaders(),
           'Content-Type': 'multipart/form-data'
@@ -157,7 +157,7 @@ export default function EditVenue() {
             <div className="image-grid">
               {existingImages.map((img, idx) => (
                 <div key={idx} className="image-item">
-                  <img src={`http://localhost:5000/${img}`} alt={`Venue ${idx + 1}`} className="preview-image" />
+                  <img src={`/${img}`} alt={`Venue ${idx + 1}`} className="preview-image" />
                   <button type="button" aria-label="Rasmni o‘chirish" onClick={() => handleImageDelete(img)}>❌</button>
                 </div>
               ))}

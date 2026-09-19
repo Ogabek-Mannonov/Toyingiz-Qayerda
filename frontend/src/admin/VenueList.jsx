@@ -30,7 +30,7 @@ export default function VenueList() {
   };
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/admin/districts', {
+    axios.get('/api/admin/districts', {
       headers: getAuthHeaders()
     })
       .then(res => setDistricts(res.data.districts))
@@ -51,7 +51,7 @@ export default function VenueList() {
     if (filters.status) params.status = filters.status;
     if (filters.district) params.district = filters.district;
 
-    axios.get('http://localhost:5000/api/admin/venues', {
+    axios.get('/api/admin/venues', {
       params,
       headers: getAuthHeaders()
     })
@@ -71,7 +71,7 @@ export default function VenueList() {
   };
 
   const handleApprove = (id) => {
-    axios.patch(`http://localhost:5000/api/admin/venues/${id}/approve`, null, {
+    axios.patch(`/api/admin/venues/${id}/approve`, null, {
       headers: getAuthHeaders()
     })
       .then(() => fetchVenues())
@@ -80,7 +80,7 @@ export default function VenueList() {
 
   const handleDelete = (id) => {
     if (window.confirm('To’yxonani o‘chirmoqchimisiz?')) {
-      axios.delete(`http://localhost:5000/api/admin/venues/${id}`, {
+      axios.delete(`/api/admin/venues/${id}`, {
         headers: getAuthHeaders()
       })
         .then(() => {

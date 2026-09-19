@@ -22,7 +22,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
   useEffect(() => {
     const fetchDistricts = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/admin/districts'); // kerakli endpoint
+        const res = await axios.get('/api/admin/districts'); // kerakli endpoint
         setDistricts(res.data.districts || []);
       } catch (err) {
         console.error('Rayonlarni olishda xatolik:', err);
@@ -40,7 +40,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
       setLoading(true);
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/owner/venues/${venueId}`, {
+        const res = await axios.get(`/api/owner/venues/${venueId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setFormData(res.data.venue);
@@ -91,7 +91,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
 
       if (venueId) {
         // Tahrirlash (PUT)
-        await axios.put(`http://localhost:5000/api/owner/venues/${venueId}`, data, {
+        await axios.put(`/api/owner/venues/${venueId}`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
@@ -100,7 +100,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         setSuccess('To’yxona ma’lumotlari yangilandi');
       } else {
         // Yangi qo‘shish (POST)
-        await axios.post('http://localhost:5000/api/owner/venues', data, {
+        await axios.post('/api/owner/venues', data, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',

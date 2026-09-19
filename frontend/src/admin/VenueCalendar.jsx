@@ -15,7 +15,7 @@ export default function VenueCalendar({ venueId }) {
       setError('');
       try {
         const token = localStorage.getItem('token');
-        const res = await axios.get(`http://localhost:5000/api/admin/venues/${venueId}/bookings-calendar`, {
+        const res = await axios.get(`/api/admin/venues/${venueId}/bookings-calendar`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

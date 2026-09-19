@@ -25,7 +25,7 @@ export default function Signup() {
     setError('');
 
     try {
-      await axios.post('http://localhost:5000/api/auth/signup', formData);
+      await axios.post('/api/auth/signup', formData);
 
       localStorage.setItem('username', formData.username);
 

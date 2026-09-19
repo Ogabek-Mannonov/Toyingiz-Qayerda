@@ -27,7 +27,7 @@ export default function UserBookingForm() {
     const fetchBookedDates = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:5000/api/user/venues/${hallId}/booked-dates`,
+          `/api/user/venues/${hallId}/booked-dates`,
           {
             headers: { Authorization: `Bearer ${storedToken}` },
           }
@@ -68,7 +68,7 @@ export default function UserBookingForm() {
 
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/user/bookings',
+        '/api/user/bookings',
         { ...formData, hall_id: hallId },
         { headers: { Authorization: 'Bearer ' + token } }
       );

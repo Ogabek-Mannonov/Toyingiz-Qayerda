@@ -23,7 +23,7 @@ export default function VenueDetails() {
         return;
       }
 
-      const res = await axios.get(`http://localhost:5000/api/user/venues/${hallId}`, {
+      const res = await axios.get(`/api/user/venues/${hallId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ export default function VenueDetails() {
           venue.photos.map((photo, idx) => (
             <img
               key={idx}
-              src={`http://localhost:5000${photo}`}
+              src={`${photo}`}
               alt={`venue-${idx}`}
               className="venue-image"
             />
