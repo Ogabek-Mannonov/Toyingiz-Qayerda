@@ -16,9 +16,31 @@ const createTables = async () => {
   try {
     console.log("Ma'lumotlar bazasiga ulanilmoqda...");
 
+    // Barcha eski jadvallarni o'chirish (toza boshlash uchun)
+    await pool.query('DROP TABLE IF EXISTS bookings CASCADE');
+    await pool.query('DROP TABLE IF EXISTS hall_photos CASCADE');
+    await pool.query('DROP TABLE IF EXISTS wedding_halls CASCADE');
+    await pool.query('DROP TABLE IF EXISTS users CASCADE');
+    await pool.query('DROP TABLE IF EXISTS districts CASCADE');
+
+    // 0. districts jadvali
+    await pool.query(`
+      CREATE TABLE districts (
+        district_id SERIAL PRIMARY KEY,
+        name VARCHAR(100) NOT NULL UNIQUE
+      );
+    `);
+    
+    // Asosiy tumanlarni qo'shib qo'yamiz
+    const districtsList = ['Yunusobod', 'Chilonzor', 'Yakkasaroy', 'Mirzo Ulugbek', 'Olmazor', 'Sergeli', 'Uchtepa', 'Yashnobod', 'Bektemir', 'Mirobod', 'Shayxontohur'];
+    for (const d of districtsList) {
+      await pool.query('INSERT INTO districts (name) VALUES ($1) ON CONFLICT DO NOTHING', [d]);
+    }
+    console.log('✅ districts jadvali tayyor');
+
     // 1. users jadvali
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
+      CREATE TABLE users (
         user_id SERIAL PRIMARY KEY,
         first_name VARCHAR(100) NOT NULL,
         last_name VARCHAR(100),
@@ -34,21 +56,19 @@ const createTables = async () => {
 
     // 2. wedding_halls jadvali
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS wedding_halls (
-        id SERIAL PRIMARY KEY,
+      CREATE TABLE wedding_halls (
+        hall_id SERIAL PRIMARY KEY,
         owner_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
+        district_id INTEGER REFERENCES districts(district_id),
         name VARCHAR(255) NOT NULL,
-        location VARCHAR(255),
-        capacity INTEGER,
-        description TEXT,
-        price_per_person NUMERIC(10,2),
-        region VARCHAR(100),
-        district VARCHAR(100),
-        status VARCHAR(50) DEFAULT 'pending',
         address TEXT,
-        main_image TEXT,
-        longitude NUMERIC(10,6),
+        capacity INTEGER,
+        price_per_seat NUMERIC(10,2),
+        phone_number VARCHAR(50),
+        description TEXT,
+        status VARCHAR(50) DEFAULT 'pending',
         latitude NUMERIC(10,6),
+        longitude NUMERIC(10,6),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
     `);
@@ -56,9 +76,9 @@ const createTables = async () => {
 
     // 3. hall_photos jadvali
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS hall_photos (
+      CREATE TABLE hall_photos (
         id SERIAL PRIMARY KEY,
-        hall_id INTEGER REFERENCES wedding_halls(id) ON DELETE CASCADE,
+        hall_id INTEGER REFERENCES wedding_halls(hall_id) ON DELETE CASCADE,
         image_url TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -67,9 +87,9 @@ const createTables = async () => {
 
     // 4. bookings jadvali
     await pool.query(`
-      CREATE TABLE IF NOT EXISTS bookings (
-        id SERIAL PRIMARY KEY,
-        hall_id INTEGER REFERENCES wedding_halls(id) ON DELETE CASCADE,
+      CREATE TABLE bookings (
+        booking_id SERIAL PRIMARY KEY,
+        hall_id INTEGER REFERENCES wedding_halls(hall_id) ON DELETE CASCADE,
         user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
         booking_date DATE NOT NULL,
         number_of_guests INTEGER,
@@ -82,17 +102,14 @@ const createTables = async () => {
     `);
     console.log('✅ bookings jadvali tayyor');
 
-    // 5. Admin yaratish (agar yo'q bo'lsa)
+    // 5. Admin yaratish
     const bcrypt = require('bcryptjs');
-    const adminCheck = await pool.query('SELECT * FROM users WHERE phone_number = $1', ['+998901234567']);
-    if (adminCheck.rows.length === 0) {
-      const hash = await bcrypt.hash('admin123', 10);
-      await pool.query(
-        'INSERT INTO users (first_name, last_name, username, phone_number, role, password_hash) VALUES ($1, $2, $3, $4, $5, $6)',
-        ['Asosiy', 'Admin', 'admin', '+998901234567', 'admin', hash]
-      );
-      console.log('✅ Default admin tayyor! (Tel: +998901234567, Parol: admin123)');
-    }
+    const hash = await bcrypt.hash('admin123', 10);
+    await pool.query(
+      'INSERT INTO users (first_name, last_name, username, phone_number, role, password_hash) VALUES ($1, $2, $3, $4, $5, $6)',
+      ['Asosiy', 'Admin', 'admin', '+998901234567', 'admin', hash]
+    );
+    console.log('✅ Default admin tayyor! (Username: admin, Parol: admin123)');
 
     console.log('🎉 Barcha jadvallar muvaffaqiyatli yaratildi!');
     process.exit(0);

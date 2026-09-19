@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import './admin style/adminSidebar.css'
-
+import './admin style/adminPanel.css'; // Faqat yagona Global Theme chaqiriladi
 export default function AdminSidebar() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -23,30 +22,30 @@ export default function AdminSidebar() {
           <NavLink to="/admin-panel" end className={({ isActive }) => isActive ? 'active' : ''}>Dashboard</NavLink>
         </div>
         <div className='nav-box'>
-          <NavLink to="/admin-panel/venues" className={({ isActive }) => isActive ? 'active' : ''}>To'yxonalar</NavLink>
+          <NavLink to="/admin-panel/venues" className={({ isActive }) => isActive ? 'active' : ''}>Venues</NavLink>
         </div>
         <div className='nav-box'>
-          <NavLink to="/admin-panel/createvenueowner" className={({ isActive }) => isActive ? 'active' : ''}>To'yxona Va Egalar Qo'shish</NavLink>
+          <NavLink to="/admin-panel/createvenueowner" className={({ isActive }) => isActive ? 'active' : ''}>Add Venue & Owner</NavLink>
         </div>
         <div className='nav-box'>
-          <NavLink to="/admin-panel/owners" className={({ isActive }) => isActive ? 'active' : ''}>Egalari</NavLink>
+          <NavLink to="/admin-panel/owners" className={({ isActive }) => isActive ? 'active' : ''}>Owners</NavLink>
         </div>
         <div className='nav-box'>
-          <NavLink to="/admin-panel/bookings" className={({ isActive }) => isActive ? 'active' : ''}>Bronlar</NavLink>
+          <NavLink to="/admin-panel/bookings" className={({ isActive }) => isActive ? 'active' : ''}>Bookings</NavLink>
         </div>
 
         <div className='nav-box logout' onClick={() => setShowModal(true)} style={{ cursor: 'pointer' }}>
-          Chiqish
+          Logout
         </div>
       </div>
 
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">
-            <p>Rostdan ham chiqmoqchimisiz?</p>
+            <p>Are you sure you want to log out??</p>
             <div className="modal-buttons">
-              <button className="confirmm-btn" onClick={handleLogout}>Ha, chiqaman</button>
-              <button className="cancell-btn" onClick={() => setShowModal(false)}>Bekor qilish</button>
+              <button className="admin-btn admin-btn-danger" onClick={handleLogout}>Yes, log out</button>
+              <button className="admin-btn admin-btn-success" onClick={() => setShowModal(false)}>Cancel</button>
             </div>
           </div>
         </div>

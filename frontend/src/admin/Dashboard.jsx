@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './admin style/dashboard.css'
-
+// Global theme is already imported in AdminPanel.jsx
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -23,37 +22,38 @@ export default function Dashboard() {
         setStats(res.data);
       })
       .catch(err => {
-        console.error('Statistika olishda xatolik:', err);
+        console.error('Error fetching statistics:', err);
       });
   }, []);
 
   return (
-    <div className="dashboard-container">
-      <h1 className="dashboard-title">Dashboard</h1>
-      <div className="stats-grid">
-        <div className="stat-card">
-          <h3>Umumiy to'yxonalar</h3>
-          <p>{stats.totalVenues}</p>
+    <div className="admin-page-container">
+      <h1 className="admin-page-title">Dashboard</h1>
+      
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
+        <div className="admin-card">
+          <h3 style={{ fontSize: '16px', color: 'var(--admin-text-muted)', marginBottom: '10px' }}>Total Venues</h3>
+          <p style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--admin-primary)' }}>{stats.totalVenues}</p>
         </div>
-        <div className="stat-card">
-          <h3>Tasdiqlangan to'yxonalar</h3>
-          <p>{stats.approvedVenues}</p>
+        <div className="admin-card">
+          <h3 style={{ fontSize: '16px', color: 'var(--admin-text-muted)', marginBottom: '10px' }}>Approved Venues</h3>
+          <p style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--admin-success)' }}>{stats.approvedVenues}</p>
         </div>
-        <div className="stat-card">
-          <h3>Tasdiqlanmagan to'yxonalar</h3>
-          <p>{stats.pendingVenues}</p>
+        <div className="admin-card">
+          <h3 style={{ fontSize: '16px', color: 'var(--admin-text-muted)', marginBottom: '10px' }}>Pending Venues</h3>
+          <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#ff9800' }}>{stats.pendingVenues}</p>
         </div>
-        <div className="stat-card">
-          <h3>To'yxona egalari</h3>
-          <p>{stats.ownersCount}</p>
+        <div className="admin-card">
+          <h3 style={{ fontSize: '16px', color: 'var(--admin-text-muted)', marginBottom: '10px' }}>Venue Owners</h3>
+          <p style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--admin-text-main)' }}>{stats.ownersCount}</p>
         </div>
-        <div className="stat-card">
-          <h3>Yaqinlashayotgan bronlar</h3>
-          <p>{stats.upcomingBookings}</p>
+        <div className="admin-card">
+          <h3 style={{ fontSize: '16px', color: 'var(--admin-text-muted)', marginBottom: '10px' }}>Upcoming Bookings</h3>
+          <p style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--admin-primary)' }}>{stats.upcomingBookings}</p>
         </div>
-        <div className="stat-card">
-          <h3>O'tgan bronlar</h3>
-          <p>{stats.pastBookings}</p>
+        <div className="admin-card">
+          <h3 style={{ fontSize: '16px', color: 'var(--admin-text-muted)', marginBottom: '10px' }}>Past Bookings</h3>
+          <p style={{ fontSize: '32px', fontWeight: 'bold', color: 'var(--admin-text-muted)' }}>{stats.pastBookings}</p>
         </div>
       </div>
     </div>

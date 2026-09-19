@@ -51,7 +51,7 @@ export default function Home() {
     }));
   };
 
-  // Telefon raqamga faqat raqam qo‘shish va +998 ni o‘zgartirmaslik
+  // Phone Numberga faqat raqam qo‘shish va +998 ni o‘zgartirmaslik
   const handlePhoneChange = (e) => {
     const input = e.target.value;
 
@@ -127,7 +127,7 @@ export default function Home() {
           <input
             type="text"
             name="name"
-            placeholder="Ismingiz"
+            placeholder="First Nameingiz"
             value={formData.name}
             onChange={handleChange}
             required

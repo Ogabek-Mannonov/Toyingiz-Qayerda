@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './admin style/ownerList.css'
-
+// Global theme is already imported in AdminPanel.jsx
 
 export default function OwnerList() {
   const [owners, setOwners] = useState([]);
@@ -38,7 +37,7 @@ export default function OwnerList() {
       })
       .catch(err => {
         console.error('Egalarning ro‘yxatini olishda xatolik:', err);
-        setError('Egalarning ro‘yxatini olishda xatolik yuz berdi');
+        setError('Error fetching owners');
         setLoading(false);
       });
   };
@@ -69,39 +68,41 @@ export default function OwnerList() {
   };
 
   return (
-    <div className="owner-list-container">
-      <h2>To’yxona Egalari</h2>
+    <div className="admin-page-container">
+      <h1 className="admin-page-title">Venue Owners</h1>
 
-      {/* Qidiruv va Sort */}
-      <div className="owner-filters">
+      {/* Search... Sort */}
+      <div className="admin-card" style={{ display: 'flex', gap: '15px', marginBottom: '20px', padding: '15px' }}>
         <input
           type="text"
-          placeholder="Qidiruv (ism, familiya, username)..."
+          className="admin-input"
+          style={{ marginBottom: '0', flex: 1 }}
+          placeholder="Search...sm, familiya, username)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
-        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-          <option value="first_name">Ism bo‘yicha</option>
-          <option value="last_name">Familiya bo‘yicha</option>
+        <select className="admin-input" style={{ marginBottom: '0', width: '250px' }} value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="first_name">By First Name</option>
+          <option value="last_name">By Last Name</option>
         </select>
       </div>
 
       {loading ? (
-        <p className="owner-message loading">Yuklanmoqda...</p>
+        <p className="owner-message loading">Loading...</p>
       ) : error ? (
-        <p className="owner-message error">{error}</p>
+        <p className="error-message">{error}</p>
       ) : currentOwners.length === 0 ? (
-        <p className="owner-message">Hech narsa topilmadi</p>
+        <p className="owner-message">Nothing found</p>
       ) : (
-        <>
-          <table className="owner-table">
+        <div className="admin-card admin-table-container">
+          <table className="admin-table">
             <thead>
               <tr>
-                <th>Ism</th>
-                <th>Familiya</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Username</th>
-                <th>Telefon raqam</th>
-                <th>Qo‘shilgan sana</th>
+                <th>Phone Number</th>
+                <th>Date Added</th>
               </tr>
             </thead>
             <tbody>
@@ -118,18 +119,19 @@ export default function OwnerList() {
           </table>
 
           {/* Pagination */}
-          <div className="pagination">
+          <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
             {Array.from({ length: totalPages }, (_, i) => (
               <button
                 key={i}
                 onClick={() => handlePageChange(i + 1)}
-                className={currentPage === i + 1 ? 'active' : ''}
+                className={`admin-btn ${currentPage === i + 1 ? 'admin-btn-primary' : ''}`}
+                style={{ background: currentPage !== i + 1 ? '#eee' : undefined, color: currentPage !== i + 1 ? '#333' : undefined }}
               >
                 {i + 1}
               </button>
             ))}
           </div>
-        </>
+        </div>
       )}
     </div>
   );

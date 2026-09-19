@@ -117,7 +117,7 @@ export default function EditVenue() {
     }
   };
 
-  if (loading) return <p>Yuklanmoqda...</p>;
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="edit-venue-container">
@@ -126,7 +126,7 @@ export default function EditVenue() {
       {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
 
       <form onSubmit={handleSubmit}>
-        <input className="form-input" type="text" name="name" placeholder="To’yxona nomi" value={formData.name} onChange={handleChange} required />
+        <input className="form-input" type="text" name="name" placeholder="Venue Name" value={formData.name} onChange={handleChange} required />
 
         <select className="form-input" name="district_id" value={formData.district_id} onChange={handleChange} required>
           <option value="">Tumanni tanlang</option>
@@ -135,15 +135,15 @@ export default function EditVenue() {
           ))}
         </select>
 
-        <input className="form-input" type="text" name="address" placeholder="Manzil" value={formData.address} onChange={handleChange} required />
+        <input className="form-input" type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
         <input className="form-input" type="number" name="capacity" placeholder="Sig‘im" value={formData.capacity} onChange={handleChange} required />
-        <input className="form-input" type="number" name="price_per_seat" placeholder="Narx (1 o‘rindiq)" value={formData.price_per_seat} onChange={handleChange} required />
-        <input className="form-input" type="text" name="phone_number" placeholder="Telefon raqam" value={formData.phone_number} onChange={handleChange} required />
+        <input className="form-input" type="number" name="price_per_seat" placeholder="Price (1 o‘rindiq)" value={formData.price_per_seat} onChange={handleChange} required />
+        <input className="form-input" type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} required />
         <textarea className="form-input" name="description" placeholder="Tavsif" value={formData.description} onChange={handleChange} />
 
         <select className="form-input" name="status" value={formData.status} onChange={handleChange} required>
           <option value="pending">Tasdiqlanmagan</option>
-          <option value="approved">Tasdiqlangan</option>
+          <option value="approved">Approved</option>
         </select>
 
         <label>

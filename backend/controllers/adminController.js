@@ -79,12 +79,12 @@ exports.createVenueWithOwner = async (req, res) => {
     res.status(201).json({ message: 'To’yxona va owner muvaffaqiyatli yaratildi', hall_id, owner_id });
   } catch (error) {
     console.error('Create Venue and Owner error:', error);
-    res.status(500).json({ error: error.message || 'Server xatosi' });
+    res.status(500).json({ error: error.message || 'Server Error' });
   }
 };
 
 
-// To’yxonalar ro’yxatini olish (filter va sort bilan)
+// Venues ro’yxatini olish (filter va sort bilan)
 exports.getVenues = async (req, res) => {
   try {
     const { sortBy, order, search, status, district } = req.query;
@@ -134,7 +134,7 @@ exports.getVenues = async (req, res) => {
     res.json({ venues: result.rows });
   } catch (error) {
     console.error('Get Venues error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -148,12 +148,12 @@ exports.approveVenue = async (req, res) => {
     );
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi' });
+      return res.status(404).json({ message: 'Venue not found' });
     }
     res.json({ message: 'To’yxona tasdiqlandi', venue: result.rows[0] });
   } catch (error) {
     console.error('Approve Venue error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -177,7 +177,7 @@ exports.getVenueById = async (req, res) => {
     res.json({ venue: result.rows[0] });
   } catch (error) {
     console.error('Get Venue by ID error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -263,7 +263,7 @@ exports.updateVenue = async (req, res) => {
     res.status(200).json({ message: "To'yxona yangilandi" });
   } catch (err) {
     console.error('Tahrirlashda xatolik:', err);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -275,12 +275,12 @@ exports.deleteVenue = async (req, res) => {
   try {
     const result = await pool.query('DELETE FROM wedding_halls WHERE hall_id = $1', [venueId]);
     if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi' });
+      return res.status(404).json({ message: 'Venue not found' });
     }
     res.json({ message: 'To’yxona o‘chirildi' });
   } catch (error) {
     console.error('Delete Venue error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -293,11 +293,11 @@ exports.getOwners = async (req, res) => {
     res.json({ owners: result.rows });
   } catch (error) {
     console.error('Get Owners error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
-// Bronlarni olish
+// Bookingsni olish
 exports.getBookings = async (req, res) => {
   try {
     const { sortBy, order, status, venue } = req.query;
@@ -343,7 +343,7 @@ exports.getBookings = async (req, res) => {
     res.json({ bookings: result.rows });
   } catch (error) {
     console.error('Get Bookings error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -361,7 +361,7 @@ exports.cancelBooking = async (req, res) => {
     res.json({ message: 'Bron bekor qilindi', booking: result.rows[0] });
   } catch (error) {
     console.error('Cancel Booking error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -372,7 +372,7 @@ exports.getDistricts = async (req, res) => {
     res.json({ districts: result.rows });
   } catch (error) {
     console.error('Get Districts error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -396,7 +396,7 @@ exports.getDashboardStats = async (req, res) => {
     });
   } catch (error) {
     console.error('Dashboard Stats error:', error);
-    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+    res.status(500).json({ error: 'An error occurred on the server' });
   }
 };
 
@@ -425,6 +425,6 @@ exports.getVenueBookingsCalendar = async (req, res) => {
     res.json({ bookings: bookingsRes.rows });
   } catch (error) {
     console.error('Get Venue Bookings Calendar error:', error);
-    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+    res.status(500).json({ error: 'An error occurred on the server' });
   }
 };

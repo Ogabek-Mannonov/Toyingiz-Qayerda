@@ -6,7 +6,7 @@ exports.signup = async (req, res, next) => {
   const { first_name, last_name, username, password, phone_number } = req.body;
 
   if (!first_name || !username || !password || !phone_number) {
-    return res.status(400).json({ success: false, error: "Barcha majburiy maydonlarni to'ldiring!" });
+    return res.status(400).json({ success: false, error: "Please fill all required fields!" });
   }
 
   try {
@@ -59,7 +59,7 @@ exports.login = async (req, res, next) => {
     const userResult = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
 
     if (userResult.rows.length === 0) {
-      return res.status(400).json({ success: false, error: "Foydalanuvchi topilmadi yoki parol noto'g'ri" });
+      return res.status(400).json({ success: false, error: "User not found or incorrect password" });
     }
 
     const user = userResult.rows[0];
@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
     const isMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!isMatch) {
-      return res.status(400).json({ success: false, error: "Foydalanuvchi topilmadi yoki parol noto'g'ri" });
+      return res.status(400).json({ success: false, error: "User not found or incorrect password" });
     }
 
     const token = jwt.sign(

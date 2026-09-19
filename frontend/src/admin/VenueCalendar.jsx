@@ -26,7 +26,7 @@ export default function VenueCalendar({ venueId }) {
 
         setBookings(formattedBookings);
       } catch (e) {
-        setError('Bronlar kalendarini olishda xatolik yuz berdi');
+        setError('Bookings kalendarini olishda xatolik yuz berdi');
       } finally {
         setLoading(false);
       }
@@ -70,7 +70,7 @@ export default function VenueCalendar({ venueId }) {
     }
   };
 
-  if (loading) return <p>Yuklanmoqda...</p>;
+  if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
 
   return (
@@ -90,7 +90,7 @@ export default function VenueCalendar({ venueId }) {
 
           // Title text
           const title = booking
-            ? `Mijoz: ${booking.client_name || 'Noma’lum'}\nTelefon: ${booking.client_phone_number || 'Noma’lum'}\nStatus: ${booking.status}`
+            ? `Mijoz: ${booking.client_name || 'Noma’lum'}\nPhone: ${booking.client_phone_number || 'Noma’lum'}\nStatus: ${booking.status}`
             : day.toLocaleDateString();
 
           return (
@@ -120,8 +120,8 @@ export default function VenueCalendar({ venueId }) {
       {selectedDateInfo && (
         <div style={{ marginTop: 20, padding: 10, border: '1px solid #ccc' }}>
           <h4>Bron Tafsilotlari ({selectedDateInfo.date})</h4>
-          <p><strong>Mijoz ismi:</strong> {selectedDateInfo.clientName || 'Noma’lum'}</p>
-          <p><strong>Telefon:</strong> {selectedDateInfo.phone || 'Noma’lum'}</p>
+          <p><strong>Client Name:</strong> {selectedDateInfo.clientName || 'Noma’lum'}</p>
+          <p><strong>Phone:</strong> {selectedDateInfo.phone || 'Noma’lum'}</p>
           <p><strong>O‘rindiqlar soni:</strong> {selectedDateInfo.guests}</p>
           <p><strong>Status:</strong> {selectedDateInfo.status}</p>
         </div>

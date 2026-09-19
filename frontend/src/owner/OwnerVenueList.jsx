@@ -19,7 +19,7 @@ export default function OwnerVenueList() {
       });
       setVenues(res.data.venues);
     } catch (err) {
-      setError("To’yxonalarni olishda xatolik yuz berdi");
+      setError("Error fetching venues");
     } finally {
       setLoading(false);
     }
@@ -50,9 +50,9 @@ export default function OwnerVenueList() {
 
   return (
     <div className="venue-list-container">
-      <h2 className="venue-title">Sizning To'yxonalar</h2>
+      <h2 className="venue-title">Sizning Venues</h2>
 
-      {loading && <p>Yuklanmoqda...</p>}
+      {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
       {!loading && venues.length === 0 && <p>To'yxona topilmadi</p>}
 
@@ -61,12 +61,12 @@ export default function OwnerVenueList() {
           <thead>
             <tr>
               <th>Nomi</th>
-              <th>Manzili</th>
-              <th>Sig'imi</th>
-              <th>Narxi</th>
-              <th>Telefon</th>
+              <th>Addressi</th>
+              <th>Capacityi</th>
+              <th>Pricei</th>
+              <th>Phone</th>
               <th>Status</th>
-              <th>Amallar</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>

@@ -48,7 +48,7 @@ const SidebarMenu = () => {
               <Link to="/" onClick={toggleSidebar}>Bosh sahifa</Link>
             </li>
             <li className={isActive('/user/venues') ? 'active' : ''}>
-              <Link to="/user/venues" onClick={toggleSidebar}>To'yxonalar</Link>
+              <Link to="/user/venues" onClick={toggleSidebar}>Venues</Link>
             </li>
             <li className={isActive('/user/bookings') ? 'active' : ''}>
               <Link to="/user/bookings" onClick={toggleSidebar}>Mening bronlarim</Link>
@@ -61,7 +61,7 @@ const SidebarMenu = () => {
 
         <div className="sidebar-footer">
           <Link to="/support" onClick={toggleSidebar} className="support-link">Support xizmat</Link>
-          <button onClick={openLogoutConfirm} className="logout-btn">Chiqish</button>
+          <button onClick={openLogoutConfirm} className="logout-btn">Logout</button>
         </div>
       </div>
 
@@ -71,10 +71,10 @@ const SidebarMenu = () => {
         <>
           <div className="modal-overlay" onClick={closeLogoutConfirm}></div>
           <div className="modal">
-            <h3>Chiqishni tasdiqlaysizmi?</h3>
+            <h3>Logoutni tasdiqlaysizmi?</h3>
             <p>Siz tizimdan chiqmoqchisiz.</p>
             <div className="modal-buttons">
-              <button className="btn btn-cancel" onClick={closeLogoutConfirm}>Bekor qilish</button>
+              <button className="btn btn-cancel" onClick={closeLogoutConfirm}>Cancel</button>
               <button className="btn btn-confirm" onClick={handleLogout}>Ha, chiqish</button>
             </div>
           </div>

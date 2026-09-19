@@ -28,9 +28,9 @@ export default function SidebarOwner() {
 
   const links = [
     { to: '/owner-panel', label: 'Bosh sahifa', icon: <FaHome /> },
-    { to: '/owner-panel/venues', label: "To'yxonalarim", icon: <FaList /> },
+    { to: '/owner-panel/venues', label: "Venuesim", icon: <FaList /> },
     { to: '/owner-panel/add-venue', label: "To'yxona qo'shish", icon: <FaPlus /> },
-    { to: '/owner-panel/bookings', label: "Bronlarni ko'rish", icon: <FaCalendarCheck /> },
+    { to: '/owner-panel/bookings', label: "Bookingsni ko'rish", icon: <FaCalendarCheck /> },
     { to: '/owner-panel/profile', label: 'Profil', icon: <FaUser /> },
   ];
 
@@ -56,7 +56,7 @@ export default function SidebarOwner() {
 
       <div className="logout-btnn" onClick={handleLogout}>
         <FaSignOutAlt />
-        <span>Chiqish </span>
+        <span>Logout </span>
       </div>
     </nav>
   );

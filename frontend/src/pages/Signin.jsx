@@ -48,9 +48,9 @@ export default function Signup() {
         <h2>Ro'yxatdan o'tish</h2>
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
-          <input name="first_name" placeholder="Ism" value={formData.first_name} onChange={handleChange} required />
-          <input name="last_name" placeholder="Familiya" value={formData.last_name} onChange={handleChange} required />
-          <input name="phone_number" placeholder="Telefon raqam" value={formData.phone_number} onChange={handleChange} required />
+          <input name="first_name" placeholder="First Name" value={formData.first_name} onChange={handleChange} required />
+          <input name="last_name" placeholder="Last Name" value={formData.last_name} onChange={handleChange} required />
+          <input name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} required />
           <input name="username" placeholder="Username" value={formData.username} onChange={handleChange} required />
           <input type="password" name="password" placeholder="Parol" value={formData.password} onChange={handleChange} required className='password' />
           <button type="submit">Ro'yxatdan o'tish</button>

@@ -55,7 +55,7 @@ export default function ProfileEdit() {
     }
   };
 
-  if (loading) return <p className="loading-text">Yuklanmoqda...</p>;
+  if (loading) return <p className="loading-text">Loading...</p>;
 
   return (
     <div className="profile-container">
@@ -66,7 +66,7 @@ export default function ProfileEdit() {
 
         <form onSubmit={handleSubmit} className="profile-form">
           <label className="form-label">
-            Ism:
+            First Name:
             <input
               type="text"
               name="first_name"
@@ -78,7 +78,7 @@ export default function ProfileEdit() {
           </label>
 
           <label className="form-label">
-            Familiya:
+            Last Name:
             <input
               type="text"
               name="last_name"
@@ -102,7 +102,7 @@ export default function ProfileEdit() {
           </label>
 
           <label className="form-label">
-            Telefon raqam:
+            Phone Number:
             <input
               type="text"
               name="phone_number"

@@ -16,14 +16,14 @@ export default function OwnerBookingList() {
       });
       setBookings(res.data.bookings);
     } catch (err) {
-      setError('Bronlarni olishda xatolik yuz berdi');
+      setError('Error fetching bookings');
     } finally {
       setLoading(false);
     }
   };
 
   const cancelBooking = async (bookingId) => {
-    if (!window.confirm('Bronni bekor qilmoqchimisiz?')) return;
+    if (!window.confirm('Are you sure you want to cancel this booking??')) return;
 
     try {
       const token = localStorage.getItem('token');
@@ -32,7 +32,7 @@ export default function OwnerBookingList() {
       });
       fetchBookings();
     } catch (err) {
-      alert('Bronni bekor qilishda xatolik yuz berdi');
+      alert('Error cancelling booking');
     }
   };
 
@@ -42,8 +42,8 @@ export default function OwnerBookingList() {
 
   return (
     <div style={{ marginTop: '40px' }}>
-      <h2>Sizning Bronlaringiz</h2>
-      {loading && <p>Yuklanmoqda...</p>}
+      <h2>Sizning Bookingsingiz</h2>
+      {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {!loading && bookings.length === 0 && <p>Bron topilmadi</p>}
 
@@ -51,14 +51,14 @@ export default function OwnerBookingList() {
         {bookings.map(b => (
           <li key={b.booking_id} style={{ marginBottom: '15px', borderBottom: '1px solid #ccc', paddingBottom: '10px' }}>
             <strong>{b.venue_name}</strong><br />
-            Sana: {new Date(b.booking_date).toLocaleDateString()}<br />
+            Date: {new Date(b.booking_date).toLocaleDateString()}<br />
             Holat: <em>{b.status}</em>
             {b.status !== 'cancelled' && (
               <button
                 onClick={() => cancelBooking(b.booking_id)}
                 style={{ marginLeft: '15px', padding: '5px 10px', cursor: 'pointer' }}
               >
-                Bekor qilish
+                Cancel
               </button>
             )}
           </li>

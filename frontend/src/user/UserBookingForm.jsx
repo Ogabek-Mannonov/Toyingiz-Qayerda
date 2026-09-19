@@ -142,7 +142,7 @@ export default function UserBookingForm() {
 
       <form onSubmit={handleSubmit}>
         <label>
-          Sana:
+          Date:
           <input
             type="date"
             name="booking_date"
@@ -154,7 +154,7 @@ export default function UserBookingForm() {
         </label>
         <br />
         <label>
-          Odamlar soni:
+          Number of Guests:
           <input
             type="number"
             name="number_of_guests"
@@ -166,7 +166,7 @@ export default function UserBookingForm() {
         </label>
         <br />
         <label>
-          Ism:
+          First Name:
           <input
             type="text"
             name="client_name"
@@ -177,7 +177,7 @@ export default function UserBookingForm() {
         </label>
         <br />
         <label>
-          Telefon raqam:
+          Phone Number:
           <input
             type="text"
             name="client_phone_number"

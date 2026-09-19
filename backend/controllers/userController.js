@@ -22,7 +22,7 @@ exports.getVenues = async (req, res) => {
     res.json({ venues: result.rows });
   } catch (error) {
     console.error('Get Venues error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 // Yakka to’yxonani ID bo’yicha olish
@@ -47,14 +47,14 @@ exports.getVenueById = async (req, res) => {
     );
 
     if (venueQuery.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi' });
+      return res.status(404).json({ message: 'Venue not found' });
     }
 
     res.json({ venue: venueQuery.rows[0] });
 
   } catch (error) {
     console.error('Get Venue By ID error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -82,7 +82,7 @@ exports.getVenueBookings = async (req, res) => {
     res.json({ bookings: bookingsRes.rows });
   } catch (error) {
     console.error('Get Venue Bookings error:', error);
-    res.status(500).json({ error: 'Serverda xatolik yuz berdi' });
+    res.status(500).json({ error: 'An error occurred on the server' });
   }
 };
 
@@ -93,7 +93,7 @@ exports.createBooking = async (req, res) => {
     const user_id = req.user?.id;
 
     if (!user_id) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     // 0. Avval bu sanaga bron mavjudmi – tekshiramiz
@@ -104,7 +104,7 @@ exports.createBooking = async (req, res) => {
     );
 
     if (existingBooking.rowCount > 0) {
-      return res.status(400).json({ message: `Bu sana allaqachon band qilingan.` });
+      return res.status(400).json({ message: `This date is already booked.` });
     }
 
     // 1. To'yxonani sig'imini va statusini olish
@@ -114,7 +114,7 @@ exports.createBooking = async (req, res) => {
     );
 
     if (venueResult.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi yoki tasdiqlanmagan' });
+      return res.status(404).json({ message: 'Venue not found yoki tasdiqlanmagan' });
     }
 
     const capacity = venueResult.rows[0].capacity;
@@ -137,7 +137,7 @@ exports.createBooking = async (req, res) => {
 
   } catch (error) {
     console.error('Create Booking error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -147,7 +147,7 @@ exports.getBookings = async (req, res) => {
     const user_id = req.user?.id;
 
     if (!user_id) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     const result = await pool.query(
@@ -162,7 +162,7 @@ exports.getBookings = async (req, res) => {
     res.json({ bookings: result.rows });
   } catch (error) {
     console.error('Get User Bookings error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -173,7 +173,7 @@ exports.cancelBooking = async (req, res) => {
     const bookingId = req.params.id;
 
     if (!user_id) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     // Bron o‘zi uchun ekanligini tekshirish
@@ -194,7 +194,7 @@ exports.cancelBooking = async (req, res) => {
     res.json({ message: 'Bron bekor qilindi', booking: result.rows[0] });
   } catch (error) {
     console.error('Cancel Booking error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -204,7 +204,7 @@ exports.getProfile = async (req, res) => {
     const userId = req.user?.id;
 
     if (!userId) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     const result = await pool.query(
@@ -219,7 +219,7 @@ exports.getProfile = async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Get Profile error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -231,7 +231,7 @@ exports.updateProfile = async (req, res) => {
     const { first_name, last_name, username, phone_number } = req.body;
 
     if (!userId) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     const updateQuery = `
@@ -255,7 +255,7 @@ exports.updateProfile = async (req, res) => {
 
   } catch (error) {
     console.error('Update Profile error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 

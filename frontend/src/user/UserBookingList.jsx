@@ -11,7 +11,7 @@ function UserBookingList() {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
-        setError("Avval tizimga kiring.");
+        setError("Please login first.");
         setLoading(false);
         return;
       }
@@ -26,7 +26,7 @@ function UserBookingList() {
         setBookings([]);
       }
     } catch (error) {
-      setError('Bronlarni yuklashda xatolik yuz berdi.');
+      setError('Bookingsni yuklashda xatolik yuz berdi.');
     } finally {
       setLoading(false);
     }
@@ -46,7 +46,7 @@ function UserBookingList() {
       alert('Bron bekor qilindi');
       fetchBookings();
     } catch (error) {
-      alert('Bronni bekor qilishda xatolik yuz berdi.');
+      alert('Error cancelling booking.');
     }
   };
 
@@ -54,7 +54,7 @@ function UserBookingList() {
     fetchBookings();
   }, []);
 
-  if (loading) return <p className="loading">Yuklanmoqda...</p>;
+  if (loading) return <p className="loading">Loading...</p>;
   if (error) return <p className="error">{error}</p>;
 
   return (
@@ -67,12 +67,12 @@ function UserBookingList() {
           {bookings.map((booking) => (
             <div className="booking-card" key={booking.booking_id}>
               <h3>{booking.venue_name}</h3>
-              <p>Sana: {new Date(booking.booking_date).toLocaleDateString()}</p>
+              <p>Date: {new Date(booking.booking_date).toLocaleDateString()}</p>
               <p>Mehmonlar soni: {booking.number_of_guests}</p>
               <p>Status: <strong className={`status ${booking.status}`}>{booking.status}</strong></p>
               {booking.status !== 'cancelled' && (
                 <button className="cancel-btn" onClick={() => handleCancel(booking.booking_id)}>
-                  Bekor qilish
+                  Cancel
                 </button>
               )}
             </div>

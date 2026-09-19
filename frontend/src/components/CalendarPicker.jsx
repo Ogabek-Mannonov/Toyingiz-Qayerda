@@ -17,7 +17,7 @@ export default function CalendarPicker({ bookedDates, selectedDate, onDateSelect
 
   return (
     <div>
-      <h4>Sanani tanlang</h4>
+      <h4>Dateni tanlang</h4>
       <div style={{ display: 'flex', flexWrap: 'wrap', maxWidth: 400 }}>
         {days.map(day => {
           const dateStr = day.toISOString().slice(0, 10);

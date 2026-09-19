@@ -49,7 +49,7 @@ export default function UserVenueList() {
 
       setVenues(venuesWithParsedPhotos);
     } catch (err) {
-      setError('To’yxonalarni olishda xatolik yuz berdi');
+      setError('Error fetching venues');
       console.error(err);
     } finally {
       setLoading(false);
@@ -67,18 +67,18 @@ export default function UserVenueList() {
 
   return (
     <div className='toyxonalar-get'>
-      <h2>Tasdiqlangan To’yxonalar</h2>
+      <h2>Approved Venues</h2>
 
       <div style={{ marginBottom: '15px' }}>
         <input
           type="text"
-          placeholder="Qidiruv..."
+          placeholder="Search..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
 
         <select value={filterDistrict} onChange={e => setFilterDistrict(e.target.value)}>
-          <option value="">Barcha rayonlar</option>
+          <option value="">All Districts</option>
           {districts.map(d => (
             <option key={d.district_id} value={d.name}>{d.name}</option>
           ))}
@@ -86,11 +86,11 @@ export default function UserVenueList() {
       </div>
 
       {loading ? (
-        <p>Yuklanmoqda...</p>
+        <p>Loading...</p>
       ) : error ? (
         <p style={{ color: 'red' }}>{error}</p>
       ) : venues.length === 0 ? (
-        <p>To’yxona topilmadi</p>
+        <p>Venue not found</p>
       ) : (
         <div className="venue-cards">
           {venues.map((v) => {
@@ -113,10 +113,10 @@ export default function UserVenueList() {
                 />
                 <div className="venue-info">
                   <h3>{v.name}</h3>
-                  <p>Sig'im: {v.capacity}</p>
-                  <p>Telefon: {v.phone_number}</p>
-                  <p>Narx: {v.price_per_seat} so'm / o'rindiq</p>
-                  <p>Manzil: {v.address}</p>
+                  <p>Capacity: {v.capacity}</p>
+                  <p>Phone: {v.phone_number}</p>
+                  <p>Price: {v.price_per_seat} UZS / seat</p>
+                  <p>Address: {v.address}</p>
                 </div>
               </div>
             );

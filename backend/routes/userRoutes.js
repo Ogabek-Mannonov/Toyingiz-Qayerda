@@ -4,7 +4,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-// To’yxonalarni ko’rish — bu public route, auth kerak emas
+// Venuesni ko’rish — bu public route, auth kerak emas
 router.get('/venues', userController.getVenues);
 
 // Quyidagi route’lar uchun autentifikatsiya talab qilinadi

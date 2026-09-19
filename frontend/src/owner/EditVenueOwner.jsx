@@ -100,7 +100,7 @@ export default function EditVenue() {
     <div className="edit-owner-container">
       <h2 className="edit-owner-title">To’yxonani Tahrirlash</h2>
 
-      {loading && <p className="edit-owner-loading">Yuklanmoqda...</p>}
+      {loading && <p className="edit-owner-loading">Loading...</p>}
       {error && <p className="edit-owner-error">{error}</p>}
       {success && <p className="edit-owner-success">{success}</p>}
 
@@ -123,7 +123,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Manzil:</label>
+        <label className="edit-owner-label">Address:</label>
         <input
           type="text"
           name="address"
@@ -132,7 +132,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Sig'imi:</label>
+        <label className="edit-owner-label">Capacityi:</label>
         <input
           type="number"
           name="capacity"
@@ -141,7 +141,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Narxi (bir o‘rindiqqa):</label>
+        <label className="edit-owner-label">Pricei (bir o‘rindiqqa):</label>
         <input
           type="number"
           name="price_per_seat"
@@ -150,7 +150,7 @@ export default function EditVenue() {
           required
         />
 
-        <label className="edit-owner-label">Telefon raqami:</label>
+        <label className="edit-owner-label">Phone Numberi:</label>
         <input
           type="text"
           name="phone_number"

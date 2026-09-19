@@ -34,7 +34,7 @@ exports.createVenue = async (req, res) => {
     res.status(201).json({ venue: result.rows[0] });
   } catch (error) {
     console.error('createVenue error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -50,7 +50,7 @@ exports.getVenues = async (req, res) => {
     res.json({ venues: result.rows });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -94,13 +94,13 @@ exports.updateVenue = async (req, res) => {
     const result = await pool.query(queryText, queryParams);
 
     if (result.rowCount === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi yoki ruxsat yo‘q' });
+      return res.status(404).json({ message: 'Venue not found yoki ruxsat yo‘q' });
     }
 
     res.json({ venue: result.rows[0] });
   } catch (error) {
     console.error('updateVenue error:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -120,7 +120,7 @@ exports.getBookings = async (req, res) => {
     res.json({ bookings: result.rows });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -150,7 +150,7 @@ exports.cancelBooking = async (req, res) => {
     res.json({ message: 'Bron bekor qilindi', booking: result.rows[0] });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -221,7 +221,7 @@ exports.deleteVenue = async (req, res) => {
     res.json({ message: "To'yxona o'chirildi" });
   } catch (error) {
     console.error("deleteVenue error:", error);
-    res.status(500).json({ error: "Server xatosi" });
+    res.status(500).json({ error: "Server Error" });
   }
 };
 
@@ -232,7 +232,7 @@ exports.getOwnerProfile = async (req, res) => {
     const ownerId = req.user?.id; // Token orqali olingan user_id
 
     if (!ownerId) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     const result = await pool.query(
@@ -249,7 +249,7 @@ exports.getOwnerProfile = async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Owner profilini olishda xatolik:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -260,7 +260,7 @@ exports.updateOwnerProfile = async (req, res) => {
     const { first_name, last_name, username, phone_number } = req.body;
 
     if (!ownerId) {
-      return res.status(401).json({ message: 'Avval tizimga kiring' });
+      return res.status(401).json({ message: 'Please login first' });
     }
 
     const result = await pool.query(
@@ -282,7 +282,7 @@ exports.updateOwnerProfile = async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Owner profilini yangilashda xatolik:', error);
-    res.status(500).json({ error: 'Server xatosi' });
+    res.status(500).json({ error: 'Server Error' });
   }
 };
 
@@ -299,12 +299,12 @@ exports.getVenueById = async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ message: 'To’yxona topilmadi yoki sizga tegishli emas' });
+      return res.status(404).json({ message: 'Venue not found yoki sizga tegishli emas' });
     }
 
     res.status(200).json({ venue: result.rows[0] });
   } catch (err) {
     console.error('Venue by ID xatolik:', err);
-    res.status(500).json({ message: 'Server xatosi' });
+    res.status(500).json({ message: 'Server Error' });
   }
 };

@@ -41,7 +41,7 @@ export default function VenueDetails() {
   };
 
   if (error) return <p className="error">{error}</p>;
-  if (!venue) return <p className="loading">Yuklanmoqda...</p>;
+  if (!venue) return <p className="loading">Loading...</p>;
 
   return (
     <div className="venue-details-card">
@@ -64,10 +64,10 @@ export default function VenueDetails() {
         <h2 className="venue-title">{venue.name}</h2>
 
         <div className="venue-info">
-          <p><strong>Sig'imi:</strong> {venue.capacity} kishi</p>
-          <p><strong>Narxi:</strong> {venue.price_per_seat.toLocaleString()} so‘m / o‘rindiq</p>
-          <p><strong>Telefon:</strong> {venue.phone_number}</p>
-          <p><strong>Manzil:</strong> {venue.address}</p>
+          <p><strong>Capacityi:</strong> {venue.capacity} kishi</p>
+          <p><strong>Pricei:</strong> {venue.price_per_seat.toLocaleString()} so‘m / o‘rindiq</p>
+          <p><strong>Phone:</strong> {venue.phone_number}</p>
+          <p><strong>Address:</strong> {venue.address}</p>
           <p><strong>Rayon:</strong> {venue.district_name}</p>
           <p><strong>Tavsif:</strong> {venue.description}</p>
         </div>

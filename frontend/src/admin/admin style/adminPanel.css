@@ -1,243 +1,307 @@
-* {
-  padding: 0;
-  margin: 0;
+/* =========================================
+   DESIGN TOKENS & CSS VARIABLES
+   ========================================= */
+:root {
+  --admin-bg: #f4f7fe;
+  --admin-sidebar-bg: #111c44;
+  --admin-sidebar-text: #a0aec0;
+  --admin-sidebar-active: #ffffff;
+  --admin-card-bg: #ffffff;
+  --admin-text-main: #2b3674;
+  --admin-text-muted: #a3aed1;
+  --admin-primary: #4318ff;
+  --admin-primary-hover: #3311db;
+  --admin-danger: #e31a1a;
+  --admin-success: #05cd99;
+  --admin-border: #e2e8f0;
+  
+  --shadow-sm: 0px 2px 5px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0px 4px 15px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0px 10px 30px rgba(0, 0, 0, 0.08);
+  
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  
+  --transition: all 0.3s ease;
 }
 
+/* =========================================
+   GLOBAL RESET & LAYOUT
+   ========================================= */
+.admin-panel-container * {
+  box-sizing: border-box;
+}
 
 .admin-panel-container {
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
   display: flex;
-  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--admin-bg);
+  font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--admin-text-main);
+  overflow-x: hidden;
 }
 
-/* .admin-sidebar {
-  width: 250px;
-  background-color: #161616;
-  color: white;
-  padding: 20px;
-  height: 100vh;
+/* =========================================
+   SIDEBAR
+   ========================================= */
+.admin-sidebar {
+  width: 260px;
+  background-color: var(--admin-sidebar-bg);
+  color: var(--admin-sidebar-text);
   position: fixed;
+  height: 100vh;
+  left: 0;
+  top: 0;
+  padding: 30px 20px;
+  box-shadow: var(--shadow-lg);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
 }
 
-.admin-sidebar .title {
-  margin-bottom: 30px;
+.admin-sidebar-title {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.admin-sidebar-title h2 {
+  color: var(--admin-sidebar-active);
   font-size: 24px;
-  border-bottom: 1px solid #444;
-  padding-bottom: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .nav-parent {
   display: flex;
   flex-direction: column;
+  gap: 15px;
 }
 
-.nav-box {
-  margin-bottom: 15px;
-}
-
-.nav-box a {
-  color: white;
+.nav-box a, .nav-box.logout {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-radius: var(--radius-md);
+  color: var(--admin-sidebar-text);
   text-decoration: none;
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-box a:hover, .nav-box.logout:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: var(--admin-sidebar-active);
 }
 
 .nav-box a.active {
-  font-weight: bold;
-  text-decoration: underline;
-} */
+  background-color: var(--admin-primary);
+  color: #fff;
+  box-shadow: 0px 4px 10px rgba(67, 24, 255, 0.4);
+}
 
+.nav-box.logout {
+  margin-top: auto;
+  color: #ff5b5b;
+}
+
+.nav-box.logout:hover {
+  background-color: rgba(255, 91, 91, 0.1);
+}
+
+/* =========================================
+   MAIN CONTENT AREA
+   ========================================= */
 .admin-content {
-  width: 100%;
   margin-left: 260px;
-  margin-right: 10px;
-  margin-top: 10px;
-  border-radius: 12px;
-  margin-bottom: 10px;
+  padding: 30px 40px;
+  flex-grow: 1;
+  width: calc(100% - 260px);
 }
 
-
-
-
-/* Dashboard */
-
-/* .dashboard-container {
-  padding: 20px;
+/* =========================================
+   CARDS & CONTAINERS (Dashboard, Tables)
+   ========================================= */
+.admin-card {
+  background-color: var(--admin-card-bg);
+  border-radius: var(--radius-lg);
+  padding: 25px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 30px;
+  transition: var(--transition);
 }
 
-.dashboard-title {
-  font-size: 32px;
-  margin-bottom: 20px;
+.admin-card:hover {
+  box-shadow: var(--shadow-lg);
 }
 
-.stats-grid {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.stat-card {
-  background-color: #eee;
-  padding: 20px;
-  flex: 1 1 200px;
-  border-radius: 8px;
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.stat-card h3 {
-  margin-bottom: 12px;
-  font-size: 20px;
-  color: #333;
-}
-
-.stat-card p {
+.admin-page-title {
   font-size: 28px;
-  font-weight: bold;
-  color: #222;
-  margin: 0;
-} */
-
-
-/* Create Owner */
-.create-venue-owner {
-  max-width: 600px;
-  margin: 10px auto;
-  padding: 10px;
-  background: #fafafa;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
-  font-family: Arial, sans-serif;
+  font-weight: 700;
+  color: var(--admin-text-main);
+  margin-bottom: 25px;
 }
 
-.create-venue-owner h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+/* =========================================
+   TABLES
+   ========================================= */
+.admin-table-container {
+  overflow-x: auto;
 }
 
-.create-venue-owner h3 {
-  margin-top: 25px;
-  margin-bottom: 10px;
-  color: #555;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-}
-
-.create-venue-owner form input[type="text"],
-.create-venue-owner form input[type="number"],
-.create-venue-owner form input[type="password"],
-.create-venue-owner form select,
-.create-venue-owner form input[type="file"] {
+.admin-table {
   width: 100%;
-  padding: 10px 12px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
+  border-collapse: collapse;
 }
 
-.file-label {
-  display: block;
-  margin-bottom: 10px;
-  font-weight: 600;
-  color: #444;
-}
-
-.create-venue-owner button {
-  width: 100%;
-  background-color: #007bff;
-  color: white;
-  font-size: 18px;
-  padding: 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.create-venue-owner button:hover {
-  background-color: #0056b3;
-}
-
-.error-message {
-  background-color: #f8d7da;
-  color: #842029;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #f5c2c7;
-  border-radius: 6px;
-  font-weight: 600;
-  text-align: center;
-}
-
-.success-message {
-  background-color: #d1e7dd;
-  color: #0f5132;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  border: 1px solid #badbcc;
-  border-radius: 6px;
-  font-weight: 600;
-  text-align: center;
-}
-
-
-
-
-
-/* Calendar */
-
-
-.calendar-grid {
-  display: flex;
-  flex-wrap: wrap;
-  max-width: 600px;
-  gap: 6px;
-}
-
-.calendar-day {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  border-radius: 5px;
-  user-select: none;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-}
-
-/* Ranglar */
-.calendar-day.past {
-  background-color: #d3d3d3;
-  color: #888;
-}
-
-.calendar-day.booked {
-  background-color: #ff6961;
-  color: white;
-}
-
-.calendar-day.cancelled {
-  background-color: #f9c8cb;
-  color: #a94442;
-}
-
-.calendar-day.available {
-  background-color: #77dd77;
-  color: black;
-}
-
-/* Booking info oynasi */
-.booking-info {
-  margin-top: 20px;
+.admin-table th {
+  text-align: left;
   padding: 15px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  max-width: 600px;
-  background-color: #f9f9f9;
+  font-size: 14px;
+  color: var(--admin-text-muted);
+  border-bottom: 2px solid var(--admin-border);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-table td {
+  padding: 15px;
+  border-bottom: 1px solid var(--admin-border);
+  font-size: 15px;
+  color: var(--admin-text-main);
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* =========================================
+   BUTTONS & BADGES
+   ========================================= */
+.admin-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.admin-btn-primary {
+  background-color: var(--admin-primary);
+  color: white;
+}
+.admin-btn-primary:hover {
+  background-color: var(--admin-primary-hover);
+  box-shadow: 0px 4px 10px rgba(67, 24, 255, 0.3);
+}
+
+.admin-btn-danger {
+  background-color: #ffe5e5;
+  color: var(--admin-danger);
+}
+.admin-btn-danger:hover {
+  background-color: var(--admin-danger);
+  color: white;
+}
+
+.admin-btn-success {
+  background-color: #e5f9f4;
+  color: var(--admin-success);
+}
+.admin-btn-success:hover {
+  background-color: var(--admin-success);
+  color: white;
+}
+
+.status-badge {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status-approved {
+  background-color: #e5f9f4;
+  color: var(--admin-success);
+}
+.status-pending {
+  background-color: #fff4e5;
+  color: #ff9800;
+}
+.status-rejected {
+  background-color: #ffe5e5;
+  color: var(--admin-danger);
+}
+
+/* =========================================
+   FORMS (Inputs & Selects)
+   ========================================= */
+.admin-panel-container .admin-input {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid var(--admin-border) !important;
+  border-radius: var(--radius-md) !important;
+  font-size: 15px;
+  color: var(--admin-text-main);
+  background-color: #f8fafc !important;
+  transition: var(--transition);
+  margin-bottom: 20px;
+}
+
+.admin-panel-container .admin-input:focus {
+  outline: none;
+  border-color: var(--admin-primary);
+  background-color: #fff;
+  box-shadow: 0px 0px 0px 3px rgba(67, 24, 255, 0.1);
+}
+
+/* =========================================
+   MODAL
+   ========================================= */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 28, 68, 0.5);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: white;
+  padding: 30px;
+  border-radius: var(--radius-lg);
+  width: 400px;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: modalIn 0.3s ease-out;
+}
+
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-box p {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--admin-text-main);
+  margin-bottom: 25px;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
 }

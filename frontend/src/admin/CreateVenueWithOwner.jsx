@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import './admin style/createVenueWithOwner.css';
+// Global theme is already imported in AdminPanel.jsx
 import './admin style/map.css'; // faqat map uchun qo‘shildi
 
 export default function CreateVenueWithOwner() {
@@ -138,18 +138,18 @@ export default function CreateVenueWithOwner() {
   };
 
   return (
-    <div className='create-cont'>
-      <h2>To'yxona va To'yxona egasini qo'shish</h2>
+    <div className="admin-page-container">
+      <h1 className="admin-page-title">Add Venue & Owner</h1>
 
       {error && <div className="error-message">{error}</div>}
       {successMessage && <div className="success-message">{successMessage}</div>}
 
-      <form className="admin-form" onSubmit={handleSubmit}>
-        <h3>To'yxona Ma'lumotlari</h3>
+      <form className="admin-card" onSubmit={handleSubmit}>
+        <h3 style={{ marginBottom: '20px', color: 'var(--admin-primary)' }}>Venue Details</h3>
         <div>
-          <input type="text" name="name" placeholder="To'yxona Nomi" value={formData.name} onChange={handleChange} required />
-          <select name="district_name" value={formData.district_name} onChange={handleChange} required>
-            <option value="">Tumanni tanlang</option>
+          <input className="admin-input" type="text" name="name" placeholder="Venue Name" value={formData.name} onChange={handleChange} required />
+          <select className="admin-input" name="district_name" value={formData.district_name} onChange={handleChange} required>
+            <option value="">Select District</option>
             {districts.map(d => (
               <option key={d.district_id} value={d.name}>{d.name}</option>
             ))}
@@ -157,20 +157,20 @@ export default function CreateVenueWithOwner() {
         </div>
 
         <div>
-          <input type="text" name="address" placeholder="Manzil" value={formData.address} onChange={handleChange} required />
-          <input type="number" name="capacity" placeholder="Joylar Soni" value={formData.capacity} onChange={handleChange} required />
+          <input className="admin-input" type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
+          <input className="admin-input" type="number" name="capacity" placeholder="Capacity" value={formData.capacity} onChange={handleChange} required />
         </div>
 
         <div>
-          <input type="number" name="price_per_seat" placeholder="Bir O'rindiq Narxi" value={formData.price_per_seat} onChange={handleChange} required />
-          <input type="text" name="phone_number" placeholder="Telefon raqam" value={formData.phone_number} onChange={handleChange} required />
+          <input className="admin-input" type="number" name="price_per_seat" placeholder="Price per Seat" value={formData.price_per_seat} onChange={handleChange} required />
+          <input className="admin-input" type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} required />
         </div>
 
-        <textarea name="description" placeholder="Tavsif" value={formData.description} onChange={handleChange} rows={4} />
+        <textarea className="admin-input" name="description" placeholder="Description" value={formData.description} onChange={handleChange} rows={4} />
 
         {/* 🌍 Map qo‘shilgan qism */}
-        <h3>Lokatsiya</h3>
-        <div className="map-container">
+        <h3 style={{ marginBottom: '20px', marginTop: '10px', color: 'var(--admin-primary)' }}>Location</h3>
+        <div className="map-container" style={{ marginBottom: '20px' }}>
           <MapContainer center={[41.2995, 69.2401]} zoom={12} className="map">
             <TileLayer
               attribution='&copy; <a href="https://osm.org/copyright">OpenStreetMap</a>'
@@ -180,24 +180,28 @@ export default function CreateVenueWithOwner() {
           </MapContainer>
           <div className="coords">
             <input
+              className="admin-input"
+              style={{ marginBottom: '0' }}
               type="text"
               name="latitude"
               value={formData.latitude}
-              placeholder="Kenglik (lat)"
+              placeholder="Latitude"
               readOnly
             />
             <input
+              className="admin-input"
+              style={{ marginBottom: '0' }}
               type="text"
               name="longitude"
               value={formData.longitude}
-              placeholder="Uzunlik (lng)"
+              placeholder="Longitude"
               readOnly
             />
           </div>
         </div>
 
-        <label htmlFor="file-upload" className="custom-file-upload">
-          <span className="upload-icon">📁</span> Rasmlar tanlang
+        <label htmlFor="file-upload" className="admin-btn admin-btn-primary" style={{ display: 'inline-block', marginBottom: '20px', cursor: 'pointer' }}>
+          <span className="upload-icon">📁</span> Select Images
         </label>
         <input
           id="file-upload"
@@ -216,21 +220,21 @@ export default function CreateVenueWithOwner() {
           </ul>
         )}
 
-        <h3>To'yxona Egasi Haqida Ma'lumot</h3>
+        <h3 style={{ marginBottom: '20px', marginTop: '10px', color: 'var(--admin-primary)' }}>Venue Owner Details</h3>
 
         <div>
-          <input type="text" name="owner_first_name" placeholder="Ism" value={formData.owner_first_name} onChange={handleChange} required />
-          <input type="text" name="owner_last_name" placeholder="Familiya" value={formData.owner_last_name} onChange={handleChange} required />
+          <input className="admin-input" type="text" name="owner_first_name" placeholder="First Name" value={formData.owner_first_name} onChange={handleChange} required />
+          <input className="admin-input" type="text" name="owner_last_name" placeholder="Last Name" value={formData.owner_last_name} onChange={handleChange} required />
         </div>
 
         <div>
-          <input type="text" name="owner_username" placeholder="Username" value={formData.owner_username} onChange={handleChange} required />
-          <input type="password" name="owner_password" placeholder="Password" value={formData.owner_password} onChange={handleChange} required />
+          <input className="admin-input" type="text" name="owner_username" placeholder="Username" value={formData.owner_username} onChange={handleChange} required />
+          <input className="admin-input" type="password" name="owner_password" placeholder="Password" value={formData.owner_password} onChange={handleChange} required />
         </div>
 
-        <input type="text" name="owner_phone_number" placeholder="Telefon raqam" value={formData.owner_phone_number} onChange={handleChange} required />
+        <input className="admin-input" type="text" name="owner_phone_number" placeholder="Phone Number" value={formData.owner_phone_number} onChange={handleChange} required />
 
-        <button type="submit">Yuborish</button>
+        <button className="admin-btn admin-btn-success" style={{ width: '100%', fontSize: '16px', padding: '12px' }} type="submit">Submit</button>
       </form>
     </div>
   );

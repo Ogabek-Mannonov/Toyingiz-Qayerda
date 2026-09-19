@@ -34,16 +34,16 @@ export default function OwnerDashboard() {
   }, []);
 
   if (loading) {
-    return <div className="owner-dashboard">Yuklanmoqda...</div>;
+    return <div className="owner-dashboard">Loading...</div>;
   }
 
   return (
     <div className="owner-dashboard">
       <div className="stats-cards">
-        <div className="card">To'yxonalar: {stats.totalVenues}</div>
+        <div className="card">Venues: {stats.totalVenues}</div>
         <div className="card">Kelgusi bronlar: {stats.upcomingBookings}</div>
         <div className="card">Bugungi bronlar: {stats.todayBookings}</div>
-        <div className="card">Bekor qilinganlar: {stats.cancelledBookings}</div>
+        <div className="card">Cancelledlar: {stats.cancelledBookings}</div>
       </div>
     </div>
   );

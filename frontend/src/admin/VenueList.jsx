@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import VenueCalendar from './VenueCalendar';
-import './admin style/venue-list.css'
+// Global theme is already imported in AdminPanel.jsx
 
 
 
@@ -60,7 +60,7 @@ export default function VenueList() {
         setLoading(false);
       })
       .catch(() => {
-        setError('To’yxonalarni olishda xatolik yuz berdi');
+        setError('Error fetching venues');
         setLoading(false);
       });
   };
@@ -75,11 +75,11 @@ export default function VenueList() {
       headers: getAuthHeaders()
     })
       .then(() => fetchVenues())
-      .catch(() => alert('Tasdiqlashda xatolik yuz berdi'));
+      .catch(() => alert('Error approving venue'));
   };
 
   const handleDelete = (id) => {
-    if (window.confirm('To’yxonani o‘chirmoqchimisiz?')) {
+    if (window.confirm('Are you sure you want to delete this venue?')) {
       axios.delete(`/api/admin/venues/${id}`, {
         headers: getAuthHeaders()
       })
@@ -87,69 +87,71 @@ export default function VenueList() {
           fetchVenues();
           if (selectedVenueId === id) setSelectedVenueId(null);
         })
-        .catch(() => alert('O‘chirishda xatolik yuz berdi'));
+        .catch(() => alert('Error deleting venue'));
     }
   };
 
   return (
-    <div>
-      <h2>To’yxonalar Ro’yxati</h2>
+    <div className="admin-page-container">
+      <h1 className="admin-page-title">Venues List</h1>
 
-      <div className="filter-container">
+      <div className="admin-card" style={{ display: 'flex', gap: '15px', marginBottom: '20px', padding: '15px' }}>
         <input
           type="text"
+          className="admin-input"
+          style={{ marginBottom: '0', flex: 1 }}
           name="search"
-          placeholder="Qidiruv..."
+          placeholder="Search..."
           value={filters.search}
           onChange={handleFilterChange}
         />
 
-        <select name="status" value={filters.status} onChange={handleFilterChange}>
-          <option value="">Barchasi</option>
-          <option value="approved">Tasdiqlangan</option>
-          <option value="pending">Tasdiqlanmagan</option>
+        <select className="admin-input" style={{ marginBottom: '0' }} name="status" value={filters.status} onChange={handleFilterChange}>
+          <option value="">All</option>
+          <option value="approved">Approved</option>
+          <option value="pending">Pending</option>
         </select>
 
-        <select name="district" value={filters.district} onChange={handleFilterChange}>
-          <option value="">Rayon tanlash</option>
+        <select className="admin-input" style={{ marginBottom: '0' }} name="district" value={filters.district} onChange={handleFilterChange}>
+          <option value="">Select District</option>
           {districts.map(d => (
             <option key={d.district_id} value={d.name}>{d.name}</option>
           ))}
         </select>
 
-        <select name="sortBy" value={filters.sortBy} onChange={handleFilterChange}>
-          <option value="">Saralash</option>
-          <option value="price_per_seat">Narx</option>
-          <option value="capacity">Sig‘im</option>
-          <option value="district">Rayon</option>
+        <select className="admin-input" style={{ marginBottom: '0' }} name="sortBy" value={filters.sortBy} onChange={handleFilterChange}>
+          <option value="">Sort By</option>
+          <option value="price_per_seat">Price</option>
+          <option value="capacity">Capacity</option>
+          <option value="district">District</option>
           <option value="status">Status</option>
         </select>
 
-        <select name="order" value={filters.order} onChange={handleFilterChange}>
-          <option value="asc">O‘sish</option>
-          <option value="desc">Kamayish</option>
+        <select className="admin-input" style={{ marginBottom: '0' }} name="order" value={filters.order} onChange={handleFilterChange}>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
         </select>
       </div>
 
       {loading ? (
-        <p>Yuklanmoqda...</p>
+        <p>Loading...</p>
       ) : error ? (
-        <p style={{ color: 'red' }}>{error}</p>
+        <p className="error-message">{error}</p>
       ) : venues.length === 0 ? (
-        <p>Hech qanday to’yxona topilmadi</p>
+        <p>No venues found</p>
       ) : (
-        <>
-          <table className="admin-table" border="1" cellPadding="8" cellSpacing="0" style={{ cursor: 'pointer' }}>
+        <div className="admin-card admin-table-container">
+          <table className="admin-table" style={{ cursor: 'pointer' }}>
             <thead>
               <tr>
-                <th>Nomi</th>
-                <th>Rayon</th>
-                <th>Manzil</th>
-                <th>Sig‘im</th>
-                <th>Narx (1 o‘rindiq)</th>
+                <th>Name</th>
+                <th>District</th>
+                <th>Address</th>
+                <th>Capacity</th>
+                <th>Price (per seat)</th>
                 <th>Status</th>
-                <th>Egasi</th>
-                <th>Amallar</th>
+                <th>Owner</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -160,24 +162,26 @@ export default function VenueList() {
                   <td>{v.address}</td>
                   <td>{v.capacity}</td>
                   <td>{v.price_per_seat}</td>
-                  <td style={{ color: v.status === 'approved' ? 'green' : 'red', fontWeight: 'bold' }}>
-                    {v.status === 'approved' ? 'Tasdiqlangan' : 'Tasdiqlanmagan'}
+                  <td>
+                    <span className={`status-badge status-${v.status}`}>
+                      {v.status === 'approved' ? 'Approved' : 'Pending'}
+                    </span>
                   </td>
                   <td>{v.owner_name}</td>
                   <td onClick={e => e.stopPropagation()}>
                     {v.status !== 'approved' && (
-                      <button className="admin-btn approve" onClick={() => handleApprove(v.hall_id)}>Tasdiqlash</button>
+                      <button className="admin-btn admin-btn-success" onClick={() => handleApprove(v.hall_id)}>Approve</button>
                     )}
-                    <button className="admin-btn delete" onClick={() => handleDelete(v.hall_id)} style={{ marginLeft: '10px' }}>O‘chirish</button>
+                    <button className="admin-btn admin-btn-danger" onClick={() => handleDelete(v.hall_id)} style={{ marginLeft: '10px' }}>Delete</button>
                     <button
-                      className="admin-btn edit"
+                      className="admin-btn admin-btn-primary"
                       onClick={e => {
                         e.stopPropagation();
                         navigate(`/admin-panel/venues/edit/${v.hall_id}`);
                       }}
                       style={{ marginLeft: '10px' }}
                     >
-                      Tahrirlash
+                      Edit
                     </button>
                   </td>
                 </tr>
@@ -186,14 +190,14 @@ export default function VenueList() {
           </table>
 
           {selectedVenueId && (
-            <div className="venue-calendar-wrapper">
+            <div className="venue-calendar-wrapper" style={{ marginTop: '20px' }}>
               <VenueCalendar venueId={selectedVenueId} />
-              <button className="close-calendar-btn" onClick={() => setSelectedVenueId(null)}>
-                Kalendarni yopish
+              <button className="admin-btn admin-btn-danger" onClick={() => setSelectedVenueId(null)} style={{ marginTop: '10px' }}>
+                Close Calendar
               </button>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

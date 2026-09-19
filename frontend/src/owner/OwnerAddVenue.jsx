@@ -128,7 +128,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
     }
   };
 
-  if (loading) return <p>Yuklanmoqda...</p>;
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="owner-venue-form-container">
@@ -139,7 +139,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
       <form onSubmit={handleSubmit} className="owner-venue-form">
         <input
           name="name"
-          placeholder="To’yxona nomi"
+          placeholder="Venue Name"
           value={formData.name}
           onChange={handleChange}
           required
@@ -161,7 +161,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
 
         <input
           name="address"
-          placeholder="Manzil"
+          placeholder="Address"
           value={formData.address}
           onChange={handleChange}
           required
@@ -186,7 +186,7 @@ export default function OwnerVenueForm({ venueId, onSuccess }) {
         />
         <input
           name="phone_number"
-          placeholder="Telefon raqam"
+          placeholder="Phone Number"
           value={formData.phone_number}
           onChange={handleChange}
           required
