@@ -29,17 +29,17 @@ export default function Home() {
     {
       url: "https://images.squarespace-cdn.com/content/v1/52cd6c35e4b00bc0dba09595/1579010513202-K7Z8U0ND58F1E7DXE1V2/west-mill-exclusive-use-wedding-venue-52.JPG",
       alt: "To'y zalining gozal korinishi",
-      caption: "Eng unutilmas kuningiz uchun eng chiroyli toy zallari",
+      caption: "The most beautiful wedding halls for your unforgettable day",
     },
     {
       url: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8d2VkZGluZyUyMHZlbnVlfGVufDB8fDB8fHww",
       alt: "Dekoratsiya namunasi",
-      caption: "Nafis bezaklar bilan sizning toyingiz yanada gozal",
+      caption: "Your wedding is even more beautiful with elegant decorations",
     },
     {
       url: "https://www.venuereport.com/media/cache/resolve/venue_gallery_big/uploads/2016%252F05%252Ffort-denison-5.jpg",
       alt: "Bayramning baxtiyor lahzalari",
-      caption: "Baxtli onlarni biz bilan baham koring",
+      caption: "Share your happy moments with us",
     },
   ];
 
@@ -79,7 +79,7 @@ export default function Home() {
       });
 
       if (res.ok) {
-        setStatus("Xabar yuborildi!");
+        setStatus("Message sent successfully!");
         setFormData({
           name: "",
           phone: "+998",
@@ -87,11 +87,11 @@ export default function Home() {
           message: "",
         });
       } else {
-        setStatus("Xatolik yuz berdi.");
+        setStatus("An error occurred.");
       }
     } catch (err) {
       console.error("Xatolik:", err);
-      setStatus("Xatolik yuz berdi.");
+      setStatus("An error occurred.");
     }
   };
 
@@ -111,23 +111,23 @@ export default function Home() {
 
       {/* XIZMATLAR */}
       <section className="services-section">
-        <h2>Bizning xizmatlarimiz</h2>
+        <h2>Our Services</h2>
         <ul>
-          <li>Toy zallari bron qilish</li>
-          <li>Ovqatlanish va banket xizmati</li>
-          <li>Bezash va dekoratsiya</li>
-          <li>Foto va video suratga olish</li>
+          <li>Wedding Hall Booking</li>
+          <li>Catering and Banquet Service</li>
+          <li>Decoration</li>
+          <li>Photography and Videography</li>
         </ul>
       </section>
 
       {/* CONTACT FORM */}
       <section className="contact-section">
-        <h2>Biz bilan bog'laning</h2>
+        <h2>Contact Us</h2>
         <form className="contact-form" onSubmit={handleSubmit}>
           <input
             type="text"
             name="name"
-            placeholder="First Nameingiz"
+            placeholder="First Name"
             value={formData.name}
             onChange={handleChange}
             required
@@ -143,20 +143,20 @@ export default function Home() {
           <input
             type="email"
             name="email"
-            placeholder="Emailingiz"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             required
           />
           <textarea
             name="message"
-            placeholder="Xabaringiz"
+            placeholder="Message"
             rows="5"
             value={formData.message}
             onChange={handleChange}
             required
           ></textarea>
-          <button type="submit">Yuborish</button>
+          <button type="submit">Submit</button>
         </form>
         {status && <p className="status-message">{status}</p>}
       </section>

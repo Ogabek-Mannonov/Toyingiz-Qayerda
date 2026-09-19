@@ -42,6 +42,19 @@ export default function OwnerList() {
       });
   };
 
+  const handleDelete = (id) => {
+    if (window.confirm('Are you sure you want to delete this owner?')) {
+      const token = localStorage.getItem('token');
+      axios.delete(`/api/admin/owners/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      .then(() => fetchOwners())
+      .catch(() => alert('Error deleting owner'));
+    }
+  };
+
   const filterAndSortOwners = () => {
     let filtered = owners.filter(o =>
       o.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -77,7 +90,7 @@ export default function OwnerList() {
           type="text"
           className="admin-input"
           style={{ marginBottom: '0', flex: 1 }}
-          placeholder="Search...sm, familiya, username)..."
+          placeholder="Search (first name, last name, username)..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -103,6 +116,7 @@ export default function OwnerList() {
                 <th>Username</th>
                 <th>Phone Number</th>
                 <th>Date Added</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -113,6 +127,11 @@ export default function OwnerList() {
                   <td>{o.username}</td>
                   <td>{o.phone_number}</td>
                   <td>{new Date(o.created_at).toLocaleDateString()}</td>
+                  <td>
+                    <button className="admin-btn admin-btn-danger" onClick={() => handleDelete(o.user_id)}>
+                      Delete
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -57,11 +57,11 @@ export default function Header() {
       <div className="right-box">
         {username ? (
           <>
-            <span style={{ color: 'black', fontWeight: '600' }}>Salom, {username}!</span>
+            <span style={{ color: 'black', fontWeight: '600' }}>Hello, {username}!</span>
             
           </>
         ) : (
-          <button className='signin-btn' onClick={goToSignup}>Ro'yxatdan o'tish</button>
+          <button className='signin-btn' onClick={goToSignup}>Sign Up</button>
         )}
       </div>
     </div>

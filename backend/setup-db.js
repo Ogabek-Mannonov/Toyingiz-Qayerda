@@ -31,8 +31,8 @@ const createTables = async () => {
       );
     `);
     
-    // Asosiy tumanlarni qo'shib qo'yamiz
-    const districtsList = ['Yunusobod', 'Chilonzor', 'Yakkasaroy', 'Mirzo Ulugbek', 'Olmazor', 'Sergeli', 'Uchtepa', 'Yashnobod', 'Bektemir', 'Mirobod', 'Shayxontohur'];
+    // Asosiy shaharlarni (Xalqaro) qo'shib qo'yamiz
+    const districtsList = ['New York', 'Los Angeles', 'London', 'Paris', 'Dubai', 'Tokyo', 'Sydney', 'Berlin', 'Toronto', 'Rome'];
     for (const d of districtsList) {
       await pool.query('INSERT INTO districts (name) VALUES ($1) ON CONFLICT DO NOTHING', [d]);
     }

@@ -19,6 +19,7 @@ router.put('/venues/:id', upload.array('images', 5), adminController.updateVenue
 
 
 router.get('/owners', adminController.getOwners);
+router.delete('/owners/:id', adminController.deleteOwner);
 
 router.get('/bookings', adminController.getBookings);
 router.patch('/bookings/:id/cancel', adminController.cancelBooking);

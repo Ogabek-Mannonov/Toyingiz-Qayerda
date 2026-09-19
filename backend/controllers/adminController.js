@@ -143,7 +143,7 @@ exports.approveVenue = async (req, res) => {
   const venueId = req.params.id;
   try {
     const result = await pool.query(
-      `UPDATE wedding_halls SET status = 'approved', updated_at = NOW() WHERE hall_id = $1 RETURNING *`,
+      `UPDATE wedding_halls SET status = 'approved' WHERE hall_id = $1 RETURNING *`,
       [venueId]
     );
 
@@ -207,17 +207,22 @@ exports.updateVenue = async (req, res) => {
     );
     const oldImages = oldImagesResult.rows;
 
-    // Eski rasmlarni o‘chirish (agar yangi rasmlar kelsa)
-    if (req.files && req.files.length > 0 && oldImages.length > 0) {
-      for (const image of oldImages) {
-        const filePath = path.join(__dirname, '..', image.image_url); // uploads/filename.jpg
-        fs.unlink(filePath, err => {
-          if (err) console.error('Rasm o‘chirishda xatolik:', err);
-        });
-      }
+    // Frontend yuborgan (qoldirilishi kerak bo'lgan) rasmlar ro'yxatini olish
+    let existingImages = req.body['existingImages[]'] || req.body.existingImages || [];
+    if (!Array.isArray(existingImages)) {
+      existingImages = [existingImages];
+    }
 
-      // Eski rasm yozuvlarini bazadan o‘chirish
-      await pool.query('DELETE FROM hall_photos WHERE hall_id = $1', [id]);
+    // Qaysi rasmlarni o'chirish kerakligini aniqlash
+    const imagesToDelete = oldImages.filter(img => !existingImages.includes(img.image_url));
+
+    // Tanlangan rasmlarni papkadan va bazadan o'chirish
+    for (const image of imagesToDelete) {
+      const filePath = path.join(__dirname, '..', image.image_url);
+      fs.unlink(filePath, err => {
+        if (err && err.code !== 'ENOENT') console.error('Rasm o‘chirishda xatolik:', err);
+      });
+      await pool.query('DELETE FROM hall_photos WHERE hall_id = $1 AND image_url = $2', [id, image.image_url]);
     }
 
     // Yangi rasm yozuvlarini bazaga qo‘shish
@@ -243,8 +248,7 @@ exports.updateVenue = async (req, res) => {
         phone_number = $6,
         description = $7,
         status = $8,
-        owner_id = $9,
-        updated_at = NOW()
+        owner_id = $9
       WHERE hall_id = $10`,
       [
         name,
@@ -293,6 +297,21 @@ exports.getOwners = async (req, res) => {
     res.json({ owners: result.rows });
   } catch (error) {
     console.error('Get Owners error:', error);
+    res.status(500).json({ error: 'Server Error' });
+  }
+};
+
+// To’yxona egalarini o'chirish
+exports.deleteOwner = async (req, res) => {
+  const ownerId = req.params.id;
+  try {
+    const result = await pool.query('DELETE FROM users WHERE user_id = $1 AND role = $2', [ownerId, 'owner']);
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: 'Owner not found' });
+    }
+    res.json({ message: 'Owner deleted successfully' });
+  } catch (error) {
+    console.error('Delete Owner error:', error);
     res.status(500).json({ error: 'Server Error' });
   }
 };

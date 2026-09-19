@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import './admin style/edit-venue.css';
+// Global theme is already imported in AdminPanel.jsx
 
 export default function EditVenue() {
   const { id } = useParams();
@@ -61,7 +61,7 @@ export default function EditVenue() {
         });
         setExistingImages(venue.images || []);
       } catch (err) {
-        setError('To’yxona ma’lumotlarini olishda xatolik yuz berdi');
+        setError('Error fetching venue details');
       } finally {
         setLoading(false);
       }
@@ -110,62 +110,62 @@ export default function EditVenue() {
         }
       });
 
-      setSuccessMessage('To’yxona muvaffaqiyatli yangilandi');
+      setSuccessMessage('Venue updated successfully');
       setTimeout(() => navigate('/admin-panel/venues'), 1500);
     } catch (err) {
-      setError('Yangilashda xatolik yuz berdi');
+      setError('Error updating venue');
     }
   };
 
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="edit-venue-container">
-      <h2>To’yxonani tahrirlash</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
+    <div className="admin-page-container">
+      <h1 className="admin-page-title">Edit Venue</h1>
+      {error && <p className="error-message">{error}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
 
-      <form onSubmit={handleSubmit}>
-        <input className="form-input" type="text" name="name" placeholder="Venue Name" value={formData.name} onChange={handleChange} required />
+      <form className="admin-card" onSubmit={handleSubmit}>
+        <input className="admin-input" type="text" name="name" placeholder="Venue Name" value={formData.name} onChange={handleChange} required />
 
-        <select className="form-input" name="district_id" value={formData.district_id} onChange={handleChange} required>
-          <option value="">Tumanni tanlang</option>
+        <select className="admin-input" name="district_id" value={formData.district_id} onChange={handleChange} required>
+          <option value="">Select District</option>
           {districts.map(d => (
             <option key={d.district_id} value={d.district_id}>{d.name}</option>
           ))}
         </select>
 
-        <input className="form-input" type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
-        <input className="form-input" type="number" name="capacity" placeholder="Sig‘im" value={formData.capacity} onChange={handleChange} required />
-        <input className="form-input" type="number" name="price_per_seat" placeholder="Price (1 o‘rindiq)" value={formData.price_per_seat} onChange={handleChange} required />
-        <input className="form-input" type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} required />
-        <textarea className="form-input" name="description" placeholder="Tavsif" value={formData.description} onChange={handleChange} />
+        <input className="admin-input" type="text" name="address" placeholder="Address" value={formData.address} onChange={handleChange} required />
+        <input className="admin-input" type="number" name="capacity" placeholder="Capacity" value={formData.capacity} onChange={handleChange} required />
+        <input className="admin-input" type="number" name="price_per_seat" placeholder="Price (per seat)" value={formData.price_per_seat} onChange={handleChange} required />
+        <input className="admin-input" type="text" name="phone_number" placeholder="Phone Number" value={formData.phone_number} onChange={handleChange} required />
+        <textarea className="admin-input" name="description" placeholder="Description" value={formData.description} onChange={handleChange} rows={4} />
 
-        <select className="form-input" name="status" value={formData.status} onChange={handleChange} required>
-          <option value="pending">Tasdiqlanmagan</option>
+        <select className="admin-input" name="status" value={formData.status} onChange={handleChange} required>
+          <option value="pending">Pending</option>
           <option value="approved">Approved</option>
         </select>
 
-        <label>
-          📁 Yangi rasm(lar) yuklash:
-          <input type="file" name="images" accept="image/*" multiple onChange={handleFileChange} />
+        <label htmlFor="edit-file-upload" className="admin-btn admin-btn-primary" style={{ display: 'inline-block', marginBottom: '20px', cursor: 'pointer' }}>
+          <span className="upload-icon">📁</span> Upload new image(s)
         </label>
+        <input id="edit-file-upload" type="file" name="images" accept="image/*" multiple onChange={handleFileChange} style={{ display: 'none' }} />
 
         {existingImages.length > 0 && (
-          <div className="image-preview-gallery">
-            <p>Joriy rasmlar:</p>
-            <div className="image-grid">
+          <div className="image-preview-gallery" style={{ marginBottom: '20px' }}>
+            <p style={{ marginBottom: '10px', color: 'var(--admin-text-main)', fontWeight: 'bold' }}>Current images:</p>
+            <div className="image-grid" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
               {existingImages.map((img, idx) => (
-                <div key={idx} className="image-item">
-                  <img src={`/${img}`} alt={`Venue ${idx + 1}`} className="preview-image" />
-                  <button type="button" aria-label="Rasmni o‘chirish" onClick={() => handleImageDelete(img)}>❌</button>
+                <div key={idx} className="image-item" style={{ position: 'relative' }}>
+                  <img src={`/${img}`} alt={`Venue ${idx + 1}`} className="preview-image" style={{ width: '100px', height: '100px', objectFit: 'cover', borderRadius: '8px' }} />
+                  <button type="button" aria-label="Delete image" onClick={() => handleImageDelete(img)} style={{ position: 'absolute', top: '-5px', right: '-5px', background: 'red', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer' }}>❌</button>
                 </div>
               ))}
             </div>
           </div>
         )}
 
-        <button className="form-button" type="submit">Saqlash</button>
+        <button className="admin-btn admin-btn-success" style={{ width: '100%', fontSize: '16px', padding: '12px' }} type="submit">Save Changes</button>
       </form>
     </div>
   );

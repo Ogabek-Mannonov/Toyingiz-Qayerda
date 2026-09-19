@@ -8,6 +8,8 @@ export default function AdminSidebar() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('userRole');
+    localStorage.removeItem('username');
+    window.dispatchEvent(new Event('usernameChange'));
     navigate('/login');
   };
 

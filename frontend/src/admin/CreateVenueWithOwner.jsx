@@ -32,7 +32,7 @@ export default function CreateVenueWithOwner() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      setError('Iltimos, tizimga kiring!');
+      setError('Please login!');
       return;
     }
 
@@ -42,7 +42,7 @@ export default function CreateVenueWithOwner() {
       }
     })
     .then(res => setDistricts(res.data.districts))
-    .catch(() => setError('Rayonlarni olishda xatolik yuz berdi'));
+    .catch(() => setError('Error fetching districts'));
   }, []);
 
   const handleChange = (e) => {
@@ -72,7 +72,7 @@ export default function CreateVenueWithOwner() {
 
     const token = localStorage.getItem('token');
     if (!token) {
-      setError('Iltimos, tizimga kiring!');
+      setError('Please login!');
       return;
     }
 
@@ -95,7 +95,7 @@ export default function CreateVenueWithOwner() {
         },
       });
 
-      setSuccessMessage("To’yxona va egasi muvaffaqiyatli yaratildi!");
+      setSuccessMessage("Venue and owner created successfully!");
       setFormData({
         name: '',
         district_name: '',
@@ -115,7 +115,7 @@ export default function CreateVenueWithOwner() {
       });
       setFileNames([]);
     } catch (error) {
-      setError(error.response?.data?.error || error.response?.data?.message || 'Server bilan bog‘lanishda xatolik yuz berdi');
+      setError(error.response?.data?.error || error.response?.data?.message || 'Error connecting to the server');
       setSuccessMessage('');
     }
   };
